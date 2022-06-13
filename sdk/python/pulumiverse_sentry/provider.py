@@ -13,28 +13,21 @@ __all__ = ['ProviderArgs', 'Provider']
 @pulumi.input_type
 class ProviderArgs:
     def __init__(__self__, *,
-                 token: pulumi.Input[str],
-                 base_url: Optional[pulumi.Input[str]] = None):
+                 base_url: Optional[pulumi.Input[str]] = None,
+                 token: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Provider resource.
-        :param pulumi.Input[str] token: The authentication token used to connect to Sentry
         :param pulumi.Input[str] base_url: The Sentry Base API URL
+        :param pulumi.Input[str] token: The authentication token used to connect to Sentry
         """
-        pulumi.set(__self__, "token", token)
+        if base_url is None:
+            base_url = _utilities.get_env('SENTRY_BASE_URL')
         if base_url is not None:
             pulumi.set(__self__, "base_url", base_url)
-
-    @property
-    @pulumi.getter
-    def token(self) -> pulumi.Input[str]:
-        """
-        The authentication token used to connect to Sentry
-        """
-        return pulumi.get(self, "token")
-
-    @token.setter
-    def token(self, value: pulumi.Input[str]):
-        pulumi.set(self, "token", value)
+        if token is None:
+            token = _utilities.get_env('SENTRY_TOKEN')
+        if token is not None:
+            pulumi.set(__self__, "token", token)
 
     @property
     @pulumi.getter(name="baseUrl")
@@ -47,6 +40,18 @@ class ProviderArgs:
     @base_url.setter
     def base_url(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "base_url", value)
+
+    @property
+    @pulumi.getter
+    def token(self) -> Optional[pulumi.Input[str]]:
+        """
+        The authentication token used to connect to Sentry
+        """
+        return pulumi.get(self, "token")
+
+    @token.setter
+    def token(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "token", value)
 
 
 class Provider(pulumi.ProviderResource):
@@ -72,7 +77,7 @@ class Provider(pulumi.ProviderResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: ProviderArgs,
+                 args: Optional[ProviderArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         The provider type for the sentry package. By default, resources use package-wide configuration
@@ -111,10 +116,14 @@ class Provider(pulumi.ProviderResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ProviderArgs.__new__(ProviderArgs)
 
+            if base_url is None:
+                base_url = _utilities.get_env('SENTRY_BASE_URL')
             __props__.__dict__["base_url"] = base_url
-            if token is None and not opts.urn:
-                raise TypeError("Missing required property 'token'")
-            __props__.__dict__["token"] = token
+            if token is None:
+                token = _utilities.get_env('SENTRY_TOKEN')
+            __props__.__dict__["token"] = None if token is None else pulumi.Output.secret(token)
+        secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["token"])
+        opts = pulumi.ResourceOptions.merge(opts, secret_opts)
         super(Provider, __self__).__init__(
             'sentry',
             resource_name,
@@ -131,7 +140,7 @@ class Provider(pulumi.ProviderResource):
 
     @property
     @pulumi.getter
-    def token(self) -> pulumi.Output[str]:
+    def token(self) -> pulumi.Output[Optional[str]]:
         """
         The authentication token used to connect to Sentry
         """

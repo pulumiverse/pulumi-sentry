@@ -19,12 +19,12 @@ class _ExportableConfig(types.ModuleType):
         """
         The Sentry Base API URL
         """
-        return __config__.get('baseUrl')
+        return __config__.get('baseUrl') or _utilities.get_env('SENTRY_BASE_URL')
 
     @property
     def token(self) -> Optional[str]:
         """
         The authentication token used to connect to Sentry
         """
-        return __config__.get('token')
+        return __config__.get('token') or _utilities.get_env('SENTRY_TOKEN')
 

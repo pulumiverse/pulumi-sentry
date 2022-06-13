@@ -316,7 +316,7 @@ class SentryKey(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create a key
         default = sentry.SentryKey("default",
@@ -347,7 +347,7 @@ class SentryKey(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create a key
         default = sentry.SentryKey("default",

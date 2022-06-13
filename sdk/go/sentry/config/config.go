@@ -10,10 +10,18 @@ import (
 
 // The Sentry Base API URL
 func GetBaseUrl(ctx *pulumi.Context) string {
-	return config.Get(ctx, "sentry:baseUrl")
+	v, err := config.Try(ctx, "sentry:baseUrl")
+	if err == nil {
+		return v
+	}
+	return getEnvOrDefault("", nil, "SENTRY_BASE_URL").(string)
 }
 
 // The authentication token used to connect to Sentry
 func GetToken(ctx *pulumi.Context) string {
-	return config.Get(ctx, "sentry:token")
+	v, err := config.Try(ctx, "sentry:token")
+	if err == nil {
+		return v
+	}
+	return getEnvOrDefault("", nil, "SENTRY_TOKEN").(string)
 }

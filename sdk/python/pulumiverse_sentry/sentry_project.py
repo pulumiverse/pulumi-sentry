@@ -378,7 +378,7 @@ class SentryProject(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create a project
         default = sentry.SentryProject("default",
@@ -423,7 +423,7 @@ class SentryProject(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create a project
         default = sentry.SentryProject("default",

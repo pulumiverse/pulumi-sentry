@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Immutable;
 
-namespace Pulumi.Sentry
+namespace Pulumiverse.Sentry
 {
     public static class Config
     {
@@ -32,7 +32,7 @@ namespace Pulumi.Sentry
 
         private static readonly Pulumi.Config __config = new Pulumi.Config("sentry");
 
-        private static readonly __Value<string?> _baseUrl = new __Value<string?>(() => __config.Get("baseUrl"));
+        private static readonly __Value<string?> _baseUrl = new __Value<string?>(() => __config.Get("baseUrl") ?? Utilities.GetEnv("SENTRY_BASE_URL"));
         /// <summary>
         /// The Sentry Base API URL
         /// </summary>
@@ -42,7 +42,7 @@ namespace Pulumi.Sentry
             set => _baseUrl.Set(value);
         }
 
-        private static readonly __Value<string?> _token = new __Value<string?>(() => __config.Get("token"));
+        private static readonly __Value<string?> _token = new __Value<string?>(() => __config.Get("token") ?? Utilities.GetEnv("SENTRY_TOKEN"));
         /// <summary>
         /// The authentication token used to connect to Sentry
         /// </summary>

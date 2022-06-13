@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.Sentry
+namespace Pulumiverse.Sentry
 {
     /// <summary>
     /// The provider type for the sentry package. By default, resources use package-wide configuration
@@ -28,7 +29,7 @@ namespace Pulumi.Sentry
         /// The authentication token used to connect to Sentry
         /// </summary>
         [Output("token")]
-        public Output<string> Token { get; private set; } = null!;
+        public Output<string?> Token { get; private set; } = null!;
 
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Pulumi.Sentry
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Provider(string name, ProviderArgs args, CustomResourceOptions? options = null)
+        public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
             : base("sentry", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -49,6 +50,10 @@ namespace Pulumi.Sentry
             {
                 Version = Utilities.Version,
                 PluginDownloadURL = "https://github.com/pulumiverse/pulumi-sentry/releases/download/${VERSION}",
+                AdditionalSecretOutputs =
+                {
+                    "token",
+                },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
@@ -65,14 +70,26 @@ namespace Pulumi.Sentry
         [Input("baseUrl")]
         public Input<string>? BaseUrl { get; set; }
 
+        [Input("token")]
+        private Input<string>? _token;
+
         /// <summary>
         /// The authentication token used to connect to Sentry
         /// </summary>
-        [Input("token", required: true)]
-        public Input<string> Token { get; set; } = null!;
+        public Input<string>? Token
+        {
+            get => _token;
+            set
+            {
+                var emptySecret = Output.CreateSecret(0);
+                _token = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+            }
+        }
 
         public ProviderArgs()
         {
+            BaseUrl = Utilities.GetEnv("SENTRY_BASE_URL");
+            Token = Utilities.GetEnv("SENTRY_TOKEN");
         }
     }
 }

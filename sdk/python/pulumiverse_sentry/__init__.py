@@ -18,10 +18,10 @@ from .sentry_team import *
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
-    import pulumi_sentry.config as __config
+    import pulumiverse_sentry.config as __config
     config = __config
 else:
-    config = _utilities.lazy_import('pulumi_sentry.config')
+    config = _utilities.lazy_import('pulumiverse_sentry.config')
 
 _utilities.register(
     resource_modules="""
@@ -29,7 +29,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "mod": "index/sentryDefaultKey",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryDefaultKey:SentryDefaultKey": "SentryDefaultKey"
   }
@@ -37,7 +37,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "mod": "index/sentryKey",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryKey:SentryKey": "SentryKey"
   }
@@ -45,7 +45,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "mod": "index/sentryOrganization",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryOrganization:SentryOrganization": "SentryOrganization"
   }
@@ -53,7 +53,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "mod": "index/sentryPlugin",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryPlugin:SentryPlugin": "SentryPlugin"
   }
@@ -61,7 +61,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "mod": "index/sentryProject",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryProject:SentryProject": "SentryProject"
   }
@@ -69,7 +69,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "mod": "index/sentryRule",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryRule:SentryRule": "SentryRule"
   }
@@ -77,7 +77,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "mod": "index/sentryTeam",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryTeam:SentryTeam": "SentryTeam"
   }
@@ -89,7 +89,7 @@ _utilities.register(
  {
   "pkg": "sentry",
   "token": "pulumi:providers:sentry",
-  "fqn": "pulumi_sentry",
+  "fqn": "pulumiverse_sentry",
   "class": "Provider"
  }
 ]

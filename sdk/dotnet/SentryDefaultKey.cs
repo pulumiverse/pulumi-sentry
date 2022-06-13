@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.Sentry
+namespace Pulumiverse.Sentry
 {
     [SentryResourceType("sentry:index/sentryDefaultKey:SentryDefaultKey")]
     public partial class SentryDefaultKey : Pulumi.CustomResource

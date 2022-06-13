@@ -13,7 +13,7 @@ const __config = new pulumi.Config("sentry");
 export declare const baseUrl: string | undefined;
 Object.defineProperty(exports, "baseUrl", {
     get() {
-        return __config.get("baseUrl");
+        return __config.get("baseUrl") ?? utilities.getEnv("SENTRY_BASE_URL");
     },
     enumerable: true,
 });
@@ -24,7 +24,7 @@ Object.defineProperty(exports, "baseUrl", {
 export declare const token: string | undefined;
 Object.defineProperty(exports, "token", {
     get() {
-        return __config.get("token");
+        return __config.get("token") ?? utilities.getEnv("SENTRY_TOKEN");
     },
     enumerable: true,
 });

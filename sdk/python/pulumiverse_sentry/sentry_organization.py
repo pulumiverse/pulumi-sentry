@@ -139,7 +139,7 @@ class SentryOrganization(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create an organization
         default = sentry.SentryOrganization("default",
@@ -176,7 +176,7 @@ class SentryOrganization(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create an organization
         default = sentry.SentryOrganization("default",

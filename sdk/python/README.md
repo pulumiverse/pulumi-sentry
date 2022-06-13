@@ -27,7 +27,7 @@ yarn add @pulumiverse/sentry
 To use from Python, install using `pip`:
 
 ```bash
-pip install pulumi_sentry
+pip install pulumiverse_sentry
 ```
 
 ### Go
@@ -43,7 +43,7 @@ go get github.com/pulumiverse/pulumi-sentry/sdk/go/...
 To use from .NET, install using `dotnet add package`:
 
 ```bash
-dotnet add package Pulumi.Sentry
+dotnet add package Pulumiverse.Sentry
 ```
 
 ## Configuration

@@ -85,7 +85,7 @@ func Provider() tfbridge.ProviderInfo {
 		Repository: "https://github.com/pulumiverse/pulumi-sentry",
 		// The GitHub Org for the provider - defaults to `terraform-providers`
 		GitHubOrg: "jianyuan",
-		Config:    map[string]*tfbridge.SchemaInfo{
+		Config: map[string]*tfbridge.SchemaInfo{
 			// Add any required configuration here, or remove the example below if
 			// no additional points are required.
 			// "region": {
@@ -94,6 +94,17 @@ func Provider() tfbridge.ProviderInfo {
 			// 		EnvVars: []string{"AWS_REGION", "AWS_DEFAULT_REGION"},
 			// 	},
 			// },
+			"token": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"SENTRY_TOKEN"},
+				},
+				Secret: boolRef(true),
+			},
+			"base_url": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"SENTRY_BASE_URL"},
+				},
+			},
 		},
 		PreConfigureCallback: preConfigureCallback,
 		Resources: map[string]*tfbridge.ResourceInfo{
@@ -166,6 +177,7 @@ func Provider() tfbridge.ProviderInfo {
 			Requires: map[string]string{
 				"pulumi": ">=3.0.0,<4.0.0",
 			},
+			PackageName: "pulumiverse_sentry",
 		},
 		Golang: &tfbridge.GolangInfo{
 			ImportBasePath: filepath.Join(
@@ -180,6 +192,7 @@ func Provider() tfbridge.ProviderInfo {
 			PackageReferences: map[string]string{
 				"Pulumi": "3.*",
 			},
+			RootNamespace: "Pulumiverse",
 		},
 	}
 

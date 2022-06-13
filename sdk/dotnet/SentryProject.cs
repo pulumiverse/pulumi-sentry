@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.Sentry
+namespace Pulumiverse.Sentry
 {
     /// <summary>
     /// ## # sentry.SentryProject Resource
@@ -18,7 +19,7 @@ namespace Pulumi.Sentry
     /// 
     /// ```csharp
     /// using Pulumi;
-    /// using Sentry = Pulumi.Sentry;
+    /// using Sentry = Pulumiverse.Sentry;
     /// 
     /// class MyStack : Stack
     /// {

@@ -187,7 +187,7 @@ class SentryTeam(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create a team
         default = sentry.SentryTeam("default",
@@ -224,7 +224,7 @@ class SentryTeam(pulumi.CustomResource):
 
         ```python
         import pulumi
-        import pulumi_sentry as sentry
+        import pulumiverse_sentry as sentry
 
         # Create a team
         default = sentry.SentryTeam("default",

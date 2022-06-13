@@ -37,7 +37,7 @@ def readme():
         return "sentry Pulumi Package - Development Version"
 
 
-setup(name='pulumi_sentry',
+setup(name='pulumiverse_sentry',
       version=VERSION,
       description="A Pulumi package for creating and managing Sentry resources.",
       long_description=readme(),
@@ -53,7 +53,7 @@ setup(name='pulumi_sentry',
       license='Apache-2.0',
       packages=find_packages(),
       package_data={
-          'pulumi_sentry': [
+          'pulumiverse_sentry': [
               'py.typed',
               'pulumi-plugin.json',
           ]
