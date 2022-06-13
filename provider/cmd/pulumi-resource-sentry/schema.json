@@ -1,0 +1,1127 @@
+{
+    "name": "sentry",
+    "displayName": "Sentry",
+    "description": "A Pulumi package for creating and managing Sentry resources.",
+    "keywords": [
+        "pulumi",
+        "sentry",
+        "category/cloud"
+    ],
+    "homepage": "https://github.com/pulumiverse",
+    "license": "Apache-2.0",
+    "attribution": "This Pulumi package is based on the [`sentry` Terraform Provider](https://github.com/jianyuan/terraform-provider-sentry).",
+    "repository": "https://github.com/pulumiverse/pulumi-sentry",
+    "logoUrl": "https://raw.githubusercontent.com/pulumiverse/.github/main/assets/mascot.png",
+    "pluginDownloadURL": "https://github.com/pulumiverse/pulumi-sentry/releases/download/${VERSION}",
+    "publisher": "Pulumiverse",
+    "meta": {
+        "moduleFormat": "(.*)(?:/[^/]*)"
+    },
+    "config": {
+        "variables": {
+            "baseUrl": {
+                "type": "string",
+                "description": "The Sentry Base API URL\n"
+            },
+            "token": {
+                "type": "string",
+                "description": "The authentication token used to connect to Sentry\n"
+            }
+        },
+        "defaults": [
+            "token"
+        ]
+    },
+    "provider": {
+        "description": "The provider type for the sentry package. By default, resources use package-wide configuration\nsettings, however an explicit `Provider` instance may be created and passed during resource\nconstruction to achieve fine-grained programmatic control over provider settings. See the\n[documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.\n",
+        "properties": {
+            "baseUrl": {
+                "type": "string",
+                "description": "The Sentry Base API URL\n"
+            },
+            "token": {
+                "type": "string",
+                "description": "The authentication token used to connect to Sentry\n"
+            }
+        },
+        "required": [
+            "token"
+        ],
+        "inputProperties": {
+            "baseUrl": {
+                "type": "string",
+                "description": "The Sentry Base API URL\n"
+            },
+            "token": {
+                "type": "string",
+                "description": "The authentication token used to connect to Sentry\n"
+            }
+        },
+        "requiredInputs": [
+            "token"
+        ]
+    },
+    "resources": {
+        "sentry:index/sentryDefaultKey:SentryDefaultKey": {
+            "properties": {
+                "dsnCsp": {
+                    "type": "string"
+                },
+                "dsnPublic": {
+                    "type": "string"
+                },
+                "dsnSecret": {
+                    "type": "string",
+                    "secret": true
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the key\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the key should be created for\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the key should be created for\n"
+                },
+                "projectId": {
+                    "type": "integer"
+                },
+                "public": {
+                    "type": "string"
+                },
+                "rateLimitCount": {
+                    "type": "integer"
+                },
+                "rateLimitWindow": {
+                    "type": "integer"
+                },
+                "secret": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "required": [
+                "dsnCsp",
+                "dsnPublic",
+                "dsnSecret",
+                "isActive",
+                "name",
+                "organization",
+                "project",
+                "projectId",
+                "public",
+                "rateLimitCount",
+                "rateLimitWindow",
+                "secret"
+            ],
+            "inputProperties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the key\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the key should be created for\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the key should be created for\n"
+                },
+                "rateLimitCount": {
+                    "type": "integer"
+                },
+                "rateLimitWindow": {
+                    "type": "integer"
+                }
+            },
+            "requiredInputs": [
+                "organization",
+                "project"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SentryDefaultKey resources.\n",
+                "properties": {
+                    "dsnCsp": {
+                        "type": "string"
+                    },
+                    "dsnPublic": {
+                        "type": "string"
+                    },
+                    "dsnSecret": {
+                        "type": "string",
+                        "secret": true
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the key\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The slug of the organization the key should be created for\n"
+                    },
+                    "project": {
+                        "type": "string",
+                        "description": "The slug of the project the key should be created for\n"
+                    },
+                    "projectId": {
+                        "type": "integer"
+                    },
+                    "public": {
+                        "type": "string"
+                    },
+                    "rateLimitCount": {
+                        "type": "integer"
+                    },
+                    "rateLimitWindow": {
+                        "type": "integer"
+                    },
+                    "secret": {
+                        "type": "string",
+                        "secret": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "sentry:index/sentryKey:SentryKey": {
+            "description": "## # sentry.SentryKey Resource\n\nSentry Key resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Create a key\nconst defaultSentryKey = new sentry.SentryKey(\"default\", {\n    organization: \"my-organization\",\n    project: \"web-app\",\n});\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\n# Create a key\ndefault = sentry.SentryKey(\"default\",\n    organization=\"my-organization\",\n    project=\"web-app\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create a key\n        var @default = new Sentry.SentryKey(\"default\", new Sentry.SentryKeyArgs\n        {\n            Organization = \"my-organization\",\n            Project = \"web-app\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.NewSentryKey(ctx, \"default\", \u0026sentry.SentryKeyArgs{\n\t\t\tOrganization: pulumi.String(\"my-organization\"),\n\t\t\tProject:      pulumi.String(\"web-app\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "properties": {
+                "dsnCsp": {
+                    "type": "string",
+                    "description": "DSN for the Content Security Policy (CSP) for the key.\n"
+                },
+                "dsnPublic": {
+                    "type": "string",
+                    "description": "DSN for the key.\n"
+                },
+                "dsnSecret": {
+                    "type": "string",
+                    "description": "DSN (Deprecated) for the key.\n",
+                    "secret": true
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "description": "Flag indicating the key is active.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the key.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the key should be created for.\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the key should be created for.\n"
+                },
+                "projectId": {
+                    "type": "integer",
+                    "description": "The ID of the project that the key belongs to.\n"
+                },
+                "public": {
+                    "type": "string",
+                    "description": "Public key portion of the client key.\n"
+                },
+                "rateLimitCount": {
+                    "type": "integer",
+                    "description": "Number of events that can be reported within the rate limit window.\n"
+                },
+                "rateLimitWindow": {
+                    "type": "integer",
+                    "description": "Length of time that will be considered when checking the rate limit.\n"
+                },
+                "secret": {
+                    "type": "string",
+                    "description": "Secret key portion of the client key.\n",
+                    "secret": true
+                }
+            },
+            "required": [
+                "dsnCsp",
+                "dsnPublic",
+                "dsnSecret",
+                "isActive",
+                "name",
+                "organization",
+                "project",
+                "projectId",
+                "public",
+                "rateLimitCount",
+                "rateLimitWindow",
+                "secret"
+            ],
+            "inputProperties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the key.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the key should be created for.\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the key should be created for.\n"
+                },
+                "rateLimitCount": {
+                    "type": "integer",
+                    "description": "Number of events that can be reported within the rate limit window.\n"
+                },
+                "rateLimitWindow": {
+                    "type": "integer",
+                    "description": "Length of time that will be considered when checking the rate limit.\n"
+                }
+            },
+            "requiredInputs": [
+                "organization",
+                "project"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SentryKey resources.\n",
+                "properties": {
+                    "dsnCsp": {
+                        "type": "string",
+                        "description": "DSN for the Content Security Policy (CSP) for the key.\n"
+                    },
+                    "dsnPublic": {
+                        "type": "string",
+                        "description": "DSN for the key.\n"
+                    },
+                    "dsnSecret": {
+                        "type": "string",
+                        "description": "DSN (Deprecated) for the key.\n",
+                        "secret": true
+                    },
+                    "isActive": {
+                        "type": "boolean",
+                        "description": "Flag indicating the key is active.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the key.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The slug of the organization the key should be created for.\n"
+                    },
+                    "project": {
+                        "type": "string",
+                        "description": "The slug of the project the key should be created for.\n"
+                    },
+                    "projectId": {
+                        "type": "integer",
+                        "description": "The ID of the project that the key belongs to.\n"
+                    },
+                    "public": {
+                        "type": "string",
+                        "description": "Public key portion of the client key.\n"
+                    },
+                    "rateLimitCount": {
+                        "type": "integer",
+                        "description": "Number of events that can be reported within the rate limit window.\n"
+                    },
+                    "rateLimitWindow": {
+                        "type": "integer",
+                        "description": "Length of time that will be considered when checking the rate limit.\n"
+                    },
+                    "secret": {
+                        "type": "string",
+                        "description": "Secret key portion of the client key.\n",
+                        "secret": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "sentry:index/sentryOrganization:SentryOrganization": {
+            "description": "## # sentry.SentryOrganization Resource\n\nSentry Organization resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Create an organization\nconst defaultSentryOrganization = new sentry.SentryOrganization(\"default\", {\n    agreeTerms: true,\n    slug: \"my-organization\",\n});\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\n# Create an organization\ndefault = sentry.SentryOrganization(\"default\",\n    agree_terms=True,\n    slug=\"my-organization\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create an organization\n        var @default = new Sentry.SentryOrganization(\"default\", new Sentry.SentryOrganizationArgs\n        {\n            AgreeTerms = true,\n            Slug = \"my-organization\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.NewSentryOrganization(ctx, \"default\", \u0026sentry.SentryOrganizationArgs{\n\t\t\tAgreeTerms: pulumi.Bool(true),\n\t\t\tSlug:       pulumi.String(\"my-organization\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\nThis resource can be imported using an ID made up of the organization slugbash\n\n```sh\n $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug\n```\n\n ",
+            "properties": {
+                "agreeTerms": {
+                    "type": "boolean",
+                    "description": "You agree to the applicable terms of service and privacy policy.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The human readable name for the organization.\n"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.\n"
+                }
+            },
+            "required": [
+                "agreeTerms",
+                "name",
+                "slug"
+            ],
+            "inputProperties": {
+                "agreeTerms": {
+                    "type": "boolean",
+                    "description": "You agree to the applicable terms of service and privacy policy.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The human readable name for the organization.\n"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.\n"
+                }
+            },
+            "requiredInputs": [
+                "agreeTerms"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SentryOrganization resources.\n",
+                "properties": {
+                    "agreeTerms": {
+                        "type": "boolean",
+                        "description": "You agree to the applicable terms of service and privacy policy.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The human readable name for the organization.\n"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "sentry:index/sentryPlugin:SentryPlugin": {
+            "description": "## # sentry.SentryPlugin Resource\n\nSentry Plugin resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Create a plugin\nconst defaultSentryPlugin = new sentry.SentryPlugin(\"default\", {\n    config: {\n        webhook: \"slack://webhook\",\n    },\n    organization: \"my-organization\",\n    plugin: \"slack\",\n    project: \"web-app\",\n});\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\n# Create a plugin\ndefault = sentry.SentryPlugin(\"default\",\n    config={\n        \"webhook\": \"slack://webhook\",\n    },\n    organization=\"my-organization\",\n    plugin=\"slack\",\n    project=\"web-app\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create a plugin\n        var @default = new Sentry.SentryPlugin(\"default\", new Sentry.SentryPluginArgs\n        {\n            Config = \n            {\n                { \"webhook\", \"slack://webhook\" },\n            },\n            Organization = \"my-organization\",\n            Plugin = \"slack\",\n            Project = \"web-app\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.NewSentryPlugin(ctx, \"default\", \u0026sentry.SentryPluginArgs{\n\t\t\tConfig: pulumi.AnyMap{\n\t\t\t\t\"webhook\": pulumi.Any(\"slack://webhook\"),\n\t\t\t},\n\t\t\tOrganization: pulumi.String(\"my-organization\"),\n\t\t\tPlugin:       pulumi.String(\"slack\"),\n\t\t\tProject:      pulumi.String(\"web-app\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "properties": {
+                "config": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "Configuration of the plugin.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the plugin should be enabled for.\n"
+                },
+                "plugin": {
+                    "type": "string",
+                    "description": "Identifier of the plugin.\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the plugin should be enabled for.\n"
+                }
+            },
+            "required": [
+                "organization",
+                "plugin",
+                "project"
+            ],
+            "inputProperties": {
+                "config": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "Configuration of the plugin.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the plugin should be enabled for.\n"
+                },
+                "plugin": {
+                    "type": "string",
+                    "description": "Identifier of the plugin.\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the plugin should be enabled for.\n"
+                }
+            },
+            "requiredInputs": [
+                "organization",
+                "plugin",
+                "project"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SentryPlugin resources.\n",
+                "properties": {
+                    "config": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        },
+                        "description": "Configuration of the plugin.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The slug of the organization the plugin should be enabled for.\n"
+                    },
+                    "plugin": {
+                        "type": "string",
+                        "description": "Identifier of the plugin.\n"
+                    },
+                    "project": {
+                        "type": "string",
+                        "description": "The slug of the project the plugin should be enabled for.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "sentry:index/sentryProject:SentryProject": {
+            "description": "## # sentry.SentryProject Resource\n\nSentry Project resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Create a project\nconst defaultSentryProject = new sentry.SentryProject(\"default\", {\n    organization: \"my-organization\",\n    platform: \"javascript\",\n    resolveAge: 720,\n    slug: \"web-app\",\n    team: \"my-team\",\n});\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\n# Create a project\ndefault = sentry.SentryProject(\"default\",\n    organization=\"my-organization\",\n    platform=\"javascript\",\n    resolve_age=720,\n    slug=\"web-app\",\n    team=\"my-team\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create a project\n        var @default = new Sentry.SentryProject(\"default\", new Sentry.SentryProjectArgs\n        {\n            Organization = \"my-organization\",\n            Platform = \"javascript\",\n            ResolveAge = 720,\n            Slug = \"web-app\",\n            Team = \"my-team\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.NewSentryProject(ctx, \"default\", \u0026sentry.SentryProjectArgs{\n\t\t\tOrganization: pulumi.String(\"my-organization\"),\n\t\t\tPlatform:     pulumi.String(\"javascript\"),\n\t\t\tResolveAge:   pulumi.Int(720),\n\t\t\tSlug:         pulumi.String(\"web-app\"),\n\t\t\tTeam:         pulumi.String(\"my-team\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\nThis resource can be imported using an ID made up of the organization slug and project slugbash\n\n```sh\n $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug\n```\n\n ",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "digestsMaxDelay": {
+                    "type": "integer",
+                    "description": "The maximum amount of time (in seconds) to wait between scheduling digests for delivery.\n"
+                },
+                "digestsMinDelay": {
+                    "type": "integer",
+                    "description": "The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.\n"
+                },
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "isBookmarked": {
+                    "type": "boolean",
+                    "deprecationMessage": "is_bookmarked is no longer used"
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The human readable name for the project.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the project should be created for.\n"
+                },
+                "platform": {
+                    "type": "string",
+                    "description": "The integration platform.\n"
+                },
+                "projectId": {
+                    "type": "string"
+                },
+                "resolveAge": {
+                    "type": "integer",
+                    "description": "Hours in which an issue is automatically resolve if not seen after this amount of time.\n"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.\n"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "team": {
+                    "type": "string",
+                    "description": "The slug of the team the project should be created for.\n"
+                }
+            },
+            "required": [
+                "color",
+                "digestsMaxDelay",
+                "digestsMinDelay",
+                "features",
+                "isBookmarked",
+                "isPublic",
+                "name",
+                "organization",
+                "platform",
+                "projectId",
+                "resolveAge",
+                "slug",
+                "status",
+                "team"
+            ],
+            "inputProperties": {
+                "digestsMaxDelay": {
+                    "type": "integer",
+                    "description": "The maximum amount of time (in seconds) to wait between scheduling digests for delivery.\n"
+                },
+                "digestsMinDelay": {
+                    "type": "integer",
+                    "description": "The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The human readable name for the project.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the project should be created for.\n"
+                },
+                "platform": {
+                    "type": "string",
+                    "description": "The integration platform.\n"
+                },
+                "resolveAge": {
+                    "type": "integer",
+                    "description": "Hours in which an issue is automatically resolve if not seen after this amount of time.\n"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.\n"
+                },
+                "team": {
+                    "type": "string",
+                    "description": "The slug of the team the project should be created for.\n"
+                }
+            },
+            "requiredInputs": [
+                "organization",
+                "team"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SentryProject resources.\n",
+                "properties": {
+                    "color": {
+                        "type": "string"
+                    },
+                    "digestsMaxDelay": {
+                        "type": "integer",
+                        "description": "The maximum amount of time (in seconds) to wait between scheduling digests for delivery.\n"
+                    },
+                    "digestsMinDelay": {
+                        "type": "integer",
+                        "description": "The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.\n"
+                    },
+                    "features": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "isBookmarked": {
+                        "type": "boolean",
+                        "deprecationMessage": "is_bookmarked is no longer used"
+                    },
+                    "isPublic": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The human readable name for the project.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The slug of the organization the project should be created for.\n"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "The integration platform.\n"
+                    },
+                    "projectId": {
+                        "type": "string"
+                    },
+                    "resolveAge": {
+                        "type": "integer",
+                        "description": "Hours in which an issue is automatically resolve if not seen after this amount of time.\n"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.\n"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "team": {
+                        "type": "string",
+                        "description": "The slug of the team the project should be created for.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "sentry:index/sentryRule:SentryRule": {
+            "description": "## # sentry.SentryRule Resource\n\nSentry Rule resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an alert rule on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules).\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Create a plugin\nconst defaultSentryRule = new sentry.SentryRule(\"default\", {\n    actionMatch: \"any\",\n    actions: [{\n        id: \"sentry.mail.actions.NotifyEmailAction\",\n        name: \"Send an email to IssueOwners\",\n        targetIdentifier: \"\",\n        targetType: \"IssueOwners\",\n    }],\n    conditions: [{\n        id: \"sentry.rules.conditions.first_seen_event.FirstSeenEventCondition\",\n        name: \"A new issue is created\",\n    }],\n    environment: \"production\",\n    filters: [{\n        id: \"sentry.rules.filters.assigned_to.AssignedToFilter\",\n        targetType: \"Unassigned\",\n    }],\n    frequency: 30,\n    organization: \"my-organization\",\n    project: \"web-app\",\n});\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\n# Create a plugin\ndefault = sentry.SentryRule(\"default\",\n    action_match=\"any\",\n    actions=[{\n        \"id\": \"sentry.mail.actions.NotifyEmailAction\",\n        \"name\": \"Send an email to IssueOwners\",\n        \"targetIdentifier\": \"\",\n        \"targetType\": \"IssueOwners\",\n    }],\n    conditions=[{\n        \"id\": \"sentry.rules.conditions.first_seen_event.FirstSeenEventCondition\",\n        \"name\": \"A new issue is created\",\n    }],\n    environment=\"production\",\n    filters=[{\n        \"id\": \"sentry.rules.filters.assigned_to.AssignedToFilter\",\n        \"targetType\": \"Unassigned\",\n    }],\n    frequency=30,\n    organization=\"my-organization\",\n    project=\"web-app\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create a plugin\n        var @default = new Sentry.SentryRule(\"default\", new Sentry.SentryRuleArgs\n        {\n            ActionMatch = \"any\",\n            Actions = \n            {\n                \n                {\n                    { \"id\", \"sentry.mail.actions.NotifyEmailAction\" },\n                    { \"name\", \"Send an email to IssueOwners\" },\n                    { \"targetIdentifier\", \"\" },\n                    { \"targetType\", \"IssueOwners\" },\n                },\n            },\n            Conditions = \n            {\n                \n                {\n                    { \"id\", \"sentry.rules.conditions.first_seen_event.FirstSeenEventCondition\" },\n                    { \"name\", \"A new issue is created\" },\n                },\n            },\n            Environment = \"production\",\n            Filters = \n            {\n                \n                {\n                    { \"id\", \"sentry.rules.filters.assigned_to.AssignedToFilter\" },\n                    { \"targetType\", \"Unassigned\" },\n                },\n            },\n            Frequency = 30,\n            Organization = \"my-organization\",\n            Project = \"web-app\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.NewSentryRule(ctx, \"default\", \u0026sentry.SentryRuleArgs{\n\t\t\tActionMatch: pulumi.String(\"any\"),\n\t\t\tActions: pulumi.AnyMapArray{\n\t\t\t\tpulumi.AnyMap{\n\t\t\t\t\t\"id\":               pulumi.Any(\"sentry.mail.actions.NotifyEmailAction\"),\n\t\t\t\t\t\"name\":             pulumi.Any(\"Send an email to IssueOwners\"),\n\t\t\t\t\t\"targetIdentifier\": pulumi.Any(\"\"),\n\t\t\t\t\t\"targetType\":       pulumi.Any(\"IssueOwners\"),\n\t\t\t\t},\n\t\t\t},\n\t\t\tConditions: pulumi.AnyMapArray{\n\t\t\t\tpulumi.AnyMap{\n\t\t\t\t\t\"id\":   pulumi.Any(\"sentry.rules.conditions.first_seen_event.FirstSeenEventCondition\"),\n\t\t\t\t\t\"name\": pulumi.Any(\"A new issue is created\"),\n\t\t\t\t},\n\t\t\t},\n\t\t\tEnvironment: pulumi.String(\"production\"),\n\t\t\tFilters: pulumi.AnyMapArray{\n\t\t\t\tpulumi.AnyMap{\n\t\t\t\t\t\"id\":         pulumi.Any(\"sentry.rules.filters.assigned_to.AssignedToFilter\"),\n\t\t\t\t\t\"targetType\": pulumi.Any(\"Unassigned\"),\n\t\t\t\t},\n\t\t\t},\n\t\t\tFrequency:    pulumi.Int(30),\n\t\t\tOrganization: pulumi.String(\"my-organization\"),\n\t\t\tProject:      pulumi.String(\"web-app\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "properties": {
+                "actionMatch": {
+                    "type": "string",
+                    "description": "Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.\n"
+                },
+                "actions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    },
+                    "description": "List of actions.\n"
+                },
+                "conditions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    },
+                    "description": "List of conditions.\n"
+                },
+                "environment": {
+                    "type": "string",
+                    "description": "Environment for these conditions to apply to.\n"
+                },
+                "filterMatch": {
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    },
+                    "description": "List of filters.\n"
+                },
+                "frequency": {
+                    "type": "integer",
+                    "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name for this alert.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the plugin should be enabled for.\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the plugin should be enabled for.\n"
+                }
+            },
+            "required": [
+                "actionMatch",
+                "actions",
+                "conditions",
+                "environment",
+                "filterMatch",
+                "frequency",
+                "name",
+                "organization",
+                "project"
+            ],
+            "inputProperties": {
+                "actionMatch": {
+                    "type": "string",
+                    "description": "Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.\n"
+                },
+                "actions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    },
+                    "description": "List of actions.\n"
+                },
+                "conditions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    },
+                    "description": "List of conditions.\n"
+                },
+                "environment": {
+                    "type": "string",
+                    "description": "Environment for these conditions to apply to.\n"
+                },
+                "filterMatch": {
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    },
+                    "description": "List of filters.\n"
+                },
+                "frequency": {
+                    "type": "integer",
+                    "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name for this alert.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the plugin should be enabled for.\n"
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The slug of the project the plugin should be enabled for.\n"
+                }
+            },
+            "requiredInputs": [
+                "actions",
+                "conditions",
+                "organization",
+                "project"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SentryRule resources.\n",
+                "properties": {
+                    "actionMatch": {
+                        "type": "string",
+                        "description": "Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.\n"
+                    },
+                    "actions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "pulumi.json#/Any"
+                            }
+                        },
+                        "description": "List of actions.\n"
+                    },
+                    "conditions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "pulumi.json#/Any"
+                            }
+                        },
+                        "description": "List of conditions.\n"
+                    },
+                    "environment": {
+                        "type": "string",
+                        "description": "Environment for these conditions to apply to.\n"
+                    },
+                    "filterMatch": {
+                        "type": "string"
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "pulumi.json#/Any"
+                            }
+                        },
+                        "description": "List of filters.\n"
+                    },
+                    "frequency": {
+                        "type": "integer",
+                        "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name for this alert.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The slug of the organization the plugin should be enabled for.\n"
+                    },
+                    "project": {
+                        "type": "string",
+                        "description": "The slug of the project the plugin should be enabled for.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "sentry:index/sentryTeam:SentryTeam": {
+            "description": "## # sentry.SentryTeam Resource\n\nSentry Team resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Create a team\nconst defaultSentryTeam = new sentry.SentryTeam(\"default\", {\n    organization: \"my-organization\",\n    slug: \"my-team\",\n});\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\n# Create a team\ndefault = sentry.SentryTeam(\"default\",\n    organization=\"my-organization\",\n    slug=\"my-team\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create a team\n        var @default = new Sentry.SentryTeam(\"default\", new Sentry.SentryTeamArgs\n        {\n            Organization = \"my-organization\",\n            Slug = \"my-team\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.NewSentryTeam(ctx, \"default\", \u0026sentry.SentryTeamArgs{\n\t\t\tOrganization: pulumi.String(\"my-organization\"),\n\t\t\tSlug:         pulumi.String(\"my-team\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\nThis resource can be imported using an ID made up of the organization slug and project slugbash\n\n```sh\n $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug\n```\n\n ",
+            "properties": {
+                "hasAccess": {
+                    "type": "boolean"
+                },
+                "isMember": {
+                    "type": "boolean"
+                },
+                "isPending": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The human readable name for the team.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the team should be created for.\n"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.\n"
+                },
+                "teamId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "hasAccess",
+                "isMember",
+                "isPending",
+                "name",
+                "organization",
+                "slug",
+                "teamId"
+            ],
+            "inputProperties": {
+                "name": {
+                    "type": "string",
+                    "description": "The human readable name for the team.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The slug of the organization the team should be created for.\n"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.\n"
+                }
+            },
+            "requiredInputs": [
+                "organization"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SentryTeam resources.\n",
+                "properties": {
+                    "hasAccess": {
+                        "type": "boolean"
+                    },
+                    "isMember": {
+                        "type": "boolean"
+                    },
+                    "isPending": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The human readable name for the team.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The slug of the organization the team should be created for.\n"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.\n"
+                    },
+                    "teamId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "functions": {
+        "sentry:index/getSentryKey:getSentryKey": {
+            "description": "## # sentry.SentryKey Data Source\n\nSentry Key data source.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Retrieve the Default Key\nconst defaultSentryKey = pulumi.output(sentry.getSentryKey({\n    name: \"Default\",\n    organization: \"my-organization\",\n    project: \"web-app\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\ndefault = sentry.get_sentry_key(name=\"Default\",\n    organization=\"my-organization\",\n    project=\"web-app\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var @default = Output.Create(Sentry.GetSentryKey.InvokeAsync(new Sentry.GetSentryKeyArgs\n        {\n            Name = \"Default\",\n            Organization = \"my-organization\",\n            Project = \"web-app\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.LookupSentryKey(ctx, \u0026GetSentryKeyArgs{\n\t\t\tName:         pulumi.StringRef(\"Default\"),\n\t\t\tOrganization: \"my-organization\",\n\t\t\tProject:      \"web-app\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "inputs": {
+                "description": "A collection of arguments for invoking getSentryKey.\n",
+                "properties": {
+                    "first": {
+                        "type": "boolean",
+                        "description": "Boolean flag indicating that we want the first key of the returned keys.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the key to retrieve.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The slug of the organization the key should be created for.\n"
+                    },
+                    "project": {
+                        "type": "string",
+                        "description": "The slug of the project the key should be created for.\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "organization",
+                    "project"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getSentryKey.\n",
+                "properties": {
+                    "dsnCsp": {
+                        "type": "string",
+                        "description": "DSN for the Content Security Policy (CSP) for the key.\n"
+                    },
+                    "dsnPublic": {
+                        "type": "string",
+                        "description": "DSN for the key.\n"
+                    },
+                    "dsnSecret": {
+                        "type": "string",
+                        "description": "DSN (Deprecated) for the key.\n",
+                        "secret": true
+                    },
+                    "first": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "isActive": {
+                        "type": "boolean",
+                        "description": "Flag indicating the key is active.\n"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "organization": {
+                        "type": "string"
+                    },
+                    "project": {
+                        "type": "string"
+                    },
+                    "projectId": {
+                        "type": "integer",
+                        "description": "The ID of the project that the key belongs to.\n"
+                    },
+                    "public": {
+                        "type": "string",
+                        "description": "Public key portion of the client key.\n"
+                    },
+                    "rateLimitCount": {
+                        "type": "integer",
+                        "description": "Number of events that can be reported within the rate limit window.\n"
+                    },
+                    "rateLimitWindow": {
+                        "type": "integer",
+                        "description": "Length of time that will be considered when checking the rate limit.\n"
+                    },
+                    "secret": {
+                        "type": "string",
+                        "description": "Secret key portion of the client key.\n",
+                        "secret": true
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "dsnCsp",
+                    "dsnPublic",
+                    "dsnSecret",
+                    "isActive",
+                    "organization",
+                    "project",
+                    "projectId",
+                    "public",
+                    "rateLimitCount",
+                    "rateLimitWindow",
+                    "secret",
+                    "id"
+                ]
+            }
+        },
+        "sentry:index/getSentryOrganization:getSentryOrganization": {
+            "description": "## # sentry.SentryOrganization Data Source\n\nSentry Organization data source.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as sentry from \"@pulumi/sentry\";\n\n// Retrieve the organization\nconst org = pulumi.output(sentry.getSentryOrganization({\n    slug: \"my-organization\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_sentry as sentry\n\norg = sentry.get_sentry_organization(slug=\"my-organization\")\n```\n```csharp\nusing Pulumi;\nusing Sentry = Pulumi.Sentry;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var org = Output.Create(Sentry.GetSentryOrganization.InvokeAsync(new Sentry.GetSentryOrganizationArgs\n        {\n            Slug = \"my-organization\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-sentry/sdk/go/sentry\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := sentry.LookupSentryOrganization(ctx, \u0026GetSentryOrganizationArgs{\n\t\t\tSlug: \"my-organization\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "inputs": {
+                "description": "A collection of arguments for invoking getSentryOrganization.\n",
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "description": "The unique URL slug for this organization.\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "slug"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getSentryOrganization.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "internalId": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The human readable name for this organization.\n"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "The unique URL slug for this organization.\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "internalId",
+                    "name",
+                    "slug",
+                    "id"
+                ]
+            }
+        }
+    },
+    "language": {
+        "csharp": {
+            "compatibility": "tfbridge20",
+            "namespaces": null,
+            "packageReferences": {
+                "Pulumi": "3.*"
+            }
+        },
+        "go": {
+            "generateExtraInputTypes": true,
+            "generateResourceContainerTypes": true,
+            "importBasePath": "github.com/pulumi/pulumi-sentry/sdk/go/sentry"
+        },
+        "nodejs": {
+            "compatibility": "tfbridge20",
+            "dependencies": {
+                "@pulumi/pulumi": "^3.0.0"
+            },
+            "devDependencies": {
+                "@types/mime": "^2.0.0",
+                "@types/node": "^10.0.0"
+            },
+            "disableUnionOutputTypes": true,
+            "packageDescription": "A Pulumi package for creating and managing Sentry resources.",
+            "packageName": "@pulumiverse/sentry",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/jianyuan/terraform-provider-sentry)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-sentry` repo](https://github.com/pulumi/pulumi-sentry/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`jianyuan/terraform-provider-sentry` repo](https://github.com/jianyuan/terraform-provider-sentry/issues).",
+            "typescriptVersion": ""
+        },
+        "python": {
+            "compatibility": "tfbridge20",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/jianyuan/terraform-provider-sentry)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-sentry` repo](https://github.com/pulumi/pulumi-sentry/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`jianyuan/terraform-provider-sentry` repo](https://github.com/jianyuan/terraform-provider-sentry/issues).",
+            "requires": {
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
+            }
+        }
+    }
+}
