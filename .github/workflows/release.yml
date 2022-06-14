@@ -3,23 +3,20 @@ on:
     push:
         tags:
             - v*.*.*
-permissions:
-    contents: write
-    packages: write
 env:
     # THIS GITHUB_TOKEN IS A REQUIREMENT TO BE ABLE TO WRITE TO GH RELEASES
-    GITHUB_TOKEN: ${{ secrets.TODO }}
+    GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
     # IF YOU NEED TO PUBLISH A NPM PACKAGE THEN ENSURE A NPM_TOKEN SECRET IS SET
     # AND PUBLISH_NPM: TRUE. IF YOU WANT TO PUBLISH TO A PRIVATE NPM REGISTRY
     # THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
-    NODE_AUTH_TOKEN: ${{ secrets.TODO }}
-    NPM_TOKEN: ${{ secrets.TODO }}
+    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     PUBLISH_NPM: true
-    NPM_REGISTRY_URL: https://npm.pkg.github.com
+    NPM_REGISTRY_URL: https://registry.npmjs.org
     # IF YOU NEED TO PUBLISH A NUGET PACKAGE THEN ENSURE AN NUGET_PUBLISH_KEY
     # SECRET IS SET AND PUBLISH_NUGET: TRUE. IF YOU WANT TO PUBLISH TO AN ALTERNATIVE
     # NPM REGISTRY THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
-    NUGET_PUBLISH_KEY: ${{ secrets.TODO }}
+    NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
     NUGET_FEED_URL: https://api.nuget.org/v3/index.json
     PUBLISH_NUGET: false
     # IF YOU NEED TO PUBLISH A PYPI PACKAGE THEN ENSURE AN PYPI_API_TOKEN
@@ -27,7 +24,7 @@ env:
     # PYPI REGISTRY THEN ENSURE THE PYPI_REPOSITORY_URL IS SET. IF YOU ARE USING AN API_TOKEN THEN
     # YOU DO NOT NEED TO CHANGE THE PYPI_USERNAME (__token__) , IF YOU ARE USING PASSWORD AUTHENTICATION THEN YOU WILL
     # NEED TO CHANGE TO USE THE CORRECT PASSWORD
-    PYPI_PASSWORD: ${{ secrets.TODO }}
+    PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
     PYPI_USERNAME: "YOUR PYPI USERNAME HERE"
     PYPI_REPOSITORY_URL: ""
     PUBLISH_PYPI: false
@@ -116,8 +113,6 @@ jobs:
                   access: "public"
                   token: ${{ env.NPM_TOKEN }}
                   package: ${{github.workspace}}/sdk/nodejs/bin/package.json
-                  registry: "https://npm.pkg.github.com"
-                  debug: console.debug
             - if: ${{ matrix.language == 'dotnet' && env.PUBLISH_NUGET == 'true' }}
               name: publish nuget package
               run: |
