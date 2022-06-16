@@ -15,12 +15,58 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"log"
+
+	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfgen"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	sentry "github.com/pulumiverse/pulumi-sentry/provider"
 	"github.com/pulumiverse/pulumi-sentry/provider/pkg/version"
-	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfgen"
 )
 
 func main() {
 	// Modify the path to point to the new provider
 	tfgen.Main("sentry", version.Version, sentry.Provider())
+
+	fixSchemaFile()
+}
+
+func fixSchemaFile() {
+	fileContents, err := ioutil.ReadFile("./provider/cmd/pulumi-resource-sentry/schema.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var packageSpec schema.PackageSpec
+	err = json.Unmarshal(fileContents, &packageSpec)
+	if err != nil {
+		log.Fatalf("cannot deserialize schema.PackageSpec: %v", err)
+	}
+
+	var info nodejs.NodePackageInfo
+	err = json.Unmarshal(packageSpec.Language["nodejs"], &info)
+	if err != nil {
+		log.Fatalf("cannot deserialize nodejs.NodePackageInfo: %v", err)
+	}
+
+	info.PluginName = "sentry"
+
+	serializedInfo, err := json.Marshal(info)
+	if err != nil {
+		log.Fatalf("cannot serialize nodejs.NodePackageInfo: %v", err)
+	}
+
+	packageSpec.Language["nodejs"] = serializedInfo
+
+	fileContents, err = json.MarshalIndent(packageSpec, "", "    ")
+	if err != nil {
+		log.Fatalf("cannot serialize schema.PackageSpec: %v", err)
+	}
+
+	err = ioutil.WriteFile("./provider/cmd/pulumi-resource-sentry/schema.json", fileContents, 0600)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
