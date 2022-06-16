@@ -306,6 +306,55 @@ func (o SentryRuleOutput) ToSentryRuleOutputWithContext(ctx context.Context) Sen
 	return o
 }
 
+// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+func (o SentryRuleOutput) ActionMatch() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.ActionMatch }).(pulumi.StringOutput)
+}
+
+// List of actions.
+func (o SentryRuleOutput) Actions() pulumi.MapArrayOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.MapArrayOutput { return v.Actions }).(pulumi.MapArrayOutput)
+}
+
+// List of conditions.
+func (o SentryRuleOutput) Conditions() pulumi.MapArrayOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.MapArrayOutput { return v.Conditions }).(pulumi.MapArrayOutput)
+}
+
+// Environment for these conditions to apply to.
+func (o SentryRuleOutput) Environment() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Environment }).(pulumi.StringOutput)
+}
+
+func (o SentryRuleOutput) FilterMatch() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.FilterMatch }).(pulumi.StringOutput)
+}
+
+// List of filters.
+func (o SentryRuleOutput) Filters() pulumi.MapArrayOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.MapArrayOutput { return v.Filters }).(pulumi.MapArrayOutput)
+}
+
+// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+func (o SentryRuleOutput) Frequency() pulumi.IntOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.IntOutput { return v.Frequency }).(pulumi.IntOutput)
+}
+
+// Name for this alert.
+func (o SentryRuleOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
+}
+
+// The slug of the organization the plugin should be enabled for.
+func (o SentryRuleOutput) Organization() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
+}
+
+// The slug of the project the plugin should be enabled for.
+func (o SentryRuleOutput) Project() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Project }).(pulumi.StringOutput)
+}
+
 type SentryRuleArrayOutput struct{ *pulumi.OutputState }
 
 func (SentryRuleArrayOutput) ElementType() reflect.Type {

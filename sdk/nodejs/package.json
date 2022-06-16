@@ -24,6 +24,7 @@
     },
     "pulumi": {
         "resource": true,
-        "pluginDownloadURL": "https://github.com/pulumiverse/pulumi-sentry/releases/download/${VERSION}"
+        "name": "sentry",
+        "server": "https://github.com/pulumiverse/pulumi-sentry/releases/download/${VERSION}"
     }
 }

@@ -229,6 +229,37 @@ func (o SentryTeamOutput) ToSentryTeamOutputWithContext(ctx context.Context) Sen
 	return o
 }
 
+func (o SentryTeamOutput) HasAccess() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.BoolOutput { return v.HasAccess }).(pulumi.BoolOutput)
+}
+
+func (o SentryTeamOutput) IsMember() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.BoolOutput { return v.IsMember }).(pulumi.BoolOutput)
+}
+
+func (o SentryTeamOutput) IsPending() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.BoolOutput { return v.IsPending }).(pulumi.BoolOutput)
+}
+
+// The human readable name for the team.
+func (o SentryTeamOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
+}
+
+// The slug of the organization the team should be created for.
+func (o SentryTeamOutput) Organization() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
+}
+
+// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+func (o SentryTeamOutput) Slug() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
+}
+
+func (o SentryTeamOutput) TeamId() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.TeamId }).(pulumi.StringOutput)
+}
+
 type SentryTeamArrayOutput struct{ *pulumi.OutputState }
 
 func (SentryTeamArrayOutput) ElementType() reflect.Type {
