@@ -221,6 +221,57 @@ func (o SentryDefaultKeyOutput) ToSentryDefaultKeyOutputWithContext(ctx context.
 	return o
 }
 
+func (o SentryDefaultKeyOutput) DsnCsp() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.DsnCsp }).(pulumi.StringOutput)
+}
+
+func (o SentryDefaultKeyOutput) DsnPublic() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.DsnPublic }).(pulumi.StringOutput)
+}
+
+func (o SentryDefaultKeyOutput) DsnSecret() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.DsnSecret }).(pulumi.StringOutput)
+}
+
+func (o SentryDefaultKeyOutput) IsActive() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.BoolOutput { return v.IsActive }).(pulumi.BoolOutput)
+}
+
+// The name of the key
+func (o SentryDefaultKeyOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
+}
+
+// The slug of the organization the key should be created for
+func (o SentryDefaultKeyOutput) Organization() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
+}
+
+// The slug of the project the key should be created for
+func (o SentryDefaultKeyOutput) Project() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.Project }).(pulumi.StringOutput)
+}
+
+func (o SentryDefaultKeyOutput) ProjectId() pulumi.IntOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.IntOutput { return v.ProjectId }).(pulumi.IntOutput)
+}
+
+func (o SentryDefaultKeyOutput) Public() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.Public }).(pulumi.StringOutput)
+}
+
+func (o SentryDefaultKeyOutput) RateLimitCount() pulumi.IntOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.IntOutput { return v.RateLimitCount }).(pulumi.IntOutput)
+}
+
+func (o SentryDefaultKeyOutput) RateLimitWindow() pulumi.IntOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.IntOutput { return v.RateLimitWindow }).(pulumi.IntOutput)
+}
+
+func (o SentryDefaultKeyOutput) Secret() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryDefaultKey) pulumi.StringOutput { return v.Secret }).(pulumi.StringOutput)
+}
+
 type SentryDefaultKeyArrayOutput struct{ *pulumi.OutputState }
 
 func (SentryDefaultKeyArrayOutput) ElementType() reflect.Type {

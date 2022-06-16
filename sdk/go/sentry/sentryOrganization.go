@@ -217,6 +217,21 @@ func (o SentryOrganizationOutput) ToSentryOrganizationOutputWithContext(ctx cont
 	return o
 }
 
+// You agree to the applicable terms of service and privacy policy.
+func (o SentryOrganizationOutput) AgreeTerms() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryOrganization) pulumi.BoolOutput { return v.AgreeTerms }).(pulumi.BoolOutput)
+}
+
+// The human readable name for the organization.
+func (o SentryOrganizationOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryOrganization) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
+}
+
+// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+func (o SentryOrganizationOutput) Slug() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryOrganization) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
+}
+
 type SentryOrganizationArrayOutput struct{ *pulumi.OutputState }
 
 func (SentryOrganizationArrayOutput) ElementType() reflect.Type {
