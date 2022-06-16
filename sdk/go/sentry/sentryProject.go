@@ -294,6 +294,71 @@ func (o SentryProjectOutput) ToSentryProjectOutputWithContext(ctx context.Contex
 	return o
 }
 
+func (o SentryProjectOutput) Color() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Color }).(pulumi.StringOutput)
+}
+
+// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
+func (o SentryProjectOutput) DigestsMaxDelay() pulumi.IntOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.IntOutput { return v.DigestsMaxDelay }).(pulumi.IntOutput)
+}
+
+// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
+func (o SentryProjectOutput) DigestsMinDelay() pulumi.IntOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.IntOutput { return v.DigestsMinDelay }).(pulumi.IntOutput)
+}
+
+func (o SentryProjectOutput) Features() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringArrayOutput { return v.Features }).(pulumi.StringArrayOutput)
+}
+
+// Deprecated: is_bookmarked is no longer used
+func (o SentryProjectOutput) IsBookmarked() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.BoolOutput { return v.IsBookmarked }).(pulumi.BoolOutput)
+}
+
+func (o SentryProjectOutput) IsPublic() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.BoolOutput { return v.IsPublic }).(pulumi.BoolOutput)
+}
+
+// The human readable name for the project.
+func (o SentryProjectOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
+}
+
+// The slug of the organization the project should be created for.
+func (o SentryProjectOutput) Organization() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
+}
+
+// The integration platform.
+func (o SentryProjectOutput) Platform() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Platform }).(pulumi.StringOutput)
+}
+
+func (o SentryProjectOutput) ProjectId() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.ProjectId }).(pulumi.StringOutput)
+}
+
+// Hours in which an issue is automatically resolve if not seen after this amount of time.
+func (o SentryProjectOutput) ResolveAge() pulumi.IntOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.IntOutput { return v.ResolveAge }).(pulumi.IntOutput)
+}
+
+// The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+func (o SentryProjectOutput) Slug() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
+}
+
+func (o SentryProjectOutput) Status() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Status }).(pulumi.StringOutput)
+}
+
+// The slug of the team the project should be created for.
+func (o SentryProjectOutput) Team() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Team }).(pulumi.StringOutput)
+}
+
 type SentryProjectArrayOutput struct{ *pulumi.OutputState }
 
 func (SentryProjectArrayOutput) ElementType() reflect.Type {
