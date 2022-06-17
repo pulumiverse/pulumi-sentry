@@ -16,8 +16,10 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfgen"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
@@ -37,6 +39,8 @@ func main() {
 	fixPackageJson()
 }
 
+// fixSchemaFile adds the plugin name to the schema, should be called after tfgen.Main to modify the
+// generated file. Remove this hotfix when issue is resolved https://github.com/pulumi/pulumi/issues/9606
 func fixSchemaFile() {
 	filePath := "./provider/cmd/pulumi-resource-sentry/schema.json"
 	fileContents, err := ioutil.ReadFile(filePath)
@@ -76,6 +80,8 @@ func fixSchemaFile() {
 	}
 }
 
+// fixPackageJson adds the plugin name to package.json, should be called after tfgen.Main to modify the
+// generated file. Remove this hotfix when issue is resolved https://github.com/pulumi/pulumi/issues/9606
 func fixPackageJson() {
 	// stolen from https://github.com/pulumi/pulumi/blob/v3.34.1/pkg/codegen/nodejs/gen.go#L2093
 	// should be kept in sync or hopefully deleted in the future
@@ -97,6 +103,10 @@ func fixPackageJson() {
 
 	filePath := "sdk/nodejs/package.json"
 	fileContents, err := ioutil.ReadFile(filePath)
+	if errors.Is(err, os.ErrNotExist) {
+		// package.json does not exist after running `make clean` and then `make tfgen`
+		return
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
