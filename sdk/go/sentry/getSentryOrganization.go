@@ -22,6 +22,7 @@ import (
 // import (
 // 	"github.com/pulumi/pulumi-sentry/sdk/go/sentry"
 // 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
 // )
 //
 // func main() {
