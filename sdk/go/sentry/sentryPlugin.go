@@ -21,8 +21,8 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-sentry/sdk/go/sentry"
 // 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
 // )
 //
 // func main() {
@@ -227,6 +227,26 @@ func (o SentryPluginOutput) ToSentryPluginOutput() SentryPluginOutput {
 
 func (o SentryPluginOutput) ToSentryPluginOutputWithContext(ctx context.Context) SentryPluginOutput {
 	return o
+}
+
+// Configuration of the plugin.
+func (o SentryPluginOutput) Config() pulumi.MapOutput {
+	return o.ApplyT(func(v *SentryPlugin) pulumi.MapOutput { return v.Config }).(pulumi.MapOutput)
+}
+
+// The slug of the organization the plugin should be enabled for.
+func (o SentryPluginOutput) Organization() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryPlugin) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
+}
+
+// Identifier of the plugin.
+func (o SentryPluginOutput) Plugin() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryPlugin) pulumi.StringOutput { return v.Plugin }).(pulumi.StringOutput)
+}
+
+// The slug of the project the plugin should be enabled for.
+func (o SentryPluginOutput) Project() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryPlugin) pulumi.StringOutput { return v.Project }).(pulumi.StringOutput)
 }
 
 type SentryPluginArrayOutput struct{ *pulumi.OutputState }

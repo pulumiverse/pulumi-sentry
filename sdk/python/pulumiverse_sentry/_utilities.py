@@ -236,4 +236,4 @@ def lift_output_func(func: typing.Any) -> typing.Callable[[_F], _F]:
     return (lambda _: lifted_func)
 
 def get_plugin_download_url():
-	return "https://github.com/pulumiverse/pulumi-sentry/releases/download/${VERSION}"
+	return "github://api.github.com/pulumiverse"

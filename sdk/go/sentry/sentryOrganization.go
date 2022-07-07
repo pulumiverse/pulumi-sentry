@@ -21,8 +21,8 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-sentry/sdk/go/sentry"
 // 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
 // )
 //
 // func main() {
@@ -215,6 +215,21 @@ func (o SentryOrganizationOutput) ToSentryOrganizationOutput() SentryOrganizatio
 
 func (o SentryOrganizationOutput) ToSentryOrganizationOutputWithContext(ctx context.Context) SentryOrganizationOutput {
 	return o
+}
+
+// You agree to the applicable terms of service and privacy policy.
+func (o SentryOrganizationOutput) AgreeTerms() pulumi.BoolOutput {
+	return o.ApplyT(func(v *SentryOrganization) pulumi.BoolOutput { return v.AgreeTerms }).(pulumi.BoolOutput)
+}
+
+// The human readable name for the organization.
+func (o SentryOrganizationOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryOrganization) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
+}
+
+// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+func (o SentryOrganizationOutput) Slug() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryOrganization) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
 
 type SentryOrganizationArrayOutput struct{ *pulumi.OutputState }

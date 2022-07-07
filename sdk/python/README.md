@@ -1,10 +1,24 @@
 # Sentry Resource Provider
 
+**This plugin requires pulumi cli v3.35.3 or later**
+
 The Sentry Resource Provider lets you manage [Sentry](https://sentry.io/) resources.
 
 It is based on the sentry terraform provider https://registry.terraform.io/providers/jianyuan/sentry/latest/docs
 
 ## Installing
+
+If you get an error like this:
+
+```
+error: could not load plugin for sentry provider 'urn:pulumi:my-stack::my-project::pulumi:providers:sentry::my-provider': no resource plugin 'pulumi-resource-sentry' found in the workspace at version vX.Y.Z or on your $PATH, install the plugin using `pulumi plugin install resource sentry vX.Y.Z`
+```
+
+You can use this command to install the missing version:
+
+```
+pulumi plugin install resource sentry vX.Y.Z --server github://api.github.com/pulumiverse
+```
 
 This package is available for several languages/platforms:
 
