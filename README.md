@@ -9,13 +9,13 @@ It is based on the sentry terraform provider https://registry.terraform.io/provi
 If you get an error like this:
 
 ```
-error: could not load plugin for sentry provider 'urn:pulumi:bcx-dev::sandbox::pulumi:providers:sentry::sentry': no resource plugin 'pulumi-resource-sentry' found in the workspace at version vX.Y.Z or on your $PATH, install the plugin using `pulumi plugin install resource sentry vX.Y.Z`
+error: could not load plugin for sentry provider 'urn:pulumi:my-stack::my-project::pulumi:providers:sentry::my-provider': no resource plugin 'pulumi-resource-sentry' found in the workspace at version vX.Y.Z or on your $PATH, install the plugin using `pulumi plugin install resource sentry vX.Y.Z`
 ```
 
 You can use this command to install the missing version:
 
 ```
-VERSION=vX.Y.Z; pulumi plugin install resource sentry $VERSION --server https://github.com/pulumiverse/pulumi-sentry/releases/download/$VERSION
+pulumi plugin install resource sentry vX.Y.Z --server github://api.github.com/pulumiverse
 ```
 
 This package is available for several languages/platforms:

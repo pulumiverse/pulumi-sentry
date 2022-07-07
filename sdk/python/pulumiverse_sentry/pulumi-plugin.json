@@ -1,5 +1,5 @@
 {
   "resource": true,
   "name": "sentry",
-  "server": "https://github.com/pulumiverse/pulumi-sentry/releases/download/${VERSION}"
+  "server": "github://api.github.com/pulumiverse"
 }

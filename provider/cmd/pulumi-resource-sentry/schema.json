@@ -12,7 +12,7 @@
     "attribution": "This Pulumi package is based on the [`sentry` Terraform Provider](https://github.com/jianyuan/terraform-provider-sentry).",
     "repository": "https://github.com/pulumiverse/pulumi-sentry",
     "logoUrl": "https://raw.githubusercontent.com/pulumiverse/.github/main/assets/mascot.png",
-    "pluginDownloadURL": "https://github.com/pulumiverse/pulumi-sentry/releases/download/${VERSION}",
+    "pluginDownloadURL": "github://api.github.com/pulumiverse",
     "publisher": "Pulumiverse",
     "meta": {
         "moduleFormat": "(.*)(?:/[^/]*)"
@@ -32,9 +32,7 @@
             "importBasePath": "github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
         },
         "nodejs": {
-            "packageName": "@pulumiverse/sentry",
-            "packageDescription": "A Pulumi package for creating and managing Sentry resources.",
-            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/jianyuan/terraform-provider-sentry)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-sentry` repo](https://github.com/pulumi/pulumi-sentry/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`jianyuan/terraform-provider-sentry` repo](https://github.com/jianyuan/terraform-provider-sentry/issues).",
+            "compatibility": "tfbridge20",
             "dependencies": {
                 "@pulumi/pulumi": "^3.0.0"
             },
@@ -42,9 +40,11 @@
                 "@types/mime": "^2.0.0",
                 "@types/node": "^10.0.0"
             },
-            "compatibility": "tfbridge20",
             "disableUnionOutputTypes": true,
-            "pluginName": "sentry"
+            "packageDescription": "A Pulumi package for creating and managing Sentry resources.",
+            "packageName": "@pulumiverse/sentry",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/jianyuan/terraform-provider-sentry)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-sentry` repo](https://github.com/pulumi/pulumi-sentry/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`jianyuan/terraform-provider-sentry` repo](https://github.com/jianyuan/terraform-provider-sentry/issues).",
+            "typescriptVersion": ""
         },
         "python": {
             "compatibility": "tfbridge20",

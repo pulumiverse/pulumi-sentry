@@ -61,8 +61,7 @@ build_nodejs:: VERSION := $(shell pulumictl get version --language javascript)
 build_nodejs:: install_plugins tfgen # build the node sdk
 	$(WORKING_DIR)/bin/$(TFGEN) nodejs --overlays provider/overlays/nodejs --out sdk/nodejs/
 	cd sdk/nodejs/ && \
-		sed -i '' -e 's/download\/$${VERSION}/download\/v$${VERSION}/g' ./scripts/install-pulumi-plugin.js # Remove this hotfix when issue is resolved https://github.com/pulumi/pulumi/issues/9606 && \
-		yarn install && \
+        yarn install && \
         yarn run tsc && \
 		cp -R scripts/ bin && \
         cp ../../README.md ../../LICENSE package.json yarn.lock ./bin/ && \
