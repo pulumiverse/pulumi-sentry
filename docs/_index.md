@@ -4,8 +4,9 @@ meta_desc: Provides an overview of the Sentry Provider for Pulumi.
 layout: overview
 ---
 
-The Sentry provider for Pulumi can be used to provision anything in [Sentry](https://sentry.io).
-The Sentry provider must be configured with credentials to deploy and update resources in Sentry.
+The Sentry provider for Pulumi can be used to provision Teams and Projects in [Sentry](https://sentry.io).
+
+The Sentry provider must be configured with credentials to create and update resources in Sentry.
 
 ## Example
 
@@ -14,11 +15,9 @@ The Sentry provider must be configured with credentials to deploy and update res
 
 ```typescript
 import * as sentry from "@pulumiverse/sentry";
-const db = new sentry.Database("example", {
-    cloudProvider: "azure",
-    keyspace: "default",
-    regions: ["westus2"],
-    name: "example-db"
+const project = new sentry.SentryProject("example", {
+    name: "example-project",
+    organization: "my-organization-id",
 });
 ```
 
@@ -28,11 +27,9 @@ const db = new sentry.Database("example", {
 ```python
 import pulumiverse_sentry as sentry
 
-db = sentry.Database("example",
-    cloud_provider="azure",
-    keyspace="default",
-    regions=["westus2"],
-    name="example-db"
+project = sentry.SentryProject("example",
+    name="example-project"
+    organization="my-organization-id",
 )
 ```
 
@@ -48,20 +45,14 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-
-		db, err := sentry.NewDatabase(ctx, "example", &sentry.DatabaseArgs{
-            CloudProvider: pulumi.String("azure"),
-            Keyspace: pulumi.String("default"),
-            Regions: pulumi.StringArray{
-                pulumi.String("westus2")
-            },
-            Name: pulumi.String("example-db"),
+		project, err := sentry.NewSentryProject(ctx, "example", &sentry.SentryProjectArgs{
+            Name: pulumi.String("example-project"),
+            Organization: pulumi.String("my-organization-id"),
 		})
-		if err != nil {
-			return fmt.Errorf("error creating instance server: %v", err)
-		}
 
-		ctx.Export("dbId", db.Id)
+		if err != nil {
+			return fmt.Errorf("error creating sentry project: %v", err)
+		}
 
 		return nil
 	})
@@ -75,15 +66,13 @@ func main() {
 using Pulumi;
 using Pulumiverse.sentry;
 
-class sentryDb : Stack
+class sentryProject : Stack
 {
-    public sentryDb()
+    public sentryProject()
     {
-        var db = new Database("example", new DatabaseArgs{
-            CloudProvider: "azure",
-            Keyspace: "default",
-            Regions: new[] {"westus2"},
-            Name: "example-db"
+        var project = new SentryProject("example", new SentryProjectArgs{
+            Name: "example-project"
+            Organization: "my-organization-id",
         });
     }
 }
