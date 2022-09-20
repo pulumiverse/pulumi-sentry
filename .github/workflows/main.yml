@@ -1,0 +1,21 @@
+name: main
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    prerequisites:
+        uses: pulumiverse/infra/.github/workflows/provider-prerequisites.yaml@reusable-provider-workflows
+        with:
+            provider: sentry
+        secrets:
+            github_access_token: ${ secrets.RELEASE_GITHUB_TOKEN }
+    build:
+        needs: prerequisites
+        uses: pulumiverse/infra/.github/workflows/provider-build-sdk.yaml@reusable-provider-workflows
+        with:
+            provider: sentry
+        secrets: inherit
