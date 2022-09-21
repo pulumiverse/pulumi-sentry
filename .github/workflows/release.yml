@@ -9,7 +9,7 @@ env:
     # IF YOU NEED TO PUBLISH A NPM PACKAGE THEN ENSURE A NPM_TOKEN SECRET IS SET
     # AND PUBLISH_NPM: TRUE. IF YOU WANT TO PUBLISH TO A PRIVATE NPM REGISTRY
     # THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
-    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    # Have no idea whether this is used or not: NODE_AUTH_TOKEN: ${{ YOUR NPM TOKEN HERE }}
     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     PUBLISH_NPM: true
     NPM_REGISTRY_URL: https://registry.npmjs.org
@@ -18,16 +18,16 @@ env:
     # NPM REGISTRY THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
     NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
     NUGET_FEED_URL: https://api.nuget.org/v3/index.json
-    PUBLISH_NUGET: false
+    PUBLISH_NUGET: true
     # IF YOU NEED TO PUBLISH A PYPI PACKAGE THEN ENSURE AN PYPI_API_TOKEN
     # SECRET IS SET AND PUBLISH_PYPI: TRUE. IF YOU WANT TO PUBLISH TO AN ALTERNATIVE
     # PYPI REGISTRY THEN ENSURE THE PYPI_REPOSITORY_URL IS SET. IF YOU ARE USING AN API_TOKEN THEN
     # YOU DO NOT NEED TO CHANGE THE PYPI_USERNAME (__token__) , IF YOU ARE USING PASSWORD AUTHENTICATION THEN YOU WILL
     # NEED TO CHANGE TO USE THE CORRECT PASSWORD
     PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-    PYPI_USERNAME: "YOUR PYPI USERNAME HERE"
+    PYPI_USERNAME: "__token__"
     PYPI_REPOSITORY_URL: ""
-    PUBLISH_PYPI: false
+    PUBLISH_PYPI: true
 jobs:
     publish_binary:
         name: publish
@@ -50,7 +50,7 @@ jobs:
             - name: Run GoReleaser
               uses: goreleaser/goreleaser-action@v2
               with:
-                  args: -p 3 release --rm-dist --debug
+                  args: -p 3 release --rm-dist
                   version: latest
         strategy:
             fail-fast: true
