@@ -139,6 +139,9 @@ func Provider() tfbridge.ProviderInfo {
 			"sentry_plugin":       {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryPlugin")},
 			"sentry_rule":         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryRule")},
 			"sentry_team":         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryTeam")},
+			"sentry_dashboard":    {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryDashboard")},
+			"sentry_issue_alert":  {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryIssueAlert")},
+			"sentry_metric_alert": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryMetricAlert")},
 		},
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			// Map each resource in the Terraform provider to a Pulumi function. An example
@@ -152,10 +155,10 @@ func Provider() tfbridge.ProviderInfo {
 				},
 			},
 			"sentry_organization": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryOrganization")},
-			// "sentry_project":      {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryProject")},
-			// "sentry_plugin":       {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryPlugin")},
-			// "sentry_rule":         {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryRule")},
-			// "sentry_team":         {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryTeam")},
+			"sentry_team":         {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryTeam")},
+			"sentry_dashboard":    {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryDashboard")},
+			"sentry_issue_alert":  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryIssueAlert")},
+			"sentry_metric_alert": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryMetricAlert")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			PackageName: "@pulumiverse/sentry",
