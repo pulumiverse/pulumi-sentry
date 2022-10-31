@@ -11,7 +11,7 @@
     "license": "Apache-2.0",
     "attribution": "This Pulumi package is based on the [`sentry` Terraform Provider](https://github.com/jianyuan/terraform-provider-sentry).",
     "repository": "https://github.com/pulumiverse/pulumi-sentry",
-    "logoUrl": "https://github.com/pulumiverse/pulumi-sentry/main/assets/sentry.svg",
+    "logoUrl": "https://raw.githubusercontent.com/pulumiverse/pulumi-sentry/af1e444e87565cfe5cb36d5ed79bffa2390c39cc/sentry.svg",
     "pluginDownloadURL": "github://api.github.com/pulumiverse",
     "publisher": "Pulumiverse",
     "meta": {
