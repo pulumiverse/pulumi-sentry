@@ -5,16 +5,28 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from .get_sentry_dashboard import *
+from .get_sentry_issue_alert import *
 from .get_sentry_key import *
+from .get_sentry_metric_alert import *
 from .get_sentry_organization import *
+from .get_sentry_organization_integration import *
+from .get_sentry_team import *
 from .provider import *
-from .sentry_default_key import *
+from .sentry_dashboard import *
+from .sentry_issue_alert import *
 from .sentry_key import *
+from .sentry_metric_alert import *
 from .sentry_organization import *
+from .sentry_organization_code_mapping import *
+from .sentry_organization_member import *
+from .sentry_organization_repository_github import *
 from .sentry_plugin import *
 from .sentry_project import *
 from .sentry_rule import *
 from .sentry_team import *
+from ._inputs import *
+from . import outputs
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
@@ -28,10 +40,18 @@ _utilities.register(
 [
  {
   "pkg": "sentry",
-  "mod": "index/sentryDefaultKey",
+  "mod": "index/sentryDashboard",
   "fqn": "pulumiverse_sentry",
   "classes": {
-   "sentry:index/sentryDefaultKey:SentryDefaultKey": "SentryDefaultKey"
+   "sentry:index/sentryDashboard:SentryDashboard": "SentryDashboard"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryIssueAlert",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryIssueAlert:SentryIssueAlert": "SentryIssueAlert"
   }
  },
  {
@@ -44,10 +64,42 @@ _utilities.register(
  },
  {
   "pkg": "sentry",
+  "mod": "index/sentryMetricAlert",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryMetricAlert:SentryMetricAlert": "SentryMetricAlert"
+  }
+ },
+ {
+  "pkg": "sentry",
   "mod": "index/sentryOrganization",
   "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryOrganization:SentryOrganization": "SentryOrganization"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryOrganizationCodeMapping",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping": "SentryOrganizationCodeMapping"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryOrganizationMember",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryOrganizationMember:SentryOrganizationMember": "SentryOrganizationMember"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryOrganizationRepositoryGithub",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub": "SentryOrganizationRepositoryGithub"
   }
  },
  {

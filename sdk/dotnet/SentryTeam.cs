@@ -11,44 +11,47 @@ using Pulumi;
 namespace Pulumiverse.Sentry
 {
     /// <summary>
-    /// ## # sentry.SentryTeam Resource
-    /// 
     /// Sentry Team resource.
     /// 
     /// ## Example Usage
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
     /// using Pulumi;
     /// using Sentry = Pulumiverse.Sentry;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     // Create a team
+    ///     var @default = new Sentry.SentryTeam("default", new()
     ///     {
-    ///         // Create a team
-    ///         var @default = new Sentry.SentryTeam("default", new Sentry.SentryTeamArgs
-    ///         {
-    ///             Organization = "my-organization",
-    ///             Slug = "my-team",
-    ///         });
-    ///     }
+    ///         Organization = "my-organization",
+    ///         Slug = "my-team",
+    ///     });
     /// 
-    /// }
+    /// });
     /// ```
     /// 
     /// ## Import
     /// 
-    /// This resource can be imported using an ID made up of the organization slug and project slugbash
+    /// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
     /// 
     /// ```sh
     ///  $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryTeam:SentryTeam")]
-    public partial class SentryTeam : Pulumi.CustomResource
+    public partial class SentryTeam : global::Pulumi.CustomResource
     {
         [Output("hasAccess")]
         public Output<bool> HasAccess { get; private set; } = null!;
+
+        /// <summary>
+        /// The internal ID for this team.
+        /// </summary>
+        [Output("internalId")]
+        public Output<string> InternalId { get; private set; } = null!;
 
         [Output("isMember")]
         public Output<bool> IsMember { get; private set; } = null!;
@@ -57,7 +60,7 @@ namespace Pulumiverse.Sentry
         public Output<bool> IsPending { get; private set; } = null!;
 
         /// <summary>
-        /// The human readable name for the team.
+        /// The name of the team.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -69,11 +72,14 @@ namespace Pulumiverse.Sentry
         public Output<string> Organization { get; private set; } = null!;
 
         /// <summary>
-        /// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        /// The optional slug for this team.
         /// </summary>
         [Output("slug")]
         public Output<string> Slug { get; private set; } = null!;
 
+        /// <summary>
+        /// Use `internal_id` instead.
+        /// </summary>
         [Output("teamId")]
         public Output<string> TeamId { get; private set; } = null!;
 
@@ -122,10 +128,10 @@ namespace Pulumiverse.Sentry
         }
     }
 
-    public sealed class SentryTeamArgs : Pulumi.ResourceArgs
+    public sealed class SentryTeamArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The human readable name for the team.
+        /// The name of the team.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -137,7 +143,7 @@ namespace Pulumiverse.Sentry
         public Input<string> Organization { get; set; } = null!;
 
         /// <summary>
-        /// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        /// The optional slug for this team.
         /// </summary>
         [Input("slug")]
         public Input<string>? Slug { get; set; }
@@ -145,12 +151,19 @@ namespace Pulumiverse.Sentry
         public SentryTeamArgs()
         {
         }
+        public static new SentryTeamArgs Empty => new SentryTeamArgs();
     }
 
-    public sealed class SentryTeamState : Pulumi.ResourceArgs
+    public sealed class SentryTeamState : global::Pulumi.ResourceArgs
     {
         [Input("hasAccess")]
         public Input<bool>? HasAccess { get; set; }
+
+        /// <summary>
+        /// The internal ID for this team.
+        /// </summary>
+        [Input("internalId")]
+        public Input<string>? InternalId { get; set; }
 
         [Input("isMember")]
         public Input<bool>? IsMember { get; set; }
@@ -159,7 +172,7 @@ namespace Pulumiverse.Sentry
         public Input<bool>? IsPending { get; set; }
 
         /// <summary>
-        /// The human readable name for the team.
+        /// The name of the team.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -171,16 +184,20 @@ namespace Pulumiverse.Sentry
         public Input<string>? Organization { get; set; }
 
         /// <summary>
-        /// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        /// The optional slug for this team.
         /// </summary>
         [Input("slug")]
         public Input<string>? Slug { get; set; }
 
+        /// <summary>
+        /// Use `internal_id` instead.
+        /// </summary>
         [Input("teamId")]
         public Input<string>? TeamId { get; set; }
 
         public SentryTeamState()
         {
         }
+        public static new SentryTeamState Empty => new SentryTeamState();
     }
 }

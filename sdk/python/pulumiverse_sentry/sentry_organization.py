@@ -21,7 +21,7 @@ class SentryOrganizationArgs:
         The set of arguments for constructing a SentryOrganization resource.
         :param pulumi.Input[bool] agree_terms: You agree to the applicable terms of service and privacy policy.
         :param pulumi.Input[str] name: The human readable name for the organization.
-        :param pulumi.Input[str] slug: The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The unique URL slug for this organization.
         """
         pulumi.set(__self__, "agree_terms", agree_terms)
         if name is not None:
@@ -57,7 +57,7 @@ class SentryOrganizationArgs:
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
         """
-        The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        The unique URL slug for this organization.
         """
         return pulumi.get(self, "slug")
 
@@ -70,16 +70,20 @@ class SentryOrganizationArgs:
 class _SentryOrganizationState:
     def __init__(__self__, *,
                  agree_terms: Optional[pulumi.Input[bool]] = None,
+                 internal_id: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  slug: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering SentryOrganization resources.
         :param pulumi.Input[bool] agree_terms: You agree to the applicable terms of service and privacy policy.
+        :param pulumi.Input[str] internal_id: The internal ID for this organization.
         :param pulumi.Input[str] name: The human readable name for the organization.
-        :param pulumi.Input[str] slug: The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The unique URL slug for this organization.
         """
         if agree_terms is not None:
             pulumi.set(__self__, "agree_terms", agree_terms)
+        if internal_id is not None:
+            pulumi.set(__self__, "internal_id", internal_id)
         if name is not None:
             pulumi.set(__self__, "name", name)
         if slug is not None:
@@ -98,6 +102,18 @@ class _SentryOrganizationState:
         pulumi.set(self, "agree_terms", value)
 
     @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        The internal ID for this organization.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @internal_id.setter
+    def internal_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "internal_id", value)
+
+    @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
@@ -113,7 +129,7 @@ class _SentryOrganizationState:
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
         """
-        The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        The unique URL slug for this organization.
         """
         return pulumi.get(self, "slug")
 
@@ -132,8 +148,6 @@ class SentryOrganization(pulumi.CustomResource):
                  slug: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        ## # SentryOrganization Resource
-
         Sentry Organization resource.
 
         ## Example Usage
@@ -150,7 +164,7 @@ class SentryOrganization(pulumi.CustomResource):
 
         ## Import
 
-        This resource can be imported using an ID made up of the organization slugbash
+        import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
 
         ```sh
          $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
@@ -160,7 +174,7 @@ class SentryOrganization(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] agree_terms: You agree to the applicable terms of service and privacy policy.
         :param pulumi.Input[str] name: The human readable name for the organization.
-        :param pulumi.Input[str] slug: The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The unique URL slug for this organization.
         """
         ...
     @overload
@@ -169,8 +183,6 @@ class SentryOrganization(pulumi.CustomResource):
                  args: SentryOrganizationArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        ## # SentryOrganization Resource
-
         Sentry Organization resource.
 
         ## Example Usage
@@ -187,7 +199,7 @@ class SentryOrganization(pulumi.CustomResource):
 
         ## Import
 
-        This resource can be imported using an ID made up of the organization slugbash
+        import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
 
         ```sh
          $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
@@ -212,16 +224,9 @@ class SentryOrganization(pulumi.CustomResource):
                  name: Optional[pulumi.Input[str]] = None,
                  slug: Optional[pulumi.Input[str]] = None,
                  __props__=None):
-        if opts is None:
-            opts = pulumi.ResourceOptions()
-        else:
-            opts = copy.copy(opts)
+        opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
-        if opts.version is None:
-            opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
@@ -232,6 +237,7 @@ class SentryOrganization(pulumi.CustomResource):
             __props__.__dict__["agree_terms"] = agree_terms
             __props__.__dict__["name"] = name
             __props__.__dict__["slug"] = slug
+            __props__.__dict__["internal_id"] = None
         super(SentryOrganization, __self__).__init__(
             'sentry:index/sentryOrganization:SentryOrganization',
             resource_name,
@@ -243,6 +249,7 @@ class SentryOrganization(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             agree_terms: Optional[pulumi.Input[bool]] = None,
+            internal_id: Optional[pulumi.Input[str]] = None,
             name: Optional[pulumi.Input[str]] = None,
             slug: Optional[pulumi.Input[str]] = None) -> 'SentryOrganization':
         """
@@ -253,14 +260,16 @@ class SentryOrganization(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] agree_terms: You agree to the applicable terms of service and privacy policy.
+        :param pulumi.Input[str] internal_id: The internal ID for this organization.
         :param pulumi.Input[str] name: The human readable name for the organization.
-        :param pulumi.Input[str] slug: The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The unique URL slug for this organization.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = _SentryOrganizationState.__new__(_SentryOrganizationState)
 
         __props__.__dict__["agree_terms"] = agree_terms
+        __props__.__dict__["internal_id"] = internal_id
         __props__.__dict__["name"] = name
         __props__.__dict__["slug"] = slug
         return SentryOrganization(resource_name, opts=opts, __props__=__props__)
@@ -274,6 +283,14 @@ class SentryOrganization(pulumi.CustomResource):
         return pulumi.get(self, "agree_terms")
 
     @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> pulumi.Output[str]:
+        """
+        The internal ID for this organization.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
@@ -285,7 +302,7 @@ class SentryOrganization(pulumi.CustomResource):
     @pulumi.getter
     def slug(self) -> pulumi.Output[str]:
         """
-        The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        The unique URL slug for this organization.
         """
         return pulumi.get(self, "slug")
 

@@ -8,6 +8,8 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
 // The provider type for the sentry package. By default, resources use package-wide configuration
@@ -17,9 +19,12 @@ import (
 type Provider struct {
 	pulumi.ProviderResourceState
 
-	// The Sentry Base API URL
+	// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+	// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+	// environment variable.
 	BaseUrl pulumi.StringPtrOutput `pulumi:"baseUrl"`
-	// The authentication token used to connect to Sentry
+	// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+	// variable.
 	Token pulumi.StringPtrOutput `pulumi:"token"`
 }
 
@@ -30,20 +35,24 @@ func NewProvider(ctx *pulumi.Context,
 		args = &ProviderArgs{}
 	}
 
-	if isZero(args.BaseUrl) {
-		args.BaseUrl = pulumi.StringPtr(getEnvOrDefault("", nil, "SENTRY_BASE_URL").(string))
+	if args.BaseUrl == nil {
+		if d := internal.GetEnvOrDefault(nil, nil, "SENTRY_BASE_URL"); d != nil {
+			args.BaseUrl = pulumi.StringPtr(d.(string))
+		}
 	}
-	if isZero(args.Token) {
-		args.Token = pulumi.StringPtr(getEnvOrDefault("", nil, "SENTRY_TOKEN").(string))
+	if args.Token == nil {
+		if d := internal.GetEnvOrDefault(nil, nil, "SENTRY_TOKEN"); d != nil {
+			args.Token = pulumi.StringPtr(d.(string))
+		}
 	}
 	if args.Token != nil {
-		args.Token = pulumi.ToSecret(args.Token).(pulumi.StringPtrOutput)
+		args.Token = pulumi.ToSecret(args.Token).(pulumi.StringPtrInput)
 	}
 	secrets := pulumi.AdditionalSecretOutputs([]string{
 		"token",
 	})
 	opts = append(opts, secrets)
-	opts = pkgResourceDefaultOpts(opts)
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Provider
 	err := ctx.RegisterResource("pulumi:providers:sentry", name, args, &resource, opts...)
 	if err != nil {
@@ -53,17 +62,23 @@ func NewProvider(ctx *pulumi.Context,
 }
 
 type providerArgs struct {
-	// The Sentry Base API URL
+	// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+	// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+	// environment variable.
 	BaseUrl *string `pulumi:"baseUrl"`
-	// The authentication token used to connect to Sentry
+	// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+	// variable.
 	Token *string `pulumi:"token"`
 }
 
 // The set of arguments for constructing a Provider resource.
 type ProviderArgs struct {
-	// The Sentry Base API URL
+	// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+	// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+	// environment variable.
 	BaseUrl pulumi.StringPtrInput
-	// The authentication token used to connect to Sentry
+	// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+	// variable.
 	Token pulumi.StringPtrInput
 }
 
@@ -90,6 +105,12 @@ func (i *Provider) ToProviderOutputWithContext(ctx context.Context) ProviderOutp
 	return pulumi.ToOutputWithContext(ctx, i).(ProviderOutput)
 }
 
+func (i *Provider) ToOutput(ctx context.Context) pulumix.Output[*Provider] {
+	return pulumix.Output[*Provider]{
+		OutputState: i.ToProviderOutputWithContext(ctx).OutputState,
+	}
+}
+
 type ProviderOutput struct{ *pulumi.OutputState }
 
 func (ProviderOutput) ElementType() reflect.Type {
@@ -104,12 +125,21 @@ func (o ProviderOutput) ToProviderOutputWithContext(ctx context.Context) Provide
 	return o
 }
 
-// The Sentry Base API URL
+func (o ProviderOutput) ToOutput(ctx context.Context) pulumix.Output[*Provider] {
+	return pulumix.Output[*Provider]{
+		OutputState: o.OutputState,
+	}
+}
+
+// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+// environment variable.
 func (o ProviderOutput) BaseUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.BaseUrl }).(pulumi.StringPtrOutput)
 }
 
-// The authentication token used to connect to Sentry
+// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+// variable.
 func (o ProviderOutput) Token() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Token }).(pulumi.StringPtrOutput)
 }

@@ -20,10 +20,10 @@ class SentryPluginArgs:
                  config: Optional[pulumi.Input[Mapping[str, Any]]] = None):
         """
         The set of arguments for constructing a SentryPlugin resource.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] plugin: Identifier of the plugin.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
-        :param pulumi.Input[Mapping[str, Any]] config: Configuration of the plugin.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[str] plugin: Plugin ID.
+        :param pulumi.Input[str] project: The slug of the project to create the plugin for.
+        :param pulumi.Input[Mapping[str, Any]] config: Plugin config.
         """
         pulumi.set(__self__, "organization", organization)
         pulumi.set(__self__, "plugin", plugin)
@@ -35,7 +35,7 @@ class SentryPluginArgs:
     @pulumi.getter
     def organization(self) -> pulumi.Input[str]:
         """
-        The slug of the organization the plugin should be enabled for.
+        The slug of the organization the project belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -47,7 +47,7 @@ class SentryPluginArgs:
     @pulumi.getter
     def plugin(self) -> pulumi.Input[str]:
         """
-        Identifier of the plugin.
+        Plugin ID.
         """
         return pulumi.get(self, "plugin")
 
@@ -59,7 +59,7 @@ class SentryPluginArgs:
     @pulumi.getter
     def project(self) -> pulumi.Input[str]:
         """
-        The slug of the project the plugin should be enabled for.
+        The slug of the project to create the plugin for.
         """
         return pulumi.get(self, "project")
 
@@ -71,7 +71,7 @@ class SentryPluginArgs:
     @pulumi.getter
     def config(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
         """
-        Configuration of the plugin.
+        Plugin config.
         """
         return pulumi.get(self, "config")
 
@@ -89,10 +89,10 @@ class _SentryPluginState:
                  project: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering SentryPlugin resources.
-        :param pulumi.Input[Mapping[str, Any]] config: Configuration of the plugin.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] plugin: Identifier of the plugin.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
+        :param pulumi.Input[Mapping[str, Any]] config: Plugin config.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[str] plugin: Plugin ID.
+        :param pulumi.Input[str] project: The slug of the project to create the plugin for.
         """
         if config is not None:
             pulumi.set(__self__, "config", config)
@@ -107,7 +107,7 @@ class _SentryPluginState:
     @pulumi.getter
     def config(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
         """
-        Configuration of the plugin.
+        Plugin config.
         """
         return pulumi.get(self, "config")
 
@@ -119,7 +119,7 @@ class _SentryPluginState:
     @pulumi.getter
     def organization(self) -> Optional[pulumi.Input[str]]:
         """
-        The slug of the organization the plugin should be enabled for.
+        The slug of the organization the project belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -131,7 +131,7 @@ class _SentryPluginState:
     @pulumi.getter
     def plugin(self) -> Optional[pulumi.Input[str]]:
         """
-        Identifier of the plugin.
+        Plugin ID.
         """
         return pulumi.get(self, "plugin")
 
@@ -143,7 +143,7 @@ class _SentryPluginState:
     @pulumi.getter
     def project(self) -> Optional[pulumi.Input[str]]:
         """
-        The slug of the project the plugin should be enabled for.
+        The slug of the project to create the plugin for.
         """
         return pulumi.get(self, "project")
 
@@ -163,8 +163,6 @@ class SentryPlugin(pulumi.CustomResource):
                  project: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        ## # SentryPlugin Resource
-
         Sentry Plugin resource.
 
         ## Example Usage
@@ -185,10 +183,10 @@ class SentryPlugin(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Mapping[str, Any]] config: Configuration of the plugin.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] plugin: Identifier of the plugin.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
+        :param pulumi.Input[Mapping[str, Any]] config: Plugin config.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[str] plugin: Plugin ID.
+        :param pulumi.Input[str] project: The slug of the project to create the plugin for.
         """
         ...
     @overload
@@ -197,8 +195,6 @@ class SentryPlugin(pulumi.CustomResource):
                  args: SentryPluginArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        ## # SentryPlugin Resource
-
         Sentry Plugin resource.
 
         ## Example Usage
@@ -237,16 +233,9 @@ class SentryPlugin(pulumi.CustomResource):
                  plugin: Optional[pulumi.Input[str]] = None,
                  project: Optional[pulumi.Input[str]] = None,
                  __props__=None):
-        if opts is None:
-            opts = pulumi.ResourceOptions()
-        else:
-            opts = copy.copy(opts)
+        opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
-        if opts.version is None:
-            opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
@@ -283,10 +272,10 @@ class SentryPlugin(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Mapping[str, Any]] config: Configuration of the plugin.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] plugin: Identifier of the plugin.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
+        :param pulumi.Input[Mapping[str, Any]] config: Plugin config.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[str] plugin: Plugin ID.
+        :param pulumi.Input[str] project: The slug of the project to create the plugin for.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -302,7 +291,7 @@ class SentryPlugin(pulumi.CustomResource):
     @pulumi.getter
     def config(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
         """
-        Configuration of the plugin.
+        Plugin config.
         """
         return pulumi.get(self, "config")
 
@@ -310,7 +299,7 @@ class SentryPlugin(pulumi.CustomResource):
     @pulumi.getter
     def organization(self) -> pulumi.Output[str]:
         """
-        The slug of the organization the plugin should be enabled for.
+        The slug of the organization the project belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -318,7 +307,7 @@ class SentryPlugin(pulumi.CustomResource):
     @pulumi.getter
     def plugin(self) -> pulumi.Output[str]:
         """
-        Identifier of the plugin.
+        Plugin ID.
         """
         return pulumi.get(self, "plugin")
 
@@ -326,7 +315,7 @@ class SentryPlugin(pulumi.CustomResource):
     @pulumi.getter
     def project(self) -> pulumi.Output[str]:
         """
-        The slug of the project the plugin should be enabled for.
+        The slug of the project to create the plugin for.
         """
         return pulumi.get(self, "project")
 

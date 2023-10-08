@@ -5,8 +5,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * ## # sentry.SentryOrganization Data Source
- *
  * Sentry Organization data source.
  *
  * ## Example Usage
@@ -15,18 +13,14 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
- * // Retrieve the organization
- * const org = pulumi.output(sentry.getSentryOrganization({
+ * const org = sentry.getSentryOrganization({
  *     slug: "my-organization",
- * }));
+ * });
  * ```
  */
 export function getSentryOrganization(args: GetSentryOrganizationArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryOrganizationResult> {
-    if (!opts) {
-        opts = {}
-    }
 
-    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryOrganization:getSentryOrganization", {
         "slug": args.slug,
     }, opts);
@@ -50,6 +44,9 @@ export interface GetSentryOrganizationResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * The internal ID for this organization.
+     */
     readonly internalId: string;
     /**
      * The human readable name for this organization.
@@ -60,9 +57,22 @@ export interface GetSentryOrganizationResult {
      */
     readonly slug: string;
 }
-
+/**
+ * Sentry Organization data source.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as sentry from "@pulumi/sentry";
+ *
+ * const org = sentry.getSentryOrganization({
+ *     slug: "my-organization",
+ * });
+ * ```
+ */
 export function getSentryOrganizationOutput(args: GetSentryOrganizationOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryOrganizationResult> {
-    return pulumi.output(args).apply(a => getSentryOrganization(a, opts))
+    return pulumi.output(args).apply((a: any) => getSentryOrganization(a, opts))
 }
 
 /**

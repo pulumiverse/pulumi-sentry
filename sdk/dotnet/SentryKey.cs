@@ -11,33 +11,38 @@ using Pulumi;
 namespace Pulumiverse.Sentry
 {
     /// <summary>
-    /// ## # sentry.SentryKey Resource
-    /// 
     /// Sentry Key resource.
     /// 
     /// ## Example Usage
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
     /// using Pulumi;
     /// using Sentry = Pulumiverse.Sentry;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     // Create a key
+    ///     var @default = new Sentry.SentryKey("default", new()
     ///     {
-    ///         // Create a key
-    ///         var @default = new Sentry.SentryKey("default", new Sentry.SentryKeyArgs
-    ///         {
-    ///             Organization = "my-organization",
-    ///             Project = "web-app",
-    ///         });
-    ///     }
+    ///         Organization = "my-organization",
+    ///         Project = "web-app",
+    ///     });
     /// 
-    /// }
+    /// });
+    /// ```
+    /// 
+    /// ## Import
+    /// 
+    /// import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+    /// 
+    /// ```sh
+    ///  $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryKey:SentryKey")]
-    public partial class SentryKey : Pulumi.CustomResource
+    public partial class SentryKey : global::Pulumi.CustomResource
     {
         /// <summary>
         /// DSN for the Content Security Policy (CSP) for the key.
@@ -51,9 +56,6 @@ namespace Pulumiverse.Sentry
         [Output("dsnPublic")]
         public Output<string> DsnPublic { get; private set; } = null!;
 
-        /// <summary>
-        /// DSN (Deprecated) for the key.
-        /// </summary>
         [Output("dsnSecret")]
         public Output<string> DsnSecret { get; private set; } = null!;
 
@@ -161,7 +163,7 @@ namespace Pulumiverse.Sentry
         }
     }
 
-    public sealed class SentryKeyArgs : Pulumi.ResourceArgs
+    public sealed class SentryKeyArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// The name of the key.
@@ -196,9 +198,10 @@ namespace Pulumiverse.Sentry
         public SentryKeyArgs()
         {
         }
+        public static new SentryKeyArgs Empty => new SentryKeyArgs();
     }
 
-    public sealed class SentryKeyState : Pulumi.ResourceArgs
+    public sealed class SentryKeyState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// DSN for the Content Security Policy (CSP) for the key.
@@ -214,10 +217,7 @@ namespace Pulumiverse.Sentry
 
         [Input("dsnSecret")]
         private Input<string>? _dsnSecret;
-
-        /// <summary>
-        /// DSN (Deprecated) for the key.
-        /// </summary>
+        [Obsolete(@"DSN (Deprecated) for the key.")]
         public Input<string>? DsnSecret
         {
             get => _dsnSecret;
@@ -295,5 +295,6 @@ namespace Pulumiverse.Sentry
         public SentryKeyState()
         {
         }
+        public static new SentryKeyState Empty => new SentryKeyState();
     }
 }

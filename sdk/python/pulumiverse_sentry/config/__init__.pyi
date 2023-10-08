@@ -11,11 +11,14 @@ from .. import _utilities
 
 baseUrl: Optional[str]
 """
-The Sentry Base API URL
+The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+environment variable.
 """
 
 token: Optional[str]
 """
-The authentication token used to connect to Sentry
+The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+variable.
 """
 

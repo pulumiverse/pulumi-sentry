@@ -7,12 +7,12 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// ## # SentryKey Resource
-//
 // Sentry Key resource.
 //
 // ## Example Usage
@@ -21,22 +21,35 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := sentry.NewSentryKey(ctx, "default", &sentry.SentryKeyArgs{
-// 			Organization: pulumi.String("my-organization"),
-// 			Project:      pulumi.String("web-app"),
-// 		})
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := sentry.NewSentryKey(ctx, "default", &sentry.SentryKeyArgs{
+//				Organization: pulumi.String("my-organization"),
+//				Project:      pulumi.String("web-app"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ## Import
+//
+// import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+//
+// ```sh
+//
+//	$ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
+//
 // ```
 type SentryKey struct {
 	pulumi.CustomResourceState
@@ -45,7 +58,7 @@ type SentryKey struct {
 	DsnCsp pulumi.StringOutput `pulumi:"dsnCsp"`
 	// DSN for the key.
 	DsnPublic pulumi.StringOutput `pulumi:"dsnPublic"`
-	// DSN (Deprecated) for the key.
+	// Deprecated: DSN (Deprecated) for the key.
 	DsnSecret pulumi.StringOutput `pulumi:"dsnSecret"`
 	// Flag indicating the key is active.
 	IsActive pulumi.BoolOutput `pulumi:"isActive"`
@@ -85,7 +98,7 @@ func NewSentryKey(ctx *pulumi.Context,
 		"secret",
 	})
 	opts = append(opts, secrets)
-	opts = pkgResourceDefaultOpts(opts)
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource SentryKey
 	err := ctx.RegisterResource("sentry:index/sentryKey:SentryKey", name, args, &resource, opts...)
 	if err != nil {
@@ -112,7 +125,7 @@ type sentryKeyState struct {
 	DsnCsp *string `pulumi:"dsnCsp"`
 	// DSN for the key.
 	DsnPublic *string `pulumi:"dsnPublic"`
-	// DSN (Deprecated) for the key.
+	// Deprecated: DSN (Deprecated) for the key.
 	DsnSecret *string `pulumi:"dsnSecret"`
 	// Flag indicating the key is active.
 	IsActive *bool `pulumi:"isActive"`
@@ -139,7 +152,7 @@ type SentryKeyState struct {
 	DsnCsp pulumi.StringPtrInput
 	// DSN for the key.
 	DsnPublic pulumi.StringPtrInput
-	// DSN (Deprecated) for the key.
+	// Deprecated: DSN (Deprecated) for the key.
 	DsnSecret pulumi.StringPtrInput
 	// Flag indicating the key is active.
 	IsActive pulumi.BoolPtrInput
@@ -215,10 +228,16 @@ func (i *SentryKey) ToSentryKeyOutputWithContext(ctx context.Context) SentryKeyO
 	return pulumi.ToOutputWithContext(ctx, i).(SentryKeyOutput)
 }
 
+func (i *SentryKey) ToOutput(ctx context.Context) pulumix.Output[*SentryKey] {
+	return pulumix.Output[*SentryKey]{
+		OutputState: i.ToSentryKeyOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryKeyArrayInput is an input type that accepts SentryKeyArray and SentryKeyArrayOutput values.
 // You can construct a concrete instance of `SentryKeyArrayInput` via:
 //
-//          SentryKeyArray{ SentryKeyArgs{...} }
+//	SentryKeyArray{ SentryKeyArgs{...} }
 type SentryKeyArrayInput interface {
 	pulumi.Input
 
@@ -240,10 +259,16 @@ func (i SentryKeyArray) ToSentryKeyArrayOutputWithContext(ctx context.Context) S
 	return pulumi.ToOutputWithContext(ctx, i).(SentryKeyArrayOutput)
 }
 
+func (i SentryKeyArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryKey] {
+	return pulumix.Output[[]*SentryKey]{
+		OutputState: i.ToSentryKeyArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryKeyMapInput is an input type that accepts SentryKeyMap and SentryKeyMapOutput values.
 // You can construct a concrete instance of `SentryKeyMapInput` via:
 //
-//          SentryKeyMap{ "key": SentryKeyArgs{...} }
+//	SentryKeyMap{ "key": SentryKeyArgs{...} }
 type SentryKeyMapInput interface {
 	pulumi.Input
 
@@ -265,6 +290,12 @@ func (i SentryKeyMap) ToSentryKeyMapOutputWithContext(ctx context.Context) Sentr
 	return pulumi.ToOutputWithContext(ctx, i).(SentryKeyMapOutput)
 }
 
+func (i SentryKeyMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryKey] {
+	return pulumix.Output[map[string]*SentryKey]{
+		OutputState: i.ToSentryKeyMapOutputWithContext(ctx).OutputState,
+	}
+}
+
 type SentryKeyOutput struct{ *pulumi.OutputState }
 
 func (SentryKeyOutput) ElementType() reflect.Type {
@@ -279,6 +310,12 @@ func (o SentryKeyOutput) ToSentryKeyOutputWithContext(ctx context.Context) Sentr
 	return o
 }
 
+func (o SentryKeyOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryKey] {
+	return pulumix.Output[*SentryKey]{
+		OutputState: o.OutputState,
+	}
+}
+
 // DSN for the Content Security Policy (CSP) for the key.
 func (o SentryKeyOutput) DsnCsp() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryKey) pulumi.StringOutput { return v.DsnCsp }).(pulumi.StringOutput)
@@ -289,7 +326,7 @@ func (o SentryKeyOutput) DsnPublic() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryKey) pulumi.StringOutput { return v.DsnPublic }).(pulumi.StringOutput)
 }
 
-// DSN (Deprecated) for the key.
+// Deprecated: DSN (Deprecated) for the key.
 func (o SentryKeyOutput) DsnSecret() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryKey) pulumi.StringOutput { return v.DsnSecret }).(pulumi.StringOutput)
 }
@@ -353,6 +390,12 @@ func (o SentryKeyArrayOutput) ToSentryKeyArrayOutputWithContext(ctx context.Cont
 	return o
 }
 
+func (o SentryKeyArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryKey] {
+	return pulumix.Output[[]*SentryKey]{
+		OutputState: o.OutputState,
+	}
+}
+
 func (o SentryKeyArrayOutput) Index(i pulumi.IntInput) SentryKeyOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryKey {
 		return vs[0].([]*SentryKey)[vs[1].(int)]
@@ -371,6 +414,12 @@ func (o SentryKeyMapOutput) ToSentryKeyMapOutput() SentryKeyMapOutput {
 
 func (o SentryKeyMapOutput) ToSentryKeyMapOutputWithContext(ctx context.Context) SentryKeyMapOutput {
 	return o
+}
+
+func (o SentryKeyMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryKey] {
+	return pulumix.Output[map[string]*SentryKey]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryKeyMapOutput) MapIndex(k pulumi.StringInput) SentryKeyOutput {

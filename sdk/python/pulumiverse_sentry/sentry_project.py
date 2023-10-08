@@ -15,26 +15,27 @@ __all__ = ['SentryProjectArgs', 'SentryProject']
 class SentryProjectArgs:
     def __init__(__self__, *,
                  organization: pulumi.Input[str],
-                 team: pulumi.Input[str],
                  digests_max_delay: Optional[pulumi.Input[int]] = None,
                  digests_min_delay: Optional[pulumi.Input[int]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  platform: Optional[pulumi.Input[str]] = None,
                  resolve_age: Optional[pulumi.Input[int]] = None,
-                 slug: Optional[pulumi.Input[str]] = None):
+                 slug: Optional[pulumi.Input[str]] = None,
+                 team: Optional[pulumi.Input[str]] = None,
+                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a SentryProject resource.
-        :param pulumi.Input[str] organization: The slug of the organization the project should be created for.
-        :param pulumi.Input[str] team: The slug of the team the project should be created for.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
-        :param pulumi.Input[str] name: The human readable name for the project.
-        :param pulumi.Input[str] platform: The integration platform.
+        :param pulumi.Input[str] name: The name for the project.
+        :param pulumi.Input[str] platform: The optional platform for this project.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
-        :param pulumi.Input[str] slug: The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The optional slug for this project.
+        :param pulumi.Input[str] team: The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The slugs of the teams to create the project for.
         """
         pulumi.set(__self__, "organization", organization)
-        pulumi.set(__self__, "team", team)
         if digests_max_delay is not None:
             pulumi.set(__self__, "digests_max_delay", digests_max_delay)
         if digests_min_delay is not None:
@@ -47,30 +48,25 @@ class SentryProjectArgs:
             pulumi.set(__self__, "resolve_age", resolve_age)
         if slug is not None:
             pulumi.set(__self__, "slug", slug)
+        if team is not None:
+            warnings.warn("""Use `teams` instead.""", DeprecationWarning)
+            pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
+        if team is not None:
+            pulumi.set(__self__, "team", team)
+        if teams is not None:
+            pulumi.set(__self__, "teams", teams)
 
     @property
     @pulumi.getter
     def organization(self) -> pulumi.Input[str]:
         """
-        The slug of the organization the project should be created for.
+        The slug of the organization the project belongs to.
         """
         return pulumi.get(self, "organization")
 
     @organization.setter
     def organization(self, value: pulumi.Input[str]):
         pulumi.set(self, "organization", value)
-
-    @property
-    @pulumi.getter
-    def team(self) -> pulumi.Input[str]:
-        """
-        The slug of the team the project should be created for.
-        """
-        return pulumi.get(self, "team")
-
-    @team.setter
-    def team(self, value: pulumi.Input[str]):
-        pulumi.set(self, "team", value)
 
     @property
     @pulumi.getter(name="digestsMaxDelay")
@@ -100,7 +96,7 @@ class SentryProjectArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The human readable name for the project.
+        The name for the project.
         """
         return pulumi.get(self, "name")
 
@@ -112,7 +108,7 @@ class SentryProjectArgs:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        The integration platform.
+        The optional platform for this project.
         """
         return pulumi.get(self, "platform")
 
@@ -136,13 +132,40 @@ class SentryProjectArgs:
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
         """
-        The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+        The optional slug for this project.
         """
         return pulumi.get(self, "slug")
 
     @slug.setter
     def slug(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "slug", value)
+
+    @property
+    @pulumi.getter
+    def team(self) -> Optional[pulumi.Input[str]]:
+        """
+        The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+        """
+        warnings.warn("""Use `teams` instead.""", DeprecationWarning)
+        pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
+
+        return pulumi.get(self, "team")
+
+    @team.setter
+    def team(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "team", value)
+
+    @property
+    @pulumi.getter
+    def teams(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The slugs of the teams to create the project for.
+        """
+        return pulumi.get(self, "teams")
+
+    @teams.setter
+    def teams(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "teams", value)
 
 
 @pulumi.input_type
@@ -152,6 +175,7 @@ class _SentryProjectState:
                  digests_max_delay: Optional[pulumi.Input[int]] = None,
                  digests_min_delay: Optional[pulumi.Input[int]] = None,
                  features: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 internal_id: Optional[pulumi.Input[str]] = None,
                  is_bookmarked: Optional[pulumi.Input[bool]] = None,
                  is_public: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -161,17 +185,21 @@ class _SentryProjectState:
                  resolve_age: Optional[pulumi.Input[int]] = None,
                  slug: Optional[pulumi.Input[str]] = None,
                  status: Optional[pulumi.Input[str]] = None,
-                 team: Optional[pulumi.Input[str]] = None):
+                 team: Optional[pulumi.Input[str]] = None,
+                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         Input properties used for looking up and filtering SentryProject resources.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
-        :param pulumi.Input[str] name: The human readable name for the project.
-        :param pulumi.Input[str] organization: The slug of the organization the project should be created for.
-        :param pulumi.Input[str] platform: The integration platform.
+        :param pulumi.Input[str] internal_id: The internal ID for this project.
+        :param pulumi.Input[str] name: The name for the project.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[str] platform: The optional platform for this project.
+        :param pulumi.Input[str] project_id: Use `internal_id` instead.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
-        :param pulumi.Input[str] slug: The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
-        :param pulumi.Input[str] team: The slug of the team the project should be created for.
+        :param pulumi.Input[str] slug: The optional slug for this project.
+        :param pulumi.Input[str] team: The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The slugs of the teams to create the project for.
         """
         if color is not None:
             pulumi.set(__self__, "color", color)
@@ -181,6 +209,8 @@ class _SentryProjectState:
             pulumi.set(__self__, "digests_min_delay", digests_min_delay)
         if features is not None:
             pulumi.set(__self__, "features", features)
+        if internal_id is not None:
+            pulumi.set(__self__, "internal_id", internal_id)
         if is_bookmarked is not None:
             warnings.warn("""is_bookmarked is no longer used""", DeprecationWarning)
             pulumi.log.warn("""is_bookmarked is deprecated: is_bookmarked is no longer used""")
@@ -195,6 +225,9 @@ class _SentryProjectState:
         if platform is not None:
             pulumi.set(__self__, "platform", platform)
         if project_id is not None:
+            warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
+            pulumi.log.warn("""project_id is deprecated: Use `internal_id` instead.""")
+        if project_id is not None:
             pulumi.set(__self__, "project_id", project_id)
         if resolve_age is not None:
             pulumi.set(__self__, "resolve_age", resolve_age)
@@ -203,7 +236,12 @@ class _SentryProjectState:
         if status is not None:
             pulumi.set(__self__, "status", status)
         if team is not None:
+            warnings.warn("""Use `teams` instead.""", DeprecationWarning)
+            pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
+        if team is not None:
             pulumi.set(__self__, "team", team)
+        if teams is not None:
+            pulumi.set(__self__, "teams", teams)
 
     @property
     @pulumi.getter
@@ -248,8 +286,23 @@ class _SentryProjectState:
         pulumi.set(self, "features", value)
 
     @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        The internal ID for this project.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @internal_id.setter
+    def internal_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "internal_id", value)
+
+    @property
     @pulumi.getter(name="isBookmarked")
     def is_bookmarked(self) -> Optional[pulumi.Input[bool]]:
+        warnings.warn("""is_bookmarked is no longer used""", DeprecationWarning)
+        pulumi.log.warn("""is_bookmarked is deprecated: is_bookmarked is no longer used""")
+
         return pulumi.get(self, "is_bookmarked")
 
     @is_bookmarked.setter
@@ -269,7 +322,7 @@ class _SentryProjectState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The human readable name for the project.
+        The name for the project.
         """
         return pulumi.get(self, "name")
 
@@ -281,7 +334,7 @@ class _SentryProjectState:
     @pulumi.getter
     def organization(self) -> Optional[pulumi.Input[str]]:
         """
-        The slug of the organization the project should be created for.
+        The slug of the organization the project belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -293,7 +346,7 @@ class _SentryProjectState:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        The integration platform.
+        The optional platform for this project.
         """
         return pulumi.get(self, "platform")
 
@@ -304,6 +357,12 @@ class _SentryProjectState:
     @property
     @pulumi.getter(name="projectId")
     def project_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        Use `internal_id` instead.
+        """
+        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
+        pulumi.log.warn("""project_id is deprecated: Use `internal_id` instead.""")
+
         return pulumi.get(self, "project_id")
 
     @project_id.setter
@@ -326,7 +385,7 @@ class _SentryProjectState:
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
         """
-        The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+        The optional slug for this project.
         """
         return pulumi.get(self, "slug")
 
@@ -347,13 +406,28 @@ class _SentryProjectState:
     @pulumi.getter
     def team(self) -> Optional[pulumi.Input[str]]:
         """
-        The slug of the team the project should be created for.
+        The slug of the team to create the project for. **Deprecated** Use `teams` instead.
         """
+        warnings.warn("""Use `teams` instead.""", DeprecationWarning)
+        pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
+
         return pulumi.get(self, "team")
 
     @team.setter
     def team(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "team", value)
+
+    @property
+    @pulumi.getter
+    def teams(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The slugs of the teams to create the project for.
+        """
+        return pulumi.get(self, "teams")
+
+    @teams.setter
+    def teams(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "teams", value)
 
 
 class SentryProject(pulumi.CustomResource):
@@ -369,10 +443,9 @@ class SentryProject(pulumi.CustomResource):
                  resolve_age: Optional[pulumi.Input[int]] = None,
                  slug: Optional[pulumi.Input[str]] = None,
                  team: Optional[pulumi.Input[str]] = None,
+                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
-        ## # SentryProject Resource
-
         Sentry Project resource.
 
         ## Example Usage
@@ -387,12 +460,15 @@ class SentryProject(pulumi.CustomResource):
             platform="javascript",
             resolve_age=720,
             slug="web-app",
-            team="my-team")
+            teams=[
+                "my-first-team",
+                "my-second-team",
+            ])
         ```
 
         ## Import
 
-        This resource can be imported using an ID made up of the organization slug and project slugbash
+        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
 
         ```sh
          $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
@@ -402,12 +478,13 @@ class SentryProject(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
-        :param pulumi.Input[str] name: The human readable name for the project.
-        :param pulumi.Input[str] organization: The slug of the organization the project should be created for.
-        :param pulumi.Input[str] platform: The integration platform.
+        :param pulumi.Input[str] name: The name for the project.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[str] platform: The optional platform for this project.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
-        :param pulumi.Input[str] slug: The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
-        :param pulumi.Input[str] team: The slug of the team the project should be created for.
+        :param pulumi.Input[str] slug: The optional slug for this project.
+        :param pulumi.Input[str] team: The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The slugs of the teams to create the project for.
         """
         ...
     @overload
@@ -416,8 +493,6 @@ class SentryProject(pulumi.CustomResource):
                  args: SentryProjectArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        ## # SentryProject Resource
-
         Sentry Project resource.
 
         ## Example Usage
@@ -432,12 +507,15 @@ class SentryProject(pulumi.CustomResource):
             platform="javascript",
             resolve_age=720,
             slug="web-app",
-            team="my-team")
+            teams=[
+                "my-first-team",
+                "my-second-team",
+            ])
         ```
 
         ## Import
 
-        This resource can be imported using an ID made up of the organization slug and project slugbash
+        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
 
         ```sh
          $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
@@ -466,17 +544,11 @@ class SentryProject(pulumi.CustomResource):
                  resolve_age: Optional[pulumi.Input[int]] = None,
                  slug: Optional[pulumi.Input[str]] = None,
                  team: Optional[pulumi.Input[str]] = None,
+                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
-        if opts is None:
-            opts = pulumi.ResourceOptions()
-        else:
-            opts = copy.copy(opts)
+        opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
-        if opts.version is None:
-            opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
@@ -491,11 +563,14 @@ class SentryProject(pulumi.CustomResource):
             __props__.__dict__["platform"] = platform
             __props__.__dict__["resolve_age"] = resolve_age
             __props__.__dict__["slug"] = slug
-            if team is None and not opts.urn:
-                raise TypeError("Missing required property 'team'")
+            if team is not None and not opts.urn:
+                warnings.warn("""Use `teams` instead.""", DeprecationWarning)
+                pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
             __props__.__dict__["team"] = team
+            __props__.__dict__["teams"] = teams
             __props__.__dict__["color"] = None
             __props__.__dict__["features"] = None
+            __props__.__dict__["internal_id"] = None
             __props__.__dict__["is_bookmarked"] = None
             __props__.__dict__["is_public"] = None
             __props__.__dict__["project_id"] = None
@@ -514,6 +589,7 @@ class SentryProject(pulumi.CustomResource):
             digests_max_delay: Optional[pulumi.Input[int]] = None,
             digests_min_delay: Optional[pulumi.Input[int]] = None,
             features: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            internal_id: Optional[pulumi.Input[str]] = None,
             is_bookmarked: Optional[pulumi.Input[bool]] = None,
             is_public: Optional[pulumi.Input[bool]] = None,
             name: Optional[pulumi.Input[str]] = None,
@@ -523,7 +599,8 @@ class SentryProject(pulumi.CustomResource):
             resolve_age: Optional[pulumi.Input[int]] = None,
             slug: Optional[pulumi.Input[str]] = None,
             status: Optional[pulumi.Input[str]] = None,
-            team: Optional[pulumi.Input[str]] = None) -> 'SentryProject':
+            team: Optional[pulumi.Input[str]] = None,
+            teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None) -> 'SentryProject':
         """
         Get an existing SentryProject resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -533,12 +610,15 @@ class SentryProject(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
-        :param pulumi.Input[str] name: The human readable name for the project.
-        :param pulumi.Input[str] organization: The slug of the organization the project should be created for.
-        :param pulumi.Input[str] platform: The integration platform.
+        :param pulumi.Input[str] internal_id: The internal ID for this project.
+        :param pulumi.Input[str] name: The name for the project.
+        :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[str] platform: The optional platform for this project.
+        :param pulumi.Input[str] project_id: Use `internal_id` instead.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
-        :param pulumi.Input[str] slug: The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
-        :param pulumi.Input[str] team: The slug of the team the project should be created for.
+        :param pulumi.Input[str] slug: The optional slug for this project.
+        :param pulumi.Input[str] team: The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The slugs of the teams to create the project for.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -548,6 +628,7 @@ class SentryProject(pulumi.CustomResource):
         __props__.__dict__["digests_max_delay"] = digests_max_delay
         __props__.__dict__["digests_min_delay"] = digests_min_delay
         __props__.__dict__["features"] = features
+        __props__.__dict__["internal_id"] = internal_id
         __props__.__dict__["is_bookmarked"] = is_bookmarked
         __props__.__dict__["is_public"] = is_public
         __props__.__dict__["name"] = name
@@ -558,6 +639,7 @@ class SentryProject(pulumi.CustomResource):
         __props__.__dict__["slug"] = slug
         __props__.__dict__["status"] = status
         __props__.__dict__["team"] = team
+        __props__.__dict__["teams"] = teams
         return SentryProject(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -587,8 +669,19 @@ class SentryProject(pulumi.CustomResource):
         return pulumi.get(self, "features")
 
     @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> pulumi.Output[str]:
+        """
+        The internal ID for this project.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @property
     @pulumi.getter(name="isBookmarked")
     def is_bookmarked(self) -> pulumi.Output[bool]:
+        warnings.warn("""is_bookmarked is no longer used""", DeprecationWarning)
+        pulumi.log.warn("""is_bookmarked is deprecated: is_bookmarked is no longer used""")
+
         return pulumi.get(self, "is_bookmarked")
 
     @property
@@ -600,7 +693,7 @@ class SentryProject(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The human readable name for the project.
+        The name for the project.
         """
         return pulumi.get(self, "name")
 
@@ -608,7 +701,7 @@ class SentryProject(pulumi.CustomResource):
     @pulumi.getter
     def organization(self) -> pulumi.Output[str]:
         """
-        The slug of the organization the project should be created for.
+        The slug of the organization the project belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -616,13 +709,19 @@ class SentryProject(pulumi.CustomResource):
     @pulumi.getter
     def platform(self) -> pulumi.Output[str]:
         """
-        The integration platform.
+        The optional platform for this project.
         """
         return pulumi.get(self, "platform")
 
     @property
     @pulumi.getter(name="projectId")
     def project_id(self) -> pulumi.Output[str]:
+        """
+        Use `internal_id` instead.
+        """
+        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
+        pulumi.log.warn("""project_id is deprecated: Use `internal_id` instead.""")
+
         return pulumi.get(self, "project_id")
 
     @property
@@ -637,7 +736,7 @@ class SentryProject(pulumi.CustomResource):
     @pulumi.getter
     def slug(self) -> pulumi.Output[str]:
         """
-        The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+        The optional slug for this project.
         """
         return pulumi.get(self, "slug")
 
@@ -648,9 +747,20 @@ class SentryProject(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def team(self) -> pulumi.Output[str]:
+    def team(self) -> pulumi.Output[Optional[str]]:
         """
-        The slug of the team the project should be created for.
+        The slug of the team to create the project for. **Deprecated** Use `teams` instead.
         """
+        warnings.warn("""Use `teams` instead.""", DeprecationWarning)
+        pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
+
         return pulumi.get(self, "team")
+
+    @property
+    @pulumi.getter
+    def teams(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        """
+        The slugs of the teams to create the project for.
+        """
+        return pulumi.get(self, "teams")
 

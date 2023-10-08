@@ -46,6 +46,9 @@ class GetSentryOrganizationResult:
     @property
     @pulumi.getter(name="internalId")
     def internal_id(self) -> str:
+        """
+        The internal ID for this organization.
+        """
         return pulumi.get(self, "internal_id")
 
     @property
@@ -80,8 +83,6 @@ class AwaitableGetSentryOrganizationResult(GetSentryOrganizationResult):
 def get_sentry_organization(slug: Optional[str] = None,
                             opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSentryOrganizationResult:
     """
-    ## # SentryOrganization Data Source
-
     Sentry Organization data source.
 
     ## Example Usage
@@ -98,27 +99,20 @@ def get_sentry_organization(slug: Optional[str] = None,
     """
     __args__ = dict()
     __args__['slug'] = slug
-    if opts is None:
-        opts = pulumi.InvokeOptions()
-    if opts.version is None:
-        opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
     __ret__ = pulumi.runtime.invoke('sentry:index/getSentryOrganization:getSentryOrganization', __args__, opts=opts, typ=GetSentryOrganizationResult).value
 
     return AwaitableGetSentryOrganizationResult(
-        id=__ret__.id,
-        internal_id=__ret__.internal_id,
-        name=__ret__.name,
-        slug=__ret__.slug)
+        id=pulumi.get(__ret__, 'id'),
+        internal_id=pulumi.get(__ret__, 'internal_id'),
+        name=pulumi.get(__ret__, 'name'),
+        slug=pulumi.get(__ret__, 'slug'))
 
 
 @_utilities.lift_output_func(get_sentry_organization)
 def get_sentry_organization_output(slug: Optional[pulumi.Input[str]] = None,
                                    opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryOrganizationResult]:
     """
-    ## # SentryOrganization Data Source
-
     Sentry Organization data source.
 
     ## Example Usage

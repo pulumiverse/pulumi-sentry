@@ -116,7 +116,6 @@ class _SentryKeyState:
         Input properties used for looking up and filtering SentryKey resources.
         :param pulumi.Input[str] dsn_csp: DSN for the Content Security Policy (CSP) for the key.
         :param pulumi.Input[str] dsn_public: DSN for the key.
-        :param pulumi.Input[str] dsn_secret: DSN (Deprecated) for the key.
         :param pulumi.Input[bool] is_active: Flag indicating the key is active.
         :param pulumi.Input[str] name: The name of the key.
         :param pulumi.Input[str] organization: The slug of the organization the key should be created for.
@@ -131,6 +130,9 @@ class _SentryKeyState:
             pulumi.set(__self__, "dsn_csp", dsn_csp)
         if dsn_public is not None:
             pulumi.set(__self__, "dsn_public", dsn_public)
+        if dsn_secret is not None:
+            warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
+            pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
         if dsn_secret is not None:
             pulumi.set(__self__, "dsn_secret", dsn_secret)
         if is_active is not None:
@@ -179,9 +181,9 @@ class _SentryKeyState:
     @property
     @pulumi.getter(name="dsnSecret")
     def dsn_secret(self) -> Optional[pulumi.Input[str]]:
-        """
-        DSN (Deprecated) for the key.
-        """
+        warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
+        pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
+
         return pulumi.get(self, "dsn_secret")
 
     @dsn_secret.setter
@@ -309,8 +311,6 @@ class SentryKey(pulumi.CustomResource):
                  rate_limit_window: Optional[pulumi.Input[int]] = None,
                  __props__=None):
         """
-        ## # SentryKey Resource
-
         Sentry Key resource.
 
         ## Example Usage
@@ -323,6 +323,14 @@ class SentryKey(pulumi.CustomResource):
         default = sentry.SentryKey("default",
             organization="my-organization",
             project="web-app")
+        ```
+
+        ## Import
+
+        import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+
+        ```sh
+         $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -340,8 +348,6 @@ class SentryKey(pulumi.CustomResource):
                  args: SentryKeyArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        ## # SentryKey Resource
-
         Sentry Key resource.
 
         ## Example Usage
@@ -354,6 +360,14 @@ class SentryKey(pulumi.CustomResource):
         default = sentry.SentryKey("default",
             organization="my-organization",
             project="web-app")
+        ```
+
+        ## Import
+
+        import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+
+        ```sh
+         $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -377,16 +391,9 @@ class SentryKey(pulumi.CustomResource):
                  rate_limit_count: Optional[pulumi.Input[int]] = None,
                  rate_limit_window: Optional[pulumi.Input[int]] = None,
                  __props__=None):
-        if opts is None:
-            opts = pulumi.ResourceOptions()
-        else:
-            opts = copy.copy(opts)
+        opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
-        if opts.version is None:
-            opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
@@ -441,7 +448,6 @@ class SentryKey(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] dsn_csp: DSN for the Content Security Policy (CSP) for the key.
         :param pulumi.Input[str] dsn_public: DSN for the key.
-        :param pulumi.Input[str] dsn_secret: DSN (Deprecated) for the key.
         :param pulumi.Input[bool] is_active: Flag indicating the key is active.
         :param pulumi.Input[str] name: The name of the key.
         :param pulumi.Input[str] organization: The slug of the organization the key should be created for.
@@ -489,9 +495,9 @@ class SentryKey(pulumi.CustomResource):
     @property
     @pulumi.getter(name="dsnSecret")
     def dsn_secret(self) -> pulumi.Output[str]:
-        """
-        DSN (Deprecated) for the key.
-        """
+        warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
+        pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
+
         return pulumi.get(self, "dsn_secret")
 
     @property

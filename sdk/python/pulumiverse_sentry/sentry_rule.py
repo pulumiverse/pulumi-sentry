@@ -14,44 +14,54 @@ __all__ = ['SentryRuleArgs', 'SentryRule']
 @pulumi.input_type
 class SentryRuleArgs:
     def __init__(__self__, *,
+                 action_match: pulumi.Input[str],
                  actions: pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]],
                  conditions: pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]],
+                 filter_match: pulumi.Input[str],
+                 frequency: pulumi.Input[int],
                  organization: pulumi.Input[str],
                  project: pulumi.Input[str],
-                 action_match: Optional[pulumi.Input[str]] = None,
                  environment: Optional[pulumi.Input[str]] = None,
-                 filter_match: Optional[pulumi.Input[str]] = None,
                  filters: Optional[pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]]] = None,
-                 frequency: Optional[pulumi.Input[int]] = None,
                  name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a SentryRule resource.
+        :param pulumi.Input[str] action_match: Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] actions: List of actions.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] conditions: List of conditions.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
-        :param pulumi.Input[str] action_match: Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
-        :param pulumi.Input[str] environment: Environment for these conditions to apply to.
-        :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] filters: List of filters.
+        :param pulumi.Input[str] filter_match: Trigger actions if `all`, `any`, or `none` of the specified filters match.
         :param pulumi.Input[int] frequency: Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
-        :param pulumi.Input[str] name: Name for this alert.
+        :param pulumi.Input[str] organization: The slug of the organization the issue alert belongs to.
+        :param pulumi.Input[str] project: The slug of the project to create the issue alert for.
+        :param pulumi.Input[str] environment: Perform issue alert in a specific environment.
+        :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] filters: List of filters.
+        :param pulumi.Input[str] name: The issue alert name.
         """
+        pulumi.set(__self__, "action_match", action_match)
         pulumi.set(__self__, "actions", actions)
         pulumi.set(__self__, "conditions", conditions)
+        pulumi.set(__self__, "filter_match", filter_match)
+        pulumi.set(__self__, "frequency", frequency)
         pulumi.set(__self__, "organization", organization)
         pulumi.set(__self__, "project", project)
-        if action_match is not None:
-            pulumi.set(__self__, "action_match", action_match)
         if environment is not None:
             pulumi.set(__self__, "environment", environment)
-        if filter_match is not None:
-            pulumi.set(__self__, "filter_match", filter_match)
         if filters is not None:
             pulumi.set(__self__, "filters", filters)
-        if frequency is not None:
-            pulumi.set(__self__, "frequency", frequency)
         if name is not None:
             pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter(name="actionMatch")
+    def action_match(self) -> pulumi.Input[str]:
+        """
+        Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
+        """
+        return pulumi.get(self, "action_match")
+
+    @action_match.setter
+    def action_match(self, value: pulumi.Input[str]):
+        pulumi.set(self, "action_match", value)
 
     @property
     @pulumi.getter
@@ -78,10 +88,34 @@ class SentryRuleArgs:
         pulumi.set(self, "conditions", value)
 
     @property
+    @pulumi.getter(name="filterMatch")
+    def filter_match(self) -> pulumi.Input[str]:
+        """
+        Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        """
+        return pulumi.get(self, "filter_match")
+
+    @filter_match.setter
+    def filter_match(self, value: pulumi.Input[str]):
+        pulumi.set(self, "filter_match", value)
+
+    @property
+    @pulumi.getter
+    def frequency(self) -> pulumi.Input[int]:
+        """
+        Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+        """
+        return pulumi.get(self, "frequency")
+
+    @frequency.setter
+    def frequency(self, value: pulumi.Input[int]):
+        pulumi.set(self, "frequency", value)
+
+    @property
     @pulumi.getter
     def organization(self) -> pulumi.Input[str]:
         """
-        The slug of the organization the plugin should be enabled for.
+        The slug of the organization the issue alert belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -93,7 +127,7 @@ class SentryRuleArgs:
     @pulumi.getter
     def project(self) -> pulumi.Input[str]:
         """
-        The slug of the project the plugin should be enabled for.
+        The slug of the project to create the issue alert for.
         """
         return pulumi.get(self, "project")
 
@@ -102,37 +136,16 @@ class SentryRuleArgs:
         pulumi.set(self, "project", value)
 
     @property
-    @pulumi.getter(name="actionMatch")
-    def action_match(self) -> Optional[pulumi.Input[str]]:
-        """
-        Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
-        """
-        return pulumi.get(self, "action_match")
-
-    @action_match.setter
-    def action_match(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "action_match", value)
-
-    @property
     @pulumi.getter
     def environment(self) -> Optional[pulumi.Input[str]]:
         """
-        Environment for these conditions to apply to.
+        Perform issue alert in a specific environment.
         """
         return pulumi.get(self, "environment")
 
     @environment.setter
     def environment(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "environment", value)
-
-    @property
-    @pulumi.getter(name="filterMatch")
-    def filter_match(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "filter_match")
-
-    @filter_match.setter
-    def filter_match(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "filter_match", value)
 
     @property
     @pulumi.getter
@@ -148,21 +161,9 @@ class SentryRuleArgs:
 
     @property
     @pulumi.getter
-    def frequency(self) -> Optional[pulumi.Input[int]]:
-        """
-        Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
-        """
-        return pulumi.get(self, "frequency")
-
-    @frequency.setter
-    def frequency(self, value: Optional[pulumi.Input[int]]):
-        pulumi.set(self, "frequency", value)
-
-    @property
-    @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Name for this alert.
+        The issue alert name.
         """
         return pulumi.get(self, "name")
 
@@ -181,20 +182,25 @@ class _SentryRuleState:
                  filter_match: Optional[pulumi.Input[str]] = None,
                  filters: Optional[pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]]] = None,
                  frequency: Optional[pulumi.Input[int]] = None,
+                 internal_id: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  organization: Optional[pulumi.Input[str]] = None,
-                 project: Optional[pulumi.Input[str]] = None):
+                 project: Optional[pulumi.Input[str]] = None,
+                 projects: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         Input properties used for looking up and filtering SentryRule resources.
-        :param pulumi.Input[str] action_match: Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        :param pulumi.Input[str] action_match: Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] actions: List of actions.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] conditions: List of conditions.
-        :param pulumi.Input[str] environment: Environment for these conditions to apply to.
+        :param pulumi.Input[str] environment: Perform issue alert in a specific environment.
+        :param pulumi.Input[str] filter_match: Trigger actions if `all`, `any`, or `none` of the specified filters match.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] filters: List of filters.
         :param pulumi.Input[int] frequency: Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
-        :param pulumi.Input[str] name: Name for this alert.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
+        :param pulumi.Input[str] internal_id: The internal ID for this issue alert.
+        :param pulumi.Input[str] name: The issue alert name.
+        :param pulumi.Input[str] organization: The slug of the organization the issue alert belongs to.
+        :param pulumi.Input[str] project: The slug of the project to create the issue alert for.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] projects: Use `project` (singular) instead.
         """
         if action_match is not None:
             pulumi.set(__self__, "action_match", action_match)
@@ -210,18 +216,25 @@ class _SentryRuleState:
             pulumi.set(__self__, "filters", filters)
         if frequency is not None:
             pulumi.set(__self__, "frequency", frequency)
+        if internal_id is not None:
+            pulumi.set(__self__, "internal_id", internal_id)
         if name is not None:
             pulumi.set(__self__, "name", name)
         if organization is not None:
             pulumi.set(__self__, "organization", organization)
         if project is not None:
             pulumi.set(__self__, "project", project)
+        if projects is not None:
+            warnings.warn("""Use `project` (singular) instead.""", DeprecationWarning)
+            pulumi.log.warn("""projects is deprecated: Use `project` (singular) instead.""")
+        if projects is not None:
+            pulumi.set(__self__, "projects", projects)
 
     @property
     @pulumi.getter(name="actionMatch")
     def action_match(self) -> Optional[pulumi.Input[str]]:
         """
-        Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         """
         return pulumi.get(self, "action_match")
 
@@ -257,7 +270,7 @@ class _SentryRuleState:
     @pulumi.getter
     def environment(self) -> Optional[pulumi.Input[str]]:
         """
-        Environment for these conditions to apply to.
+        Perform issue alert in a specific environment.
         """
         return pulumi.get(self, "environment")
 
@@ -268,6 +281,9 @@ class _SentryRuleState:
     @property
     @pulumi.getter(name="filterMatch")
     def filter_match(self) -> Optional[pulumi.Input[str]]:
+        """
+        Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        """
         return pulumi.get(self, "filter_match")
 
     @filter_match.setter
@@ -299,10 +315,22 @@ class _SentryRuleState:
         pulumi.set(self, "frequency", value)
 
     @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        The internal ID for this issue alert.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @internal_id.setter
+    def internal_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "internal_id", value)
+
+    @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Name for this alert.
+        The issue alert name.
         """
         return pulumi.get(self, "name")
 
@@ -314,7 +342,7 @@ class _SentryRuleState:
     @pulumi.getter
     def organization(self) -> Optional[pulumi.Input[str]]:
         """
-        The slug of the organization the plugin should be enabled for.
+        The slug of the organization the issue alert belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -326,13 +354,28 @@ class _SentryRuleState:
     @pulumi.getter
     def project(self) -> Optional[pulumi.Input[str]]:
         """
-        The slug of the project the plugin should be enabled for.
+        The slug of the project to create the issue alert for.
         """
         return pulumi.get(self, "project")
 
     @project.setter
     def project(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "project", value)
+
+    @property
+    @pulumi.getter
+    def projects(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Use `project` (singular) instead.
+        """
+        warnings.warn("""Use `project` (singular) instead.""", DeprecationWarning)
+        pulumi.log.warn("""projects is deprecated: Use `project` (singular) instead.""")
+
+        return pulumi.get(self, "projects")
+
+    @projects.setter
+    def projects(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "projects", value)
 
 
 class SentryRule(pulumi.CustomResource):
@@ -352,50 +395,20 @@ class SentryRule(pulumi.CustomResource):
                  project: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        ## # SentryRule Resource
-
-        Sentry Rule resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an alert rule on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules).
-
-        ## Example Usage
-
-        ```python
-        import pulumi
-        import pulumiverse_sentry as sentry
-
-        # Create a plugin
-        default = sentry.SentryRule("default",
-            action_match="any",
-            actions=[{
-                "id": "sentry.mail.actions.NotifyEmailAction",
-                "name": "Send an email to IssueOwners",
-                "targetIdentifier": "",
-                "targetType": "IssueOwners",
-            }],
-            conditions=[{
-                "id": "sentry.rules.conditions.first_seen_event.FirstSeenEventCondition",
-                "name": "A new issue is created",
-            }],
-            environment="production",
-            filters=[{
-                "id": "sentry.rules.filters.assigned_to.AssignedToFilter",
-                "targetType": "Unassigned",
-            }],
-            frequency=30,
-            organization="my-organization",
-            project="web-app")
-        ```
+        > **WARNING:** This resource is deprecated and will be removed in the next major version. Use the `SentryIssueAlert` resource instead.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] action_match: Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        :param pulumi.Input[str] action_match: Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] actions: List of actions.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] conditions: List of conditions.
-        :param pulumi.Input[str] environment: Environment for these conditions to apply to.
+        :param pulumi.Input[str] environment: Perform issue alert in a specific environment.
+        :param pulumi.Input[str] filter_match: Trigger actions if `all`, `any`, or `none` of the specified filters match.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] filters: List of filters.
         :param pulumi.Input[int] frequency: Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
-        :param pulumi.Input[str] name: Name for this alert.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
+        :param pulumi.Input[str] name: The issue alert name.
+        :param pulumi.Input[str] organization: The slug of the organization the issue alert belongs to.
+        :param pulumi.Input[str] project: The slug of the project to create the issue alert for.
         """
         ...
     @overload
@@ -404,38 +417,7 @@ class SentryRule(pulumi.CustomResource):
                  args: SentryRuleArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        ## # SentryRule Resource
-
-        Sentry Rule resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an alert rule on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules).
-
-        ## Example Usage
-
-        ```python
-        import pulumi
-        import pulumiverse_sentry as sentry
-
-        # Create a plugin
-        default = sentry.SentryRule("default",
-            action_match="any",
-            actions=[{
-                "id": "sentry.mail.actions.NotifyEmailAction",
-                "name": "Send an email to IssueOwners",
-                "targetIdentifier": "",
-                "targetType": "IssueOwners",
-            }],
-            conditions=[{
-                "id": "sentry.rules.conditions.first_seen_event.FirstSeenEventCondition",
-                "name": "A new issue is created",
-            }],
-            environment="production",
-            filters=[{
-                "id": "sentry.rules.filters.assigned_to.AssignedToFilter",
-                "targetType": "Unassigned",
-            }],
-            frequency=30,
-            organization="my-organization",
-            project="web-app")
-        ```
+        > **WARNING:** This resource is deprecated and will be removed in the next major version. Use the `SentryIssueAlert` resource instead.
 
         :param str resource_name: The name of the resource.
         :param SentryRuleArgs args: The arguments to use to populate this resource's properties.
@@ -463,21 +445,16 @@ class SentryRule(pulumi.CustomResource):
                  organization: Optional[pulumi.Input[str]] = None,
                  project: Optional[pulumi.Input[str]] = None,
                  __props__=None):
-        if opts is None:
-            opts = pulumi.ResourceOptions()
-        else:
-            opts = copy.copy(opts)
+        opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
-        if opts.version is None:
-            opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = SentryRuleArgs.__new__(SentryRuleArgs)
 
+            if action_match is None and not opts.urn:
+                raise TypeError("Missing required property 'action_match'")
             __props__.__dict__["action_match"] = action_match
             if actions is None and not opts.urn:
                 raise TypeError("Missing required property 'actions'")
@@ -486,8 +463,12 @@ class SentryRule(pulumi.CustomResource):
                 raise TypeError("Missing required property 'conditions'")
             __props__.__dict__["conditions"] = conditions
             __props__.__dict__["environment"] = environment
+            if filter_match is None and not opts.urn:
+                raise TypeError("Missing required property 'filter_match'")
             __props__.__dict__["filter_match"] = filter_match
             __props__.__dict__["filters"] = filters
+            if frequency is None and not opts.urn:
+                raise TypeError("Missing required property 'frequency'")
             __props__.__dict__["frequency"] = frequency
             __props__.__dict__["name"] = name
             if organization is None and not opts.urn:
@@ -496,6 +477,8 @@ class SentryRule(pulumi.CustomResource):
             if project is None and not opts.urn:
                 raise TypeError("Missing required property 'project'")
             __props__.__dict__["project"] = project
+            __props__.__dict__["internal_id"] = None
+            __props__.__dict__["projects"] = None
         super(SentryRule, __self__).__init__(
             'sentry:index/sentryRule:SentryRule',
             resource_name,
@@ -513,9 +496,11 @@ class SentryRule(pulumi.CustomResource):
             filter_match: Optional[pulumi.Input[str]] = None,
             filters: Optional[pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]]] = None,
             frequency: Optional[pulumi.Input[int]] = None,
+            internal_id: Optional[pulumi.Input[str]] = None,
             name: Optional[pulumi.Input[str]] = None,
             organization: Optional[pulumi.Input[str]] = None,
-            project: Optional[pulumi.Input[str]] = None) -> 'SentryRule':
+            project: Optional[pulumi.Input[str]] = None,
+            projects: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None) -> 'SentryRule':
         """
         Get an existing SentryRule resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -523,15 +508,18 @@ class SentryRule(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] action_match: Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        :param pulumi.Input[str] action_match: Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] actions: List of actions.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] conditions: List of conditions.
-        :param pulumi.Input[str] environment: Environment for these conditions to apply to.
+        :param pulumi.Input[str] environment: Perform issue alert in a specific environment.
+        :param pulumi.Input[str] filter_match: Trigger actions if `all`, `any`, or `none` of the specified filters match.
         :param pulumi.Input[Sequence[pulumi.Input[Mapping[str, Any]]]] filters: List of filters.
         :param pulumi.Input[int] frequency: Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
-        :param pulumi.Input[str] name: Name for this alert.
-        :param pulumi.Input[str] organization: The slug of the organization the plugin should be enabled for.
-        :param pulumi.Input[str] project: The slug of the project the plugin should be enabled for.
+        :param pulumi.Input[str] internal_id: The internal ID for this issue alert.
+        :param pulumi.Input[str] name: The issue alert name.
+        :param pulumi.Input[str] organization: The slug of the organization the issue alert belongs to.
+        :param pulumi.Input[str] project: The slug of the project to create the issue alert for.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] projects: Use `project` (singular) instead.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -544,16 +532,18 @@ class SentryRule(pulumi.CustomResource):
         __props__.__dict__["filter_match"] = filter_match
         __props__.__dict__["filters"] = filters
         __props__.__dict__["frequency"] = frequency
+        __props__.__dict__["internal_id"] = internal_id
         __props__.__dict__["name"] = name
         __props__.__dict__["organization"] = organization
         __props__.__dict__["project"] = project
+        __props__.__dict__["projects"] = projects
         return SentryRule(resource_name, opts=opts, __props__=__props__)
 
     @property
     @pulumi.getter(name="actionMatch")
     def action_match(self) -> pulumi.Output[str]:
         """
-        Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         """
         return pulumi.get(self, "action_match")
 
@@ -577,13 +567,16 @@ class SentryRule(pulumi.CustomResource):
     @pulumi.getter
     def environment(self) -> pulumi.Output[str]:
         """
-        Environment for these conditions to apply to.
+        Perform issue alert in a specific environment.
         """
         return pulumi.get(self, "environment")
 
     @property
     @pulumi.getter(name="filterMatch")
     def filter_match(self) -> pulumi.Output[str]:
+        """
+        Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        """
         return pulumi.get(self, "filter_match")
 
     @property
@@ -603,10 +596,18 @@ class SentryRule(pulumi.CustomResource):
         return pulumi.get(self, "frequency")
 
     @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> pulumi.Output[str]:
+        """
+        The internal ID for this issue alert.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        Name for this alert.
+        The issue alert name.
         """
         return pulumi.get(self, "name")
 
@@ -614,7 +615,7 @@ class SentryRule(pulumi.CustomResource):
     @pulumi.getter
     def organization(self) -> pulumi.Output[str]:
         """
-        The slug of the organization the plugin should be enabled for.
+        The slug of the organization the issue alert belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -622,7 +623,18 @@ class SentryRule(pulumi.CustomResource):
     @pulumi.getter
     def project(self) -> pulumi.Output[str]:
         """
-        The slug of the project the plugin should be enabled for.
+        The slug of the project to create the issue alert for.
         """
         return pulumi.get(self, "project")
+
+    @property
+    @pulumi.getter
+    def projects(self) -> pulumi.Output[Sequence[str]]:
+        """
+        Use `project` (singular) instead.
+        """
+        warnings.warn("""Use `project` (singular) instead.""", DeprecationWarning)
+        pulumi.log.warn("""projects is deprecated: Use `project` (singular) instead.""")
+
+        return pulumi.get(self, "projects")
 

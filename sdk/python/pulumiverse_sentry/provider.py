@@ -18,8 +18,11 @@ class ProviderArgs:
                  token: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Provider resource.
-        :param pulumi.Input[str] base_url: The Sentry Base API URL
-        :param pulumi.Input[str] token: The authentication token used to connect to Sentry
+        :param pulumi.Input[str] base_url: The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+               The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+               environment variable.
+        :param pulumi.Input[str] token: The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+               variable.
         """
         if base_url is None:
             base_url = _utilities.get_env('SENTRY_BASE_URL')
@@ -34,7 +37,9 @@ class ProviderArgs:
     @pulumi.getter(name="baseUrl")
     def base_url(self) -> Optional[pulumi.Input[str]]:
         """
-        The Sentry Base API URL
+        The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+        The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+        environment variable.
         """
         return pulumi.get(self, "base_url")
 
@@ -46,7 +51,8 @@ class ProviderArgs:
     @pulumi.getter
     def token(self) -> Optional[pulumi.Input[str]]:
         """
-        The authentication token used to connect to Sentry
+        The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+        variable.
         """
         return pulumi.get(self, "token")
 
@@ -71,8 +77,11 @@ class Provider(pulumi.ProviderResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] base_url: The Sentry Base API URL
-        :param pulumi.Input[str] token: The authentication token used to connect to Sentry
+        :param pulumi.Input[str] base_url: The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+               The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+               environment variable.
+        :param pulumi.Input[str] token: The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+               variable.
         """
         ...
     @overload
@@ -104,16 +113,9 @@ class Provider(pulumi.ProviderResource):
                  base_url: Optional[pulumi.Input[str]] = None,
                  token: Optional[pulumi.Input[str]] = None,
                  __props__=None):
-        if opts is None:
-            opts = pulumi.ResourceOptions()
-        else:
-            opts = copy.copy(opts)
+        opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
-        if opts.version is None:
-            opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
@@ -137,7 +139,9 @@ class Provider(pulumi.ProviderResource):
     @pulumi.getter(name="baseUrl")
     def base_url(self) -> pulumi.Output[Optional[str]]:
         """
-        The Sentry Base API URL
+        The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+        The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+        environment variable.
         """
         return pulumi.get(self, "base_url")
 
@@ -145,7 +149,8 @@ class Provider(pulumi.ProviderResource):
     @pulumi.getter
     def token(self) -> pulumi.Output[Optional[str]]:
         """
-        The authentication token used to connect to Sentry
+        The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+        variable.
         """
         return pulumi.get(self, "token")
 

@@ -5,18 +5,16 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * ## # sentry.SentryPlugin Resource
- *
  * Sentry Plugin resource.
  *
  * ## Example Usage
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
- * import * as sentry from "@pulumi/sentry";
+ * import * as sentry from "@pulumiverse/sentry";
  *
  * // Create a plugin
- * const defaultSentryPlugin = new sentry.SentryPlugin("default", {
+ * const _default = new sentry.SentryPlugin("default", {
  *     config: {
  *         webhook: "slack://webhook",
  *     },
@@ -55,19 +53,19 @@ export class SentryPlugin extends pulumi.CustomResource {
     }
 
     /**
-     * Configuration of the plugin.
+     * Plugin config.
      */
     public readonly config!: pulumi.Output<{[key: string]: any} | undefined>;
     /**
-     * The slug of the organization the plugin should be enabled for.
+     * The slug of the organization the project belongs to.
      */
     public readonly organization!: pulumi.Output<string>;
     /**
-     * Identifier of the plugin.
+     * Plugin ID.
      */
     public readonly plugin!: pulumi.Output<string>;
     /**
-     * The slug of the project the plugin should be enabled for.
+     * The slug of the project to create the plugin for.
      */
     public readonly project!: pulumi.Output<string>;
 
@@ -114,19 +112,19 @@ export class SentryPlugin extends pulumi.CustomResource {
  */
 export interface SentryPluginState {
     /**
-     * Configuration of the plugin.
+     * Plugin config.
      */
     config?: pulumi.Input<{[key: string]: any}>;
     /**
-     * The slug of the organization the plugin should be enabled for.
+     * The slug of the organization the project belongs to.
      */
     organization?: pulumi.Input<string>;
     /**
-     * Identifier of the plugin.
+     * Plugin ID.
      */
     plugin?: pulumi.Input<string>;
     /**
-     * The slug of the project the plugin should be enabled for.
+     * The slug of the project to create the plugin for.
      */
     project?: pulumi.Input<string>;
 }
@@ -136,19 +134,19 @@ export interface SentryPluginState {
  */
 export interface SentryPluginArgs {
     /**
-     * Configuration of the plugin.
+     * Plugin config.
      */
     config?: pulumi.Input<{[key: string]: any}>;
     /**
-     * The slug of the organization the plugin should be enabled for.
+     * The slug of the organization the project belongs to.
      */
     organization: pulumi.Input<string>;
     /**
-     * Identifier of the plugin.
+     * Plugin ID.
      */
     plugin: pulumi.Input<string>;
     /**
-     * The slug of the project the plugin should be enabled for.
+     * The slug of the project to create the plugin for.
      */
     project: pulumi.Input<string>;
 }

@@ -7,12 +7,12 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// ## # SentryProject Resource
-//
 // Sentry Project resource.
 //
 // ## Example Usage
@@ -21,33 +21,41 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := sentry.NewSentryProject(ctx, "default", &sentry.SentryProjectArgs{
-// 			Organization: pulumi.String("my-organization"),
-// 			Platform:     pulumi.String("javascript"),
-// 			ResolveAge:   pulumi.Int(720),
-// 			Slug:         pulumi.String("web-app"),
-// 			Team:         pulumi.String("my-team"),
-// 		})
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := sentry.NewSentryProject(ctx, "default", &sentry.SentryProjectArgs{
+//				Organization: pulumi.String("my-organization"),
+//				Platform:     pulumi.String("javascript"),
+//				ResolveAge:   pulumi.Int(720),
+//				Slug:         pulumi.String("web-app"),
+//				Teams: pulumi.StringArray{
+//					pulumi.String("my-first-team"),
+//					pulumi.String("my-second-team"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
 // ```
 //
 // ## Import
 //
-// This resource can be imported using an ID made up of the organization slug and project slugbash
+// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
 //
 // ```sh
-//  $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+//
+//	$ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+//
 // ```
 type SentryProject struct {
 	pulumi.CustomResourceState
@@ -58,23 +66,32 @@ type SentryProject struct {
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
 	DigestsMinDelay pulumi.IntOutput         `pulumi:"digestsMinDelay"`
 	Features        pulumi.StringArrayOutput `pulumi:"features"`
+	// The internal ID for this project.
+	InternalId pulumi.StringOutput `pulumi:"internalId"`
 	// Deprecated: is_bookmarked is no longer used
 	IsBookmarked pulumi.BoolOutput `pulumi:"isBookmarked"`
 	IsPublic     pulumi.BoolOutput `pulumi:"isPublic"`
-	// The human readable name for the project.
+	// The name for the project.
 	Name pulumi.StringOutput `pulumi:"name"`
-	// The slug of the organization the project should be created for.
+	// The slug of the organization the project belongs to.
 	Organization pulumi.StringOutput `pulumi:"organization"`
-	// The integration platform.
-	Platform  pulumi.StringOutput `pulumi:"platform"`
+	// The optional platform for this project.
+	Platform pulumi.StringOutput `pulumi:"platform"`
+	// Use `internalId` instead.
+	//
+	// Deprecated: Use `internal_id` instead.
 	ProjectId pulumi.StringOutput `pulumi:"projectId"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntOutput `pulumi:"resolveAge"`
-	// The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+	// The optional slug for this project.
 	Slug   pulumi.StringOutput `pulumi:"slug"`
 	Status pulumi.StringOutput `pulumi:"status"`
-	// The slug of the team the project should be created for.
-	Team pulumi.StringOutput `pulumi:"team"`
+	// The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+	//
+	// Deprecated: Use `teams` instead.
+	Team pulumi.StringPtrOutput `pulumi:"team"`
+	// The slugs of the teams to create the project for.
+	Teams pulumi.StringArrayOutput `pulumi:"teams"`
 }
 
 // NewSentryProject registers a new resource with the given unique name, arguments, and options.
@@ -87,10 +104,7 @@ func NewSentryProject(ctx *pulumi.Context,
 	if args.Organization == nil {
 		return nil, errors.New("invalid value for required argument 'Organization'")
 	}
-	if args.Team == nil {
-		return nil, errors.New("invalid value for required argument 'Team'")
-	}
-	opts = pkgResourceDefaultOpts(opts)
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource SentryProject
 	err := ctx.RegisterResource("sentry:index/sentryProject:SentryProject", name, args, &resource, opts...)
 	if err != nil {
@@ -119,23 +133,32 @@ type sentryProjectState struct {
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
 	DigestsMinDelay *int     `pulumi:"digestsMinDelay"`
 	Features        []string `pulumi:"features"`
+	// The internal ID for this project.
+	InternalId *string `pulumi:"internalId"`
 	// Deprecated: is_bookmarked is no longer used
 	IsBookmarked *bool `pulumi:"isBookmarked"`
 	IsPublic     *bool `pulumi:"isPublic"`
-	// The human readable name for the project.
+	// The name for the project.
 	Name *string `pulumi:"name"`
-	// The slug of the organization the project should be created for.
+	// The slug of the organization the project belongs to.
 	Organization *string `pulumi:"organization"`
-	// The integration platform.
-	Platform  *string `pulumi:"platform"`
+	// The optional platform for this project.
+	Platform *string `pulumi:"platform"`
+	// Use `internalId` instead.
+	//
+	// Deprecated: Use `internal_id` instead.
 	ProjectId *string `pulumi:"projectId"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge *int `pulumi:"resolveAge"`
-	// The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+	// The optional slug for this project.
 	Slug   *string `pulumi:"slug"`
 	Status *string `pulumi:"status"`
-	// The slug of the team the project should be created for.
+	// The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+	//
+	// Deprecated: Use `teams` instead.
 	Team *string `pulumi:"team"`
+	// The slugs of the teams to create the project for.
+	Teams []string `pulumi:"teams"`
 }
 
 type SentryProjectState struct {
@@ -145,23 +168,32 @@ type SentryProjectState struct {
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
 	DigestsMinDelay pulumi.IntPtrInput
 	Features        pulumi.StringArrayInput
+	// The internal ID for this project.
+	InternalId pulumi.StringPtrInput
 	// Deprecated: is_bookmarked is no longer used
 	IsBookmarked pulumi.BoolPtrInput
 	IsPublic     pulumi.BoolPtrInput
-	// The human readable name for the project.
+	// The name for the project.
 	Name pulumi.StringPtrInput
-	// The slug of the organization the project should be created for.
+	// The slug of the organization the project belongs to.
 	Organization pulumi.StringPtrInput
-	// The integration platform.
-	Platform  pulumi.StringPtrInput
+	// The optional platform for this project.
+	Platform pulumi.StringPtrInput
+	// Use `internalId` instead.
+	//
+	// Deprecated: Use `internal_id` instead.
 	ProjectId pulumi.StringPtrInput
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntPtrInput
-	// The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+	// The optional slug for this project.
 	Slug   pulumi.StringPtrInput
 	Status pulumi.StringPtrInput
-	// The slug of the team the project should be created for.
+	// The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+	//
+	// Deprecated: Use `teams` instead.
 	Team pulumi.StringPtrInput
+	// The slugs of the teams to create the project for.
+	Teams pulumi.StringArrayInput
 }
 
 func (SentryProjectState) ElementType() reflect.Type {
@@ -173,18 +205,22 @@ type sentryProjectArgs struct {
 	DigestsMaxDelay *int `pulumi:"digestsMaxDelay"`
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
 	DigestsMinDelay *int `pulumi:"digestsMinDelay"`
-	// The human readable name for the project.
+	// The name for the project.
 	Name *string `pulumi:"name"`
-	// The slug of the organization the project should be created for.
+	// The slug of the organization the project belongs to.
 	Organization string `pulumi:"organization"`
-	// The integration platform.
+	// The optional platform for this project.
 	Platform *string `pulumi:"platform"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge *int `pulumi:"resolveAge"`
-	// The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+	// The optional slug for this project.
 	Slug *string `pulumi:"slug"`
-	// The slug of the team the project should be created for.
-	Team string `pulumi:"team"`
+	// The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+	//
+	// Deprecated: Use `teams` instead.
+	Team *string `pulumi:"team"`
+	// The slugs of the teams to create the project for.
+	Teams []string `pulumi:"teams"`
 }
 
 // The set of arguments for constructing a SentryProject resource.
@@ -193,18 +229,22 @@ type SentryProjectArgs struct {
 	DigestsMaxDelay pulumi.IntPtrInput
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
 	DigestsMinDelay pulumi.IntPtrInput
-	// The human readable name for the project.
+	// The name for the project.
 	Name pulumi.StringPtrInput
-	// The slug of the organization the project should be created for.
+	// The slug of the organization the project belongs to.
 	Organization pulumi.StringInput
-	// The integration platform.
+	// The optional platform for this project.
 	Platform pulumi.StringPtrInput
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntPtrInput
-	// The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+	// The optional slug for this project.
 	Slug pulumi.StringPtrInput
-	// The slug of the team the project should be created for.
-	Team pulumi.StringInput
+	// The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+	//
+	// Deprecated: Use `teams` instead.
+	Team pulumi.StringPtrInput
+	// The slugs of the teams to create the project for.
+	Teams pulumi.StringArrayInput
 }
 
 func (SentryProjectArgs) ElementType() reflect.Type {
@@ -230,10 +270,16 @@ func (i *SentryProject) ToSentryProjectOutputWithContext(ctx context.Context) Se
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectOutput)
 }
 
+func (i *SentryProject) ToOutput(ctx context.Context) pulumix.Output[*SentryProject] {
+	return pulumix.Output[*SentryProject]{
+		OutputState: i.ToSentryProjectOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryProjectArrayInput is an input type that accepts SentryProjectArray and SentryProjectArrayOutput values.
 // You can construct a concrete instance of `SentryProjectArrayInput` via:
 //
-//          SentryProjectArray{ SentryProjectArgs{...} }
+//	SentryProjectArray{ SentryProjectArgs{...} }
 type SentryProjectArrayInput interface {
 	pulumi.Input
 
@@ -255,10 +301,16 @@ func (i SentryProjectArray) ToSentryProjectArrayOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectArrayOutput)
 }
 
+func (i SentryProjectArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryProject] {
+	return pulumix.Output[[]*SentryProject]{
+		OutputState: i.ToSentryProjectArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryProjectMapInput is an input type that accepts SentryProjectMap and SentryProjectMapOutput values.
 // You can construct a concrete instance of `SentryProjectMapInput` via:
 //
-//          SentryProjectMap{ "key": SentryProjectArgs{...} }
+//	SentryProjectMap{ "key": SentryProjectArgs{...} }
 type SentryProjectMapInput interface {
 	pulumi.Input
 
@@ -280,6 +332,12 @@ func (i SentryProjectMap) ToSentryProjectMapOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectMapOutput)
 }
 
+func (i SentryProjectMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryProject] {
+	return pulumix.Output[map[string]*SentryProject]{
+		OutputState: i.ToSentryProjectMapOutputWithContext(ctx).OutputState,
+	}
+}
+
 type SentryProjectOutput struct{ *pulumi.OutputState }
 
 func (SentryProjectOutput) ElementType() reflect.Type {
@@ -292,6 +350,12 @@ func (o SentryProjectOutput) ToSentryProjectOutput() SentryProjectOutput {
 
 func (o SentryProjectOutput) ToSentryProjectOutputWithContext(ctx context.Context) SentryProjectOutput {
 	return o
+}
+
+func (o SentryProjectOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryProject] {
+	return pulumix.Output[*SentryProject]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryProjectOutput) Color() pulumi.StringOutput {
@@ -312,6 +376,11 @@ func (o SentryProjectOutput) Features() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringArrayOutput { return v.Features }).(pulumi.StringArrayOutput)
 }
 
+// The internal ID for this project.
+func (o SentryProjectOutput) InternalId() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.InternalId }).(pulumi.StringOutput)
+}
+
 // Deprecated: is_bookmarked is no longer used
 func (o SentryProjectOutput) IsBookmarked() pulumi.BoolOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.BoolOutput { return v.IsBookmarked }).(pulumi.BoolOutput)
@@ -321,21 +390,24 @@ func (o SentryProjectOutput) IsPublic() pulumi.BoolOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.BoolOutput { return v.IsPublic }).(pulumi.BoolOutput)
 }
 
-// The human readable name for the project.
+// The name for the project.
 func (o SentryProjectOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
-// The slug of the organization the project should be created for.
+// The slug of the organization the project belongs to.
 func (o SentryProjectOutput) Organization() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
 }
 
-// The integration platform.
+// The optional platform for this project.
 func (o SentryProjectOutput) Platform() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Platform }).(pulumi.StringOutput)
 }
 
+// Use `internalId` instead.
+//
+// Deprecated: Use `internal_id` instead.
 func (o SentryProjectOutput) ProjectId() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.ProjectId }).(pulumi.StringOutput)
 }
@@ -345,7 +417,7 @@ func (o SentryProjectOutput) ResolveAge() pulumi.IntOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.IntOutput { return v.ResolveAge }).(pulumi.IntOutput)
 }
 
-// The unique URL slug for this project. If this is not provided a slug is automatically generated based on the name.
+// The optional slug for this project.
 func (o SentryProjectOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
@@ -354,9 +426,16 @@ func (o SentryProjectOutput) Status() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Status }).(pulumi.StringOutput)
 }
 
-// The slug of the team the project should be created for.
-func (o SentryProjectOutput) Team() pulumi.StringOutput {
-	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Team }).(pulumi.StringOutput)
+// The slug of the team to create the project for. **Deprecated** Use `teams` instead.
+//
+// Deprecated: Use `teams` instead.
+func (o SentryProjectOutput) Team() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringPtrOutput { return v.Team }).(pulumi.StringPtrOutput)
+}
+
+// The slugs of the teams to create the project for.
+func (o SentryProjectOutput) Teams() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.StringArrayOutput { return v.Teams }).(pulumi.StringArrayOutput)
 }
 
 type SentryProjectArrayOutput struct{ *pulumi.OutputState }
@@ -371,6 +450,12 @@ func (o SentryProjectArrayOutput) ToSentryProjectArrayOutput() SentryProjectArra
 
 func (o SentryProjectArrayOutput) ToSentryProjectArrayOutputWithContext(ctx context.Context) SentryProjectArrayOutput {
 	return o
+}
+
+func (o SentryProjectArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryProject] {
+	return pulumix.Output[[]*SentryProject]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryProjectArrayOutput) Index(i pulumi.IntInput) SentryProjectOutput {
@@ -391,6 +476,12 @@ func (o SentryProjectMapOutput) ToSentryProjectMapOutput() SentryProjectMapOutpu
 
 func (o SentryProjectMapOutput) ToSentryProjectMapOutputWithContext(ctx context.Context) SentryProjectMapOutput {
 	return o
+}
+
+func (o SentryProjectMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryProject] {
+	return pulumix.Output[map[string]*SentryProject]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryProjectMapOutput) MapIndex(k pulumi.StringInput) SentryProjectOutput {
