@@ -8,10 +8,10 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// ## # SentryOrganization Data Source
-//
 // Sentry Organization data source.
 //
 // ## Example Usage
@@ -20,25 +20,27 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-sentry/sdk/go/sentry"
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := sentry.LookupSentryOrganization(ctx, &GetSentryOrganizationArgs{
-// 			Slug: "my-organization",
-// 		}, nil)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := sentry.LookupSentryOrganization(ctx, &sentry.LookupSentryOrganizationArgs{
+//				Slug: "my-organization",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
 // ```
 func LookupSentryOrganization(ctx *pulumi.Context, args *LookupSentryOrganizationArgs, opts ...pulumi.InvokeOption) (*LookupSentryOrganizationResult, error) {
-	opts = pkgInvokeDefaultOpts(opts)
+	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupSentryOrganizationResult
 	err := ctx.Invoke("sentry:index/getSentryOrganization:getSentryOrganization", args, &rv, opts...)
 	if err != nil {
@@ -56,7 +58,8 @@ type LookupSentryOrganizationArgs struct {
 // A collection of values returned by getSentryOrganization.
 type LookupSentryOrganizationResult struct {
 	// The provider-assigned unique ID for this managed resource.
-	Id         string `pulumi:"id"`
+	Id string `pulumi:"id"`
+	// The internal ID for this organization.
 	InternalId string `pulumi:"internalId"`
 	// The human readable name for this organization.
 	Name string `pulumi:"name"`
@@ -102,11 +105,18 @@ func (o LookupSentryOrganizationResultOutput) ToLookupSentryOrganizationResultOu
 	return o
 }
 
+func (o LookupSentryOrganizationResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryOrganizationResult] {
+	return pulumix.Output[LookupSentryOrganizationResult]{
+		OutputState: o.OutputState,
+	}
+}
+
 // The provider-assigned unique ID for this managed resource.
 func (o LookupSentryOrganizationResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryOrganizationResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
+// The internal ID for this organization.
 func (o LookupSentryOrganizationResultOutput) InternalId() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryOrganizationResult) string { return v.InternalId }).(pulumi.StringOutput)
 }

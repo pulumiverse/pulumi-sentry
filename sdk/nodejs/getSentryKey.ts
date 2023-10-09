@@ -5,8 +5,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * ## # sentry.SentryKey Data Source
- *
  * Sentry Key data source.
  *
  * ## Example Usage
@@ -15,20 +13,21 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
- * // Retrieve the Default Key
- * const defaultSentryKey = pulumi.output(sentry.getSentryKey({
+ * const default = sentry.getSentryKey({
  *     name: "Default",
  *     organization: "my-organization",
  *     project: "web-app",
- * }));
+ * });
+ * const first = sentry.getSentryKey({
+ *     first: true,
+ *     organization: "my-organization",
+ *     project: "web-app",
+ * });
  * ```
  */
 export function getSentryKey(args: GetSentryKeyArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryKeyResult> {
-    if (!opts) {
-        opts = {}
-    }
 
-    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryKey:getSentryKey", {
         "first": args.first,
         "name": args.name,
@@ -72,9 +71,12 @@ export interface GetSentryKeyResult {
      */
     readonly dsnPublic: string;
     /**
-     * DSN (Deprecated) for the key.
+     * @deprecated DSN (Deprecated) for the key.
      */
     readonly dsnSecret: string;
+    /**
+     * Boolean flag indicating that we want the first key of the returned keys.
+     */
     readonly first?: boolean;
     /**
      * The provider-assigned unique ID for this managed resource.
@@ -84,8 +86,17 @@ export interface GetSentryKeyResult {
      * Flag indicating the key is active.
      */
     readonly isActive: boolean;
+    /**
+     * The name of the key to retrieve.
+     */
     readonly name?: string;
+    /**
+     * The slug of the organization the key should be created for.
+     */
     readonly organization: string;
+    /**
+     * The slug of the project the key should be created for.
+     */
     readonly project: string;
     /**
      * The ID of the project that the key belongs to.
@@ -108,9 +119,29 @@ export interface GetSentryKeyResult {
      */
     readonly secret: string;
 }
-
+/**
+ * Sentry Key data source.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as sentry from "@pulumi/sentry";
+ *
+ * const default = sentry.getSentryKey({
+ *     name: "Default",
+ *     organization: "my-organization",
+ *     project: "web-app",
+ * });
+ * const first = sentry.getSentryKey({
+ *     first: true,
+ *     organization: "my-organization",
+ *     project: "web-app",
+ * });
+ * ```
+ */
 export function getSentryKeyOutput(args: GetSentryKeyOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryKeyResult> {
-    return pulumi.output(args).apply(a => getSentryKey(a, opts))
+    return pulumi.output(args).apply((a: any) => getSentryKey(a, opts))
 }
 
 /**

@@ -7,12 +7,12 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// ## # SentryTeam Resource
-//
 // Sentry Team resource.
 //
 // ## Example Usage
@@ -21,43 +21,53 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := sentry.NewSentryTeam(ctx, "default", &sentry.SentryTeamArgs{
-// 			Organization: pulumi.String("my-organization"),
-// 			Slug:         pulumi.String("my-team"),
-// 		})
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := sentry.NewSentryTeam(ctx, "default", &sentry.SentryTeamArgs{
+//				Organization: pulumi.String("my-organization"),
+//				Slug:         pulumi.String("my-team"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
 // ```
 //
 // ## Import
 //
-// This resource can be imported using an ID made up of the organization slug and project slugbash
+// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 //
 // ```sh
-//  $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
+//
+//	$ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
+//
 // ```
 type SentryTeam struct {
 	pulumi.CustomResourceState
 
 	HasAccess pulumi.BoolOutput `pulumi:"hasAccess"`
-	IsMember  pulumi.BoolOutput `pulumi:"isMember"`
-	IsPending pulumi.BoolOutput `pulumi:"isPending"`
-	// The human readable name for the team.
+	// The internal ID for this team.
+	InternalId pulumi.StringOutput `pulumi:"internalId"`
+	IsMember   pulumi.BoolOutput   `pulumi:"isMember"`
+	IsPending  pulumi.BoolOutput   `pulumi:"isPending"`
+	// The name of the team.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// The slug of the organization the team should be created for.
 	Organization pulumi.StringOutput `pulumi:"organization"`
-	// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
-	Slug   pulumi.StringOutput `pulumi:"slug"`
+	// The optional slug for this team.
+	Slug pulumi.StringOutput `pulumi:"slug"`
+	// Use `internalId` instead.
+	//
+	// Deprecated: Use `internal_id` instead.
 	TeamId pulumi.StringOutput `pulumi:"teamId"`
 }
 
@@ -71,7 +81,7 @@ func NewSentryTeam(ctx *pulumi.Context,
 	if args.Organization == nil {
 		return nil, errors.New("invalid value for required argument 'Organization'")
 	}
-	opts = pkgResourceDefaultOpts(opts)
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource SentryTeam
 	err := ctx.RegisterResource("sentry:index/sentryTeam:SentryTeam", name, args, &resource, opts...)
 	if err != nil {
@@ -95,27 +105,37 @@ func GetSentryTeam(ctx *pulumi.Context,
 // Input properties used for looking up and filtering SentryTeam resources.
 type sentryTeamState struct {
 	HasAccess *bool `pulumi:"hasAccess"`
-	IsMember  *bool `pulumi:"isMember"`
-	IsPending *bool `pulumi:"isPending"`
-	// The human readable name for the team.
+	// The internal ID for this team.
+	InternalId *string `pulumi:"internalId"`
+	IsMember   *bool   `pulumi:"isMember"`
+	IsPending  *bool   `pulumi:"isPending"`
+	// The name of the team.
 	Name *string `pulumi:"name"`
 	// The slug of the organization the team should be created for.
 	Organization *string `pulumi:"organization"`
-	// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
-	Slug   *string `pulumi:"slug"`
+	// The optional slug for this team.
+	Slug *string `pulumi:"slug"`
+	// Use `internalId` instead.
+	//
+	// Deprecated: Use `internal_id` instead.
 	TeamId *string `pulumi:"teamId"`
 }
 
 type SentryTeamState struct {
 	HasAccess pulumi.BoolPtrInput
-	IsMember  pulumi.BoolPtrInput
-	IsPending pulumi.BoolPtrInput
-	// The human readable name for the team.
+	// The internal ID for this team.
+	InternalId pulumi.StringPtrInput
+	IsMember   pulumi.BoolPtrInput
+	IsPending  pulumi.BoolPtrInput
+	// The name of the team.
 	Name pulumi.StringPtrInput
 	// The slug of the organization the team should be created for.
 	Organization pulumi.StringPtrInput
-	// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
-	Slug   pulumi.StringPtrInput
+	// The optional slug for this team.
+	Slug pulumi.StringPtrInput
+	// Use `internalId` instead.
+	//
+	// Deprecated: Use `internal_id` instead.
 	TeamId pulumi.StringPtrInput
 }
 
@@ -124,21 +144,21 @@ func (SentryTeamState) ElementType() reflect.Type {
 }
 
 type sentryTeamArgs struct {
-	// The human readable name for the team.
+	// The name of the team.
 	Name *string `pulumi:"name"`
 	// The slug of the organization the team should be created for.
 	Organization string `pulumi:"organization"`
-	// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+	// The optional slug for this team.
 	Slug *string `pulumi:"slug"`
 }
 
 // The set of arguments for constructing a SentryTeam resource.
 type SentryTeamArgs struct {
-	// The human readable name for the team.
+	// The name of the team.
 	Name pulumi.StringPtrInput
 	// The slug of the organization the team should be created for.
 	Organization pulumi.StringInput
-	// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+	// The optional slug for this team.
 	Slug pulumi.StringPtrInput
 }
 
@@ -165,10 +185,16 @@ func (i *SentryTeam) ToSentryTeamOutputWithContext(ctx context.Context) SentryTe
 	return pulumi.ToOutputWithContext(ctx, i).(SentryTeamOutput)
 }
 
+func (i *SentryTeam) ToOutput(ctx context.Context) pulumix.Output[*SentryTeam] {
+	return pulumix.Output[*SentryTeam]{
+		OutputState: i.ToSentryTeamOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryTeamArrayInput is an input type that accepts SentryTeamArray and SentryTeamArrayOutput values.
 // You can construct a concrete instance of `SentryTeamArrayInput` via:
 //
-//          SentryTeamArray{ SentryTeamArgs{...} }
+//	SentryTeamArray{ SentryTeamArgs{...} }
 type SentryTeamArrayInput interface {
 	pulumi.Input
 
@@ -190,10 +216,16 @@ func (i SentryTeamArray) ToSentryTeamArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(SentryTeamArrayOutput)
 }
 
+func (i SentryTeamArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryTeam] {
+	return pulumix.Output[[]*SentryTeam]{
+		OutputState: i.ToSentryTeamArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryTeamMapInput is an input type that accepts SentryTeamMap and SentryTeamMapOutput values.
 // You can construct a concrete instance of `SentryTeamMapInput` via:
 //
-//          SentryTeamMap{ "key": SentryTeamArgs{...} }
+//	SentryTeamMap{ "key": SentryTeamArgs{...} }
 type SentryTeamMapInput interface {
 	pulumi.Input
 
@@ -215,6 +247,12 @@ func (i SentryTeamMap) ToSentryTeamMapOutputWithContext(ctx context.Context) Sen
 	return pulumi.ToOutputWithContext(ctx, i).(SentryTeamMapOutput)
 }
 
+func (i SentryTeamMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryTeam] {
+	return pulumix.Output[map[string]*SentryTeam]{
+		OutputState: i.ToSentryTeamMapOutputWithContext(ctx).OutputState,
+	}
+}
+
 type SentryTeamOutput struct{ *pulumi.OutputState }
 
 func (SentryTeamOutput) ElementType() reflect.Type {
@@ -229,8 +267,19 @@ func (o SentryTeamOutput) ToSentryTeamOutputWithContext(ctx context.Context) Sen
 	return o
 }
 
+func (o SentryTeamOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryTeam] {
+	return pulumix.Output[*SentryTeam]{
+		OutputState: o.OutputState,
+	}
+}
+
 func (o SentryTeamOutput) HasAccess() pulumi.BoolOutput {
 	return o.ApplyT(func(v *SentryTeam) pulumi.BoolOutput { return v.HasAccess }).(pulumi.BoolOutput)
+}
+
+// The internal ID for this team.
+func (o SentryTeamOutput) InternalId() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.InternalId }).(pulumi.StringOutput)
 }
 
 func (o SentryTeamOutput) IsMember() pulumi.BoolOutput {
@@ -241,7 +290,7 @@ func (o SentryTeamOutput) IsPending() pulumi.BoolOutput {
 	return o.ApplyT(func(v *SentryTeam) pulumi.BoolOutput { return v.IsPending }).(pulumi.BoolOutput)
 }
 
-// The human readable name for the team.
+// The name of the team.
 func (o SentryTeamOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
@@ -251,11 +300,14 @@ func (o SentryTeamOutput) Organization() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
 }
 
-// The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+// The optional slug for this team.
 func (o SentryTeamOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
 
+// Use `internalId` instead.
+//
+// Deprecated: Use `internal_id` instead.
 func (o SentryTeamOutput) TeamId() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.TeamId }).(pulumi.StringOutput)
 }
@@ -272,6 +324,12 @@ func (o SentryTeamArrayOutput) ToSentryTeamArrayOutput() SentryTeamArrayOutput {
 
 func (o SentryTeamArrayOutput) ToSentryTeamArrayOutputWithContext(ctx context.Context) SentryTeamArrayOutput {
 	return o
+}
+
+func (o SentryTeamArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryTeam] {
+	return pulumix.Output[[]*SentryTeam]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryTeamArrayOutput) Index(i pulumi.IntInput) SentryTeamOutput {
@@ -292,6 +350,12 @@ func (o SentryTeamMapOutput) ToSentryTeamMapOutput() SentryTeamMapOutput {
 
 func (o SentryTeamMapOutput) ToSentryTeamMapOutputWithContext(ctx context.Context) SentryTeamMapOutput {
 	return o
+}
+
+func (o SentryTeamMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryTeam] {
+	return pulumix.Output[map[string]*SentryTeam]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryTeamMapOutput) MapIndex(k pulumi.StringInput) SentryTeamOutput {

@@ -51,7 +51,7 @@ func boolRef(b bool) *bool {
 // Provider returns additional overlaid schema and metadata associated with the provider..
 func Provider() tfbridge.ProviderInfo {
 	// Instantiate the Terraform provider
-	p := shimv2.NewProvider(sentry.Provider())
+	p := shimv2.NewProvider(sentry.NewProvider(version.Version)())
 
 	// Create a Pulumi provider mapping
 	prov := tfbridge.ProviderInfo{
@@ -127,14 +127,10 @@ func Provider() tfbridge.ProviderInfo {
 					"secret":     {Secret: boolRef(true)},
 				},
 			},
-			"sentry_default_key": {
-				Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryDefaultKey"),
-				Fields: map[string]*tfbridge.SchemaInfo{
-					"dsn_secret": {Secret: boolRef(true)},
-					"secret":     {Secret: boolRef(true)},
-				},
-			},
 			"sentry_organization": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganization")},
+			"sentry_organization_code_mapping": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationCodeMapping")},
+			"sentry_organization_member": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationMember")},
+			"sentry_organization_repository_github": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationRepositoryGithub")},
 			"sentry_project":      {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryProject")},
 			"sentry_plugin":       {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryPlugin")},
 			"sentry_rule":         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryRule")},
@@ -155,6 +151,7 @@ func Provider() tfbridge.ProviderInfo {
 				},
 			},
 			"sentry_organization": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryOrganization")},
+			"sentry_organization_integration": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryOrganizationIntegration")},
 			"sentry_team":         {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryTeam")},
 			"sentry_dashboard":    {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryDashboard")},
 			"sentry_issue_alert":  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryIssueAlert")},

@@ -5,39 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * ## # sentry.SentryRule Resource
- *
- * Sentry Rule resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an alert rule on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules).
- *
- * ## Example Usage
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as sentry from "@pulumi/sentry";
- *
- * // Create a plugin
- * const defaultSentryRule = new sentry.SentryRule("default", {
- *     actionMatch: "any",
- *     actions: [{
- *         id: "sentry.mail.actions.NotifyEmailAction",
- *         name: "Send an email to IssueOwners",
- *         targetIdentifier: "",
- *         targetType: "IssueOwners",
- *     }],
- *     conditions: [{
- *         id: "sentry.rules.conditions.first_seen_event.FirstSeenEventCondition",
- *         name: "A new issue is created",
- *     }],
- *     environment: "production",
- *     filters: [{
- *         id: "sentry.rules.filters.assigned_to.AssignedToFilter",
- *         targetType: "Unassigned",
- *     }],
- *     frequency: 30,
- *     organization: "my-organization",
- *     project: "web-app",
- * });
- * ```
+ * > **WARNING:** This resource is deprecated and will be removed in the next major version. Use the `sentry.SentryIssueAlert` resource instead.
  */
 export class SentryRule extends pulumi.CustomResource {
     /**
@@ -68,7 +36,7 @@ export class SentryRule extends pulumi.CustomResource {
     }
 
     /**
-     * Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+     * Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
      */
     public readonly actionMatch!: pulumi.Output<string>;
     /**
@@ -80,9 +48,12 @@ export class SentryRule extends pulumi.CustomResource {
      */
     public readonly conditions!: pulumi.Output<{[key: string]: any}[]>;
     /**
-     * Environment for these conditions to apply to.
+     * Perform issue alert in a specific environment.
      */
     public readonly environment!: pulumi.Output<string>;
+    /**
+     * Trigger actions if `all`, `any`, or `none` of the specified filters match.
+     */
     public readonly filterMatch!: pulumi.Output<string>;
     /**
      * List of filters.
@@ -93,17 +64,27 @@ export class SentryRule extends pulumi.CustomResource {
      */
     public readonly frequency!: pulumi.Output<number>;
     /**
-     * Name for this alert.
+     * The internal ID for this issue alert.
+     */
+    public /*out*/ readonly internalId!: pulumi.Output<string>;
+    /**
+     * The issue alert name.
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The slug of the organization the plugin should be enabled for.
+     * The slug of the organization the issue alert belongs to.
      */
     public readonly organization!: pulumi.Output<string>;
     /**
-     * The slug of the project the plugin should be enabled for.
+     * The slug of the project to create the issue alert for.
      */
     public readonly project!: pulumi.Output<string>;
+    /**
+     * Use `project` (singular) instead.
+     *
+     * @deprecated Use `project` (singular) instead.
+     */
+    public /*out*/ readonly projects!: pulumi.Output<string[]>;
 
     /**
      * Create a SentryRule resource with the given unique name, arguments, and options.
@@ -125,16 +106,27 @@ export class SentryRule extends pulumi.CustomResource {
             resourceInputs["filterMatch"] = state ? state.filterMatch : undefined;
             resourceInputs["filters"] = state ? state.filters : undefined;
             resourceInputs["frequency"] = state ? state.frequency : undefined;
+            resourceInputs["internalId"] = state ? state.internalId : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
             resourceInputs["organization"] = state ? state.organization : undefined;
             resourceInputs["project"] = state ? state.project : undefined;
+            resourceInputs["projects"] = state ? state.projects : undefined;
         } else {
             const args = argsOrState as SentryRuleArgs | undefined;
+            if ((!args || args.actionMatch === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'actionMatch'");
+            }
             if ((!args || args.actions === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'actions'");
             }
             if ((!args || args.conditions === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'conditions'");
+            }
+            if ((!args || args.filterMatch === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'filterMatch'");
+            }
+            if ((!args || args.frequency === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'frequency'");
             }
             if ((!args || args.organization === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'organization'");
@@ -152,6 +144,8 @@ export class SentryRule extends pulumi.CustomResource {
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["organization"] = args ? args.organization : undefined;
             resourceInputs["project"] = args ? args.project : undefined;
+            resourceInputs["internalId"] = undefined /*out*/;
+            resourceInputs["projects"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(SentryRule.__pulumiType, name, resourceInputs, opts);
@@ -163,7 +157,7 @@ export class SentryRule extends pulumi.CustomResource {
  */
 export interface SentryRuleState {
     /**
-     * Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+     * Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
      */
     actionMatch?: pulumi.Input<string>;
     /**
@@ -175,9 +169,12 @@ export interface SentryRuleState {
      */
     conditions?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
     /**
-     * Environment for these conditions to apply to.
+     * Perform issue alert in a specific environment.
      */
     environment?: pulumi.Input<string>;
+    /**
+     * Trigger actions if `all`, `any`, or `none` of the specified filters match.
+     */
     filterMatch?: pulumi.Input<string>;
     /**
      * List of filters.
@@ -188,17 +185,27 @@ export interface SentryRuleState {
      */
     frequency?: pulumi.Input<number>;
     /**
-     * Name for this alert.
+     * The internal ID for this issue alert.
+     */
+    internalId?: pulumi.Input<string>;
+    /**
+     * The issue alert name.
      */
     name?: pulumi.Input<string>;
     /**
-     * The slug of the organization the plugin should be enabled for.
+     * The slug of the organization the issue alert belongs to.
      */
     organization?: pulumi.Input<string>;
     /**
-     * The slug of the project the plugin should be enabled for.
+     * The slug of the project to create the issue alert for.
      */
     project?: pulumi.Input<string>;
+    /**
+     * Use `project` (singular) instead.
+     *
+     * @deprecated Use `project` (singular) instead.
+     */
+    projects?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 /**
@@ -206,9 +213,9 @@ export interface SentryRuleState {
  */
 export interface SentryRuleArgs {
     /**
-     * Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+     * Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
      */
-    actionMatch?: pulumi.Input<string>;
+    actionMatch: pulumi.Input<string>;
     /**
      * List of actions.
      */
@@ -218,10 +225,13 @@ export interface SentryRuleArgs {
      */
     conditions: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
     /**
-     * Environment for these conditions to apply to.
+     * Perform issue alert in a specific environment.
      */
     environment?: pulumi.Input<string>;
-    filterMatch?: pulumi.Input<string>;
+    /**
+     * Trigger actions if `all`, `any`, or `none` of the specified filters match.
+     */
+    filterMatch: pulumi.Input<string>;
     /**
      * List of filters.
      */
@@ -229,17 +239,17 @@ export interface SentryRuleArgs {
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */
-    frequency?: pulumi.Input<number>;
+    frequency: pulumi.Input<number>;
     /**
-     * Name for this alert.
+     * The issue alert name.
      */
     name?: pulumi.Input<string>;
     /**
-     * The slug of the organization the plugin should be enabled for.
+     * The slug of the organization the issue alert belongs to.
      */
     organization: pulumi.Input<string>;
     /**
-     * The slug of the project the plugin should be enabled for.
+     * The slug of the project to create the issue alert for.
      */
     project: pulumi.Input<string>;
 }

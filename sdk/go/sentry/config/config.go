@@ -6,22 +6,36 @@ package config
 import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// The Sentry Base API URL
+var _ = internal.GetEnvOrDefault
+
+// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+// environment variable.
 func GetBaseUrl(ctx *pulumi.Context) string {
 	v, err := config.Try(ctx, "sentry:baseUrl")
 	if err == nil {
 		return v
 	}
-	return getEnvOrDefault("", nil, "SENTRY_BASE_URL").(string)
+	var value string
+	if d := internal.GetEnvOrDefault(nil, nil, "SENTRY_BASE_URL"); d != nil {
+		value = d.(string)
+	}
+	return value
 }
 
-// The authentication token used to connect to Sentry
+// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+// variable.
 func GetToken(ctx *pulumi.Context) string {
 	v, err := config.Try(ctx, "sentry:token")
 	if err == nil {
 		return v
 	}
-	return getEnvOrDefault("", nil, "SENTRY_TOKEN").(string)
+	var value string
+	if d := internal.GetEnvOrDefault(nil, nil, "SENTRY_TOKEN"); d != nil {
+		value = d.(string)
+	}
+	return value
 }

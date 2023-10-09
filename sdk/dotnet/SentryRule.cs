@@ -11,65 +11,13 @@ using Pulumi;
 namespace Pulumiverse.Sentry
 {
     /// <summary>
-    /// ## # sentry.SentryRule Resource
-    /// 
-    /// Sentry Rule resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an alert rule on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules).
-    /// 
-    /// ## Example Usage
-    /// 
-    /// ```csharp
-    /// using Pulumi;
-    /// using Sentry = Pulumiverse.Sentry;
-    /// 
-    /// class MyStack : Stack
-    /// {
-    ///     public MyStack()
-    ///     {
-    ///         // Create a plugin
-    ///         var @default = new Sentry.SentryRule("default", new Sentry.SentryRuleArgs
-    ///         {
-    ///             ActionMatch = "any",
-    ///             Actions = 
-    ///             {
-    ///                 
-    ///                 {
-    ///                     { "id", "sentry.mail.actions.NotifyEmailAction" },
-    ///                     { "name", "Send an email to IssueOwners" },
-    ///                     { "targetIdentifier", "" },
-    ///                     { "targetType", "IssueOwners" },
-    ///                 },
-    ///             },
-    ///             Conditions = 
-    ///             {
-    ///                 
-    ///                 {
-    ///                     { "id", "sentry.rules.conditions.first_seen_event.FirstSeenEventCondition" },
-    ///                     { "name", "A new issue is created" },
-    ///                 },
-    ///             },
-    ///             Environment = "production",
-    ///             Filters = 
-    ///             {
-    ///                 
-    ///                 {
-    ///                     { "id", "sentry.rules.filters.assigned_to.AssignedToFilter" },
-    ///                     { "targetType", "Unassigned" },
-    ///                 },
-    ///             },
-    ///             Frequency = 30,
-    ///             Organization = "my-organization",
-    ///             Project = "web-app",
-    ///         });
-    ///     }
-    /// 
-    /// }
-    /// ```
+    /// &gt; **WARNING:** This resource is deprecated and will be removed in the next major version. Use the `sentry.SentryIssueAlert` resource instead.
     /// </summary>
     [SentryResourceType("sentry:index/sentryRule:SentryRule")]
-    public partial class SentryRule : Pulumi.CustomResource
+    public partial class SentryRule : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        /// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         /// </summary>
         [Output("actionMatch")]
         public Output<string> ActionMatch { get; private set; } = null!;
@@ -87,11 +35,14 @@ namespace Pulumiverse.Sentry
         public Output<ImmutableArray<ImmutableDictionary<string, object>>> Conditions { get; private set; } = null!;
 
         /// <summary>
-        /// Environment for these conditions to apply to.
+        /// Perform issue alert in a specific environment.
         /// </summary>
         [Output("environment")]
         public Output<string> Environment { get; private set; } = null!;
 
+        /// <summary>
+        /// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        /// </summary>
         [Output("filterMatch")]
         public Output<string> FilterMatch { get; private set; } = null!;
 
@@ -108,22 +59,34 @@ namespace Pulumiverse.Sentry
         public Output<int> Frequency { get; private set; } = null!;
 
         /// <summary>
-        /// Name for this alert.
+        /// The internal ID for this issue alert.
+        /// </summary>
+        [Output("internalId")]
+        public Output<string> InternalId { get; private set; } = null!;
+
+        /// <summary>
+        /// The issue alert name.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The slug of the organization the plugin should be enabled for.
+        /// The slug of the organization the issue alert belongs to.
         /// </summary>
         [Output("organization")]
         public Output<string> Organization { get; private set; } = null!;
 
         /// <summary>
-        /// The slug of the project the plugin should be enabled for.
+        /// The slug of the project to create the issue alert for.
         /// </summary>
         [Output("project")]
         public Output<string> Project { get; private set; } = null!;
+
+        /// <summary>
+        /// Use `project` (singular) instead.
+        /// </summary>
+        [Output("projects")]
+        public Output<ImmutableArray<string>> Projects { get; private set; } = null!;
 
 
         /// <summary>
@@ -170,13 +133,13 @@ namespace Pulumiverse.Sentry
         }
     }
 
-    public sealed class SentryRuleArgs : Pulumi.ResourceArgs
+    public sealed class SentryRuleArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        /// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         /// </summary>
-        [Input("actionMatch")]
-        public Input<string>? ActionMatch { get; set; }
+        [Input("actionMatch", required: true)]
+        public Input<string> ActionMatch { get; set; } = null!;
 
         [Input("actions", required: true)]
         private InputList<ImmutableDictionary<string, object>>? _actions;
@@ -203,13 +166,16 @@ namespace Pulumiverse.Sentry
         }
 
         /// <summary>
-        /// Environment for these conditions to apply to.
+        /// Perform issue alert in a specific environment.
         /// </summary>
         [Input("environment")]
         public Input<string>? Environment { get; set; }
 
-        [Input("filterMatch")]
-        public Input<string>? FilterMatch { get; set; }
+        /// <summary>
+        /// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        /// </summary>
+        [Input("filterMatch", required: true)]
+        public Input<string> FilterMatch { get; set; } = null!;
 
         [Input("filters")]
         private InputList<ImmutableDictionary<string, object>>? _filters;
@@ -226,23 +192,23 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
         /// </summary>
-        [Input("frequency")]
-        public Input<int>? Frequency { get; set; }
+        [Input("frequency", required: true)]
+        public Input<int> Frequency { get; set; } = null!;
 
         /// <summary>
-        /// Name for this alert.
+        /// The issue alert name.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The slug of the organization the plugin should be enabled for.
+        /// The slug of the organization the issue alert belongs to.
         /// </summary>
         [Input("organization", required: true)]
         public Input<string> Organization { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the project the plugin should be enabled for.
+        /// The slug of the project to create the issue alert for.
         /// </summary>
         [Input("project", required: true)]
         public Input<string> Project { get; set; } = null!;
@@ -250,12 +216,13 @@ namespace Pulumiverse.Sentry
         public SentryRuleArgs()
         {
         }
+        public static new SentryRuleArgs Empty => new SentryRuleArgs();
     }
 
-    public sealed class SentryRuleState : Pulumi.ResourceArgs
+    public sealed class SentryRuleState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+        /// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
         /// </summary>
         [Input("actionMatch")]
         public Input<string>? ActionMatch { get; set; }
@@ -285,11 +252,14 @@ namespace Pulumiverse.Sentry
         }
 
         /// <summary>
-        /// Environment for these conditions to apply to.
+        /// Perform issue alert in a specific environment.
         /// </summary>
         [Input("environment")]
         public Input<string>? Environment { get; set; }
 
+        /// <summary>
+        /// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        /// </summary>
         [Input("filterMatch")]
         public Input<string>? FilterMatch { get; set; }
 
@@ -312,25 +282,45 @@ namespace Pulumiverse.Sentry
         public Input<int>? Frequency { get; set; }
 
         /// <summary>
-        /// Name for this alert.
+        /// The internal ID for this issue alert.
+        /// </summary>
+        [Input("internalId")]
+        public Input<string>? InternalId { get; set; }
+
+        /// <summary>
+        /// The issue alert name.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The slug of the organization the plugin should be enabled for.
+        /// The slug of the organization the issue alert belongs to.
         /// </summary>
         [Input("organization")]
         public Input<string>? Organization { get; set; }
 
         /// <summary>
-        /// The slug of the project the plugin should be enabled for.
+        /// The slug of the project to create the issue alert for.
         /// </summary>
         [Input("project")]
         public Input<string>? Project { get; set; }
 
+        [Input("projects")]
+        private InputList<string>? _projects;
+
+        /// <summary>
+        /// Use `project` (singular) instead.
+        /// </summary>
+        [Obsolete(@"Use `project` (singular) instead.")]
+        public InputList<string> Projects
+        {
+            get => _projects ?? (_projects = new InputList<string>());
+            set => _projects = value;
+        }
+
         public SentryRuleState()
         {
         }
+        public static new SentryRuleState Empty => new SentryRuleState();
     }
 }

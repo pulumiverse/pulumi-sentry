@@ -7,82 +7,42 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// ## # SentryRule Resource
-//
-// Sentry Rule resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an alert rule on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules).
-//
-// ## Example Usage
-//
-// ```go
-// package main
-//
-// import (
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
-// )
-//
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := sentry.NewSentryRule(ctx, "default", &sentry.SentryRuleArgs{
-// 			ActionMatch: pulumi.String("any"),
-// 			Actions: pulumi.AnyMapArray{
-// 				pulumi.AnyMap{
-// 					"id":               pulumi.Any("sentry.mail.actions.NotifyEmailAction"),
-// 					"name":             pulumi.Any("Send an email to IssueOwners"),
-// 					"targetIdentifier": pulumi.Any(""),
-// 					"targetType":       pulumi.Any("IssueOwners"),
-// 				},
-// 			},
-// 			Conditions: pulumi.AnyMapArray{
-// 				pulumi.AnyMap{
-// 					"id":   pulumi.Any("sentry.rules.conditions.first_seen_event.FirstSeenEventCondition"),
-// 					"name": pulumi.Any("A new issue is created"),
-// 				},
-// 			},
-// 			Environment: pulumi.String("production"),
-// 			Filters: pulumi.AnyMapArray{
-// 				pulumi.AnyMap{
-// 					"id":         pulumi.Any("sentry.rules.filters.assigned_to.AssignedToFilter"),
-// 					"targetType": pulumi.Any("Unassigned"),
-// 				},
-// 			},
-// 			Frequency:    pulumi.Int(30),
-// 			Organization: pulumi.String("my-organization"),
-// 			Project:      pulumi.String("web-app"),
-// 		})
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
-// ```
+// > **WARNING:** This resource is deprecated and will be removed in the next major version. Use the `SentryIssueAlert` resource instead.
 type SentryRule struct {
 	pulumi.CustomResourceState
 
-	// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch pulumi.StringOutput `pulumi:"actionMatch"`
 	// List of actions.
 	Actions pulumi.MapArrayOutput `pulumi:"actions"`
 	// List of conditions.
 	Conditions pulumi.MapArrayOutput `pulumi:"conditions"`
-	// Environment for these conditions to apply to.
+	// Perform issue alert in a specific environment.
 	Environment pulumi.StringOutput `pulumi:"environment"`
+	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch pulumi.StringOutput `pulumi:"filterMatch"`
 	// List of filters.
 	Filters pulumi.MapArrayOutput `pulumi:"filters"`
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency pulumi.IntOutput `pulumi:"frequency"`
-	// Name for this alert.
+	// The internal ID for this issue alert.
+	InternalId pulumi.StringOutput `pulumi:"internalId"`
+	// The issue alert name.
 	Name pulumi.StringOutput `pulumi:"name"`
-	// The slug of the organization the plugin should be enabled for.
+	// The slug of the organization the issue alert belongs to.
 	Organization pulumi.StringOutput `pulumi:"organization"`
-	// The slug of the project the plugin should be enabled for.
+	// The slug of the project to create the issue alert for.
 	Project pulumi.StringOutput `pulumi:"project"`
+	// Use `project` (singular) instead.
+	//
+	// Deprecated: Use `project` (singular) instead.
+	Projects pulumi.StringArrayOutput `pulumi:"projects"`
 }
 
 // NewSentryRule registers a new resource with the given unique name, arguments, and options.
@@ -92,11 +52,20 @@ func NewSentryRule(ctx *pulumi.Context,
 		return nil, errors.New("missing one or more required arguments")
 	}
 
+	if args.ActionMatch == nil {
+		return nil, errors.New("invalid value for required argument 'ActionMatch'")
+	}
 	if args.Actions == nil {
 		return nil, errors.New("invalid value for required argument 'Actions'")
 	}
 	if args.Conditions == nil {
 		return nil, errors.New("invalid value for required argument 'Conditions'")
+	}
+	if args.FilterMatch == nil {
+		return nil, errors.New("invalid value for required argument 'FilterMatch'")
+	}
+	if args.Frequency == nil {
+		return nil, errors.New("invalid value for required argument 'Frequency'")
 	}
 	if args.Organization == nil {
 		return nil, errors.New("invalid value for required argument 'Organization'")
@@ -104,7 +73,7 @@ func NewSentryRule(ctx *pulumi.Context,
 	if args.Project == nil {
 		return nil, errors.New("invalid value for required argument 'Project'")
 	}
-	opts = pkgResourceDefaultOpts(opts)
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource SentryRule
 	err := ctx.RegisterResource("sentry:index/sentryRule:SentryRule", name, args, &resource, opts...)
 	if err != nil {
@@ -127,47 +96,61 @@ func GetSentryRule(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering SentryRule resources.
 type sentryRuleState struct {
-	// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch *string `pulumi:"actionMatch"`
 	// List of actions.
 	Actions []map[string]interface{} `pulumi:"actions"`
 	// List of conditions.
 	Conditions []map[string]interface{} `pulumi:"conditions"`
-	// Environment for these conditions to apply to.
+	// Perform issue alert in a specific environment.
 	Environment *string `pulumi:"environment"`
+	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch *string `pulumi:"filterMatch"`
 	// List of filters.
 	Filters []map[string]interface{} `pulumi:"filters"`
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency *int `pulumi:"frequency"`
-	// Name for this alert.
+	// The internal ID for this issue alert.
+	InternalId *string `pulumi:"internalId"`
+	// The issue alert name.
 	Name *string `pulumi:"name"`
-	// The slug of the organization the plugin should be enabled for.
+	// The slug of the organization the issue alert belongs to.
 	Organization *string `pulumi:"organization"`
-	// The slug of the project the plugin should be enabled for.
+	// The slug of the project to create the issue alert for.
 	Project *string `pulumi:"project"`
+	// Use `project` (singular) instead.
+	//
+	// Deprecated: Use `project` (singular) instead.
+	Projects []string `pulumi:"projects"`
 }
 
 type SentryRuleState struct {
-	// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch pulumi.StringPtrInput
 	// List of actions.
 	Actions pulumi.MapArrayInput
 	// List of conditions.
 	Conditions pulumi.MapArrayInput
-	// Environment for these conditions to apply to.
+	// Perform issue alert in a specific environment.
 	Environment pulumi.StringPtrInput
+	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch pulumi.StringPtrInput
 	// List of filters.
 	Filters pulumi.MapArrayInput
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency pulumi.IntPtrInput
-	// Name for this alert.
+	// The internal ID for this issue alert.
+	InternalId pulumi.StringPtrInput
+	// The issue alert name.
 	Name pulumi.StringPtrInput
-	// The slug of the organization the plugin should be enabled for.
+	// The slug of the organization the issue alert belongs to.
 	Organization pulumi.StringPtrInput
-	// The slug of the project the plugin should be enabled for.
+	// The slug of the project to create the issue alert for.
 	Project pulumi.StringPtrInput
+	// Use `project` (singular) instead.
+	//
+	// Deprecated: Use `project` (singular) instead.
+	Projects pulumi.StringArrayInput
 }
 
 func (SentryRuleState) ElementType() reflect.Type {
@@ -175,47 +158,49 @@ func (SentryRuleState) ElementType() reflect.Type {
 }
 
 type sentryRuleArgs struct {
-	// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
-	ActionMatch *string `pulumi:"actionMatch"`
+	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
+	ActionMatch string `pulumi:"actionMatch"`
 	// List of actions.
 	Actions []map[string]interface{} `pulumi:"actions"`
 	// List of conditions.
 	Conditions []map[string]interface{} `pulumi:"conditions"`
-	// Environment for these conditions to apply to.
+	// Perform issue alert in a specific environment.
 	Environment *string `pulumi:"environment"`
-	FilterMatch *string `pulumi:"filterMatch"`
+	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+	FilterMatch string `pulumi:"filterMatch"`
 	// List of filters.
 	Filters []map[string]interface{} `pulumi:"filters"`
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
-	Frequency *int `pulumi:"frequency"`
-	// Name for this alert.
+	Frequency int `pulumi:"frequency"`
+	// The issue alert name.
 	Name *string `pulumi:"name"`
-	// The slug of the organization the plugin should be enabled for.
+	// The slug of the organization the issue alert belongs to.
 	Organization string `pulumi:"organization"`
-	// The slug of the project the plugin should be enabled for.
+	// The slug of the project to create the issue alert for.
 	Project string `pulumi:"project"`
 }
 
 // The set of arguments for constructing a SentryRule resource.
 type SentryRuleArgs struct {
-	// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
-	ActionMatch pulumi.StringPtrInput
+	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
+	ActionMatch pulumi.StringInput
 	// List of actions.
 	Actions pulumi.MapArrayInput
 	// List of conditions.
 	Conditions pulumi.MapArrayInput
-	// Environment for these conditions to apply to.
+	// Perform issue alert in a specific environment.
 	Environment pulumi.StringPtrInput
-	FilterMatch pulumi.StringPtrInput
+	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+	FilterMatch pulumi.StringInput
 	// List of filters.
 	Filters pulumi.MapArrayInput
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
-	Frequency pulumi.IntPtrInput
-	// Name for this alert.
+	Frequency pulumi.IntInput
+	// The issue alert name.
 	Name pulumi.StringPtrInput
-	// The slug of the organization the plugin should be enabled for.
+	// The slug of the organization the issue alert belongs to.
 	Organization pulumi.StringInput
-	// The slug of the project the plugin should be enabled for.
+	// The slug of the project to create the issue alert for.
 	Project pulumi.StringInput
 }
 
@@ -242,10 +227,16 @@ func (i *SentryRule) ToSentryRuleOutputWithContext(ctx context.Context) SentryRu
 	return pulumi.ToOutputWithContext(ctx, i).(SentryRuleOutput)
 }
 
+func (i *SentryRule) ToOutput(ctx context.Context) pulumix.Output[*SentryRule] {
+	return pulumix.Output[*SentryRule]{
+		OutputState: i.ToSentryRuleOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryRuleArrayInput is an input type that accepts SentryRuleArray and SentryRuleArrayOutput values.
 // You can construct a concrete instance of `SentryRuleArrayInput` via:
 //
-//          SentryRuleArray{ SentryRuleArgs{...} }
+//	SentryRuleArray{ SentryRuleArgs{...} }
 type SentryRuleArrayInput interface {
 	pulumi.Input
 
@@ -267,10 +258,16 @@ func (i SentryRuleArray) ToSentryRuleArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(SentryRuleArrayOutput)
 }
 
+func (i SentryRuleArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryRule] {
+	return pulumix.Output[[]*SentryRule]{
+		OutputState: i.ToSentryRuleArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryRuleMapInput is an input type that accepts SentryRuleMap and SentryRuleMapOutput values.
 // You can construct a concrete instance of `SentryRuleMapInput` via:
 //
-//          SentryRuleMap{ "key": SentryRuleArgs{...} }
+//	SentryRuleMap{ "key": SentryRuleArgs{...} }
 type SentryRuleMapInput interface {
 	pulumi.Input
 
@@ -292,6 +289,12 @@ func (i SentryRuleMap) ToSentryRuleMapOutputWithContext(ctx context.Context) Sen
 	return pulumi.ToOutputWithContext(ctx, i).(SentryRuleMapOutput)
 }
 
+func (i SentryRuleMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryRule] {
+	return pulumix.Output[map[string]*SentryRule]{
+		OutputState: i.ToSentryRuleMapOutputWithContext(ctx).OutputState,
+	}
+}
+
 type SentryRuleOutput struct{ *pulumi.OutputState }
 
 func (SentryRuleOutput) ElementType() reflect.Type {
@@ -306,7 +309,13 @@ func (o SentryRuleOutput) ToSentryRuleOutputWithContext(ctx context.Context) Sen
 	return o
 }
 
-// Use `all` to trigger alerting when all conditions are met, and `any` when at. least a condition is met. Defaults to `any`.
+func (o SentryRuleOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryRule] {
+	return pulumix.Output[*SentryRule]{
+		OutputState: o.OutputState,
+	}
+}
+
+// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 func (o SentryRuleOutput) ActionMatch() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.ActionMatch }).(pulumi.StringOutput)
 }
@@ -321,11 +330,12 @@ func (o SentryRuleOutput) Conditions() pulumi.MapArrayOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.MapArrayOutput { return v.Conditions }).(pulumi.MapArrayOutput)
 }
 
-// Environment for these conditions to apply to.
+// Perform issue alert in a specific environment.
 func (o SentryRuleOutput) Environment() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Environment }).(pulumi.StringOutput)
 }
 
+// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 func (o SentryRuleOutput) FilterMatch() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.FilterMatch }).(pulumi.StringOutput)
 }
@@ -340,19 +350,31 @@ func (o SentryRuleOutput) Frequency() pulumi.IntOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.IntOutput { return v.Frequency }).(pulumi.IntOutput)
 }
 
-// Name for this alert.
+// The internal ID for this issue alert.
+func (o SentryRuleOutput) InternalId() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.InternalId }).(pulumi.StringOutput)
+}
+
+// The issue alert name.
 func (o SentryRuleOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
-// The slug of the organization the plugin should be enabled for.
+// The slug of the organization the issue alert belongs to.
 func (o SentryRuleOutput) Organization() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
 }
 
-// The slug of the project the plugin should be enabled for.
+// The slug of the project to create the issue alert for.
 func (o SentryRuleOutput) Project() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.Project }).(pulumi.StringOutput)
+}
+
+// Use `project` (singular) instead.
+//
+// Deprecated: Use `project` (singular) instead.
+func (o SentryRuleOutput) Projects() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringArrayOutput { return v.Projects }).(pulumi.StringArrayOutput)
 }
 
 type SentryRuleArrayOutput struct{ *pulumi.OutputState }
@@ -367,6 +389,12 @@ func (o SentryRuleArrayOutput) ToSentryRuleArrayOutput() SentryRuleArrayOutput {
 
 func (o SentryRuleArrayOutput) ToSentryRuleArrayOutputWithContext(ctx context.Context) SentryRuleArrayOutput {
 	return o
+}
+
+func (o SentryRuleArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryRule] {
+	return pulumix.Output[[]*SentryRule]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryRuleArrayOutput) Index(i pulumi.IntInput) SentryRuleOutput {
@@ -387,6 +415,12 @@ func (o SentryRuleMapOutput) ToSentryRuleMapOutput() SentryRuleMapOutput {
 
 func (o SentryRuleMapOutput) ToSentryRuleMapOutputWithContext(ctx context.Context) SentryRuleMapOutput {
 	return o
+}
+
+func (o SentryRuleMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryRule] {
+	return pulumix.Output[map[string]*SentryRule]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryRuleMapOutput) MapIndex(k pulumi.StringInput) SentryRuleOutput {

@@ -84,14 +84,17 @@ class GetSentryKeyResult:
     @property
     @pulumi.getter(name="dsnSecret")
     def dsn_secret(self) -> str:
-        """
-        DSN (Deprecated) for the key.
-        """
+        warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
+        pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
+
         return pulumi.get(self, "dsn_secret")
 
     @property
     @pulumi.getter
     def first(self) -> Optional[bool]:
+        """
+        Boolean flag indicating that we want the first key of the returned keys.
+        """
         return pulumi.get(self, "first")
 
     @property
@@ -113,16 +116,25 @@ class GetSentryKeyResult:
     @property
     @pulumi.getter
     def name(self) -> Optional[str]:
+        """
+        The name of the key to retrieve.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def organization(self) -> str:
+        """
+        The slug of the organization the key should be created for.
+        """
         return pulumi.get(self, "organization")
 
     @property
     @pulumi.getter
     def project(self) -> str:
+        """
+        The slug of the project the key should be created for.
+        """
         return pulumi.get(self, "project")
 
     @property
@@ -194,8 +206,6 @@ def get_sentry_key(first: Optional[bool] = None,
                    project: Optional[str] = None,
                    opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSentryKeyResult:
     """
-    ## # SentryKey Data Source
-
     Sentry Key data source.
 
     ## Example Usage
@@ -205,6 +215,9 @@ def get_sentry_key(first: Optional[bool] = None,
     import pulumi_sentry as sentry
 
     default = sentry.get_sentry_key(name="Default",
+        organization="my-organization",
+        project="web-app")
+    first = sentry.get_sentry_key(first=True,
         organization="my-organization",
         project="web-app")
     ```
@@ -220,29 +233,24 @@ def get_sentry_key(first: Optional[bool] = None,
     __args__['name'] = name
     __args__['organization'] = organization
     __args__['project'] = project
-    if opts is None:
-        opts = pulumi.InvokeOptions()
-    if opts.version is None:
-        opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
     __ret__ = pulumi.runtime.invoke('sentry:index/getSentryKey:getSentryKey', __args__, opts=opts, typ=GetSentryKeyResult).value
 
     return AwaitableGetSentryKeyResult(
-        dsn_csp=__ret__.dsn_csp,
-        dsn_public=__ret__.dsn_public,
-        dsn_secret=__ret__.dsn_secret,
-        first=__ret__.first,
-        id=__ret__.id,
-        is_active=__ret__.is_active,
-        name=__ret__.name,
-        organization=__ret__.organization,
-        project=__ret__.project,
-        project_id=__ret__.project_id,
-        public=__ret__.public,
-        rate_limit_count=__ret__.rate_limit_count,
-        rate_limit_window=__ret__.rate_limit_window,
-        secret=__ret__.secret)
+        dsn_csp=pulumi.get(__ret__, 'dsn_csp'),
+        dsn_public=pulumi.get(__ret__, 'dsn_public'),
+        dsn_secret=pulumi.get(__ret__, 'dsn_secret'),
+        first=pulumi.get(__ret__, 'first'),
+        id=pulumi.get(__ret__, 'id'),
+        is_active=pulumi.get(__ret__, 'is_active'),
+        name=pulumi.get(__ret__, 'name'),
+        organization=pulumi.get(__ret__, 'organization'),
+        project=pulumi.get(__ret__, 'project'),
+        project_id=pulumi.get(__ret__, 'project_id'),
+        public=pulumi.get(__ret__, 'public'),
+        rate_limit_count=pulumi.get(__ret__, 'rate_limit_count'),
+        rate_limit_window=pulumi.get(__ret__, 'rate_limit_window'),
+        secret=pulumi.get(__ret__, 'secret'))
 
 
 @_utilities.lift_output_func(get_sentry_key)
@@ -252,8 +260,6 @@ def get_sentry_key_output(first: Optional[pulumi.Input[Optional[bool]]] = None,
                           project: Optional[pulumi.Input[str]] = None,
                           opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryKeyResult]:
     """
-    ## # SentryKey Data Source
-
     Sentry Key data source.
 
     ## Example Usage
@@ -263,6 +269,9 @@ def get_sentry_key_output(first: Optional[pulumi.Input[Optional[bool]]] = None,
     import pulumi_sentry as sentry
 
     default = sentry.get_sentry_key(name="Default",
+        organization="my-organization",
+        project="web-app")
+    first = sentry.get_sentry_key(first=True,
         organization="my-organization",
         project="web-app")
     ```

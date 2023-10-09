@@ -22,15 +22,18 @@ export class Provider extends pulumi.ProviderResource {
         if (obj === undefined || obj === null) {
             return false;
         }
-        return obj['__pulumiType'] === Provider.__pulumiType;
+        return obj['__pulumiType'] === "pulumi:providers:" + Provider.__pulumiType;
     }
 
     /**
-     * The Sentry Base API URL
+     * The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+     * The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+     * environment variable.
      */
     public readonly baseUrl!: pulumi.Output<string | undefined>;
     /**
-     * The authentication token used to connect to Sentry
+     * The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+     * variable.
      */
     public readonly token!: pulumi.Output<string | undefined>;
 
@@ -60,11 +63,14 @@ export class Provider extends pulumi.ProviderResource {
  */
 export interface ProviderArgs {
     /**
-     * The Sentry Base API URL
+     * The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+     * The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+     * environment variable.
      */
     baseUrl?: pulumi.Input<string>;
     /**
-     * The authentication token used to connect to Sentry
+     * The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+     * variable.
      */
     token?: pulumi.Input<string>;
 }

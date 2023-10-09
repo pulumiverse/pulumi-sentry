@@ -5,18 +5,16 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * ## # sentry.SentryOrganization Resource
- *
  * Sentry Organization resource.
  *
  * ## Example Usage
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
- * import * as sentry from "@pulumi/sentry";
+ * import * as sentry from "@pulumiverse/sentry";
  *
  * // Create an organization
- * const defaultSentryOrganization = new sentry.SentryOrganization("default", {
+ * const _default = new sentry.SentryOrganization("default", {
  *     agreeTerms: true,
  *     slug: "my-organization",
  * });
@@ -24,7 +22,7 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * This resource can be imported using an ID made up of the organization slugbash
+ * import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
  *
  * ```sh
  *  $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
@@ -63,11 +61,15 @@ export class SentryOrganization extends pulumi.CustomResource {
      */
     public readonly agreeTerms!: pulumi.Output<boolean>;
     /**
+     * The internal ID for this organization.
+     */
+    public /*out*/ readonly internalId!: pulumi.Output<string>;
+    /**
      * The human readable name for the organization.
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+     * The unique URL slug for this organization.
      */
     public readonly slug!: pulumi.Output<string>;
 
@@ -85,6 +87,7 @@ export class SentryOrganization extends pulumi.CustomResource {
         if (opts.id) {
             const state = argsOrState as SentryOrganizationState | undefined;
             resourceInputs["agreeTerms"] = state ? state.agreeTerms : undefined;
+            resourceInputs["internalId"] = state ? state.internalId : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
             resourceInputs["slug"] = state ? state.slug : undefined;
         } else {
@@ -95,6 +98,7 @@ export class SentryOrganization extends pulumi.CustomResource {
             resourceInputs["agreeTerms"] = args ? args.agreeTerms : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["slug"] = args ? args.slug : undefined;
+            resourceInputs["internalId"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(SentryOrganization.__pulumiType, name, resourceInputs, opts);
@@ -110,11 +114,15 @@ export interface SentryOrganizationState {
      */
     agreeTerms?: pulumi.Input<boolean>;
     /**
+     * The internal ID for this organization.
+     */
+    internalId?: pulumi.Input<string>;
+    /**
      * The human readable name for the organization.
      */
     name?: pulumi.Input<string>;
     /**
-     * The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+     * The unique URL slug for this organization.
      */
     slug?: pulumi.Input<string>;
 }
@@ -132,7 +140,7 @@ export interface SentryOrganizationArgs {
      */
     name?: pulumi.Input<string>;
     /**
-     * The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+     * The unique URL slug for this organization.
      */
     slug?: pulumi.Input<string>;
 }

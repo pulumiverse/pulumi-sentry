@@ -7,12 +7,12 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// ## # SentryOrganization Resource
-//
 // Sentry Organization resource.
 //
 // ## Example Usage
@@ -21,39 +21,46 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-// 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := sentry.NewSentryOrganization(ctx, "default", &sentry.SentryOrganizationArgs{
-// 			AgreeTerms: pulumi.Bool(true),
-// 			Slug:       pulumi.String("my-organization"),
-// 		})
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := sentry.NewSentryOrganization(ctx, "default", &sentry.SentryOrganizationArgs{
+//				AgreeTerms: pulumi.Bool(true),
+//				Slug:       pulumi.String("my-organization"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
 // ```
 //
 // ## Import
 //
-// This resource can be imported using an ID made up of the organization slugbash
+// import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
 //
 // ```sh
-//  $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
+//
+//	$ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
+//
 // ```
 type SentryOrganization struct {
 	pulumi.CustomResourceState
 
 	// You agree to the applicable terms of service and privacy policy.
 	AgreeTerms pulumi.BoolOutput `pulumi:"agreeTerms"`
+	// The internal ID for this organization.
+	InternalId pulumi.StringOutput `pulumi:"internalId"`
 	// The human readable name for the organization.
 	Name pulumi.StringOutput `pulumi:"name"`
-	// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+	// The unique URL slug for this organization.
 	Slug pulumi.StringOutput `pulumi:"slug"`
 }
 
@@ -67,7 +74,7 @@ func NewSentryOrganization(ctx *pulumi.Context,
 	if args.AgreeTerms == nil {
 		return nil, errors.New("invalid value for required argument 'AgreeTerms'")
 	}
-	opts = pkgResourceDefaultOpts(opts)
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource SentryOrganization
 	err := ctx.RegisterResource("sentry:index/sentryOrganization:SentryOrganization", name, args, &resource, opts...)
 	if err != nil {
@@ -92,18 +99,22 @@ func GetSentryOrganization(ctx *pulumi.Context,
 type sentryOrganizationState struct {
 	// You agree to the applicable terms of service and privacy policy.
 	AgreeTerms *bool `pulumi:"agreeTerms"`
+	// The internal ID for this organization.
+	InternalId *string `pulumi:"internalId"`
 	// The human readable name for the organization.
 	Name *string `pulumi:"name"`
-	// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+	// The unique URL slug for this organization.
 	Slug *string `pulumi:"slug"`
 }
 
 type SentryOrganizationState struct {
 	// You agree to the applicable terms of service and privacy policy.
 	AgreeTerms pulumi.BoolPtrInput
+	// The internal ID for this organization.
+	InternalId pulumi.StringPtrInput
 	// The human readable name for the organization.
 	Name pulumi.StringPtrInput
-	// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+	// The unique URL slug for this organization.
 	Slug pulumi.StringPtrInput
 }
 
@@ -116,7 +127,7 @@ type sentryOrganizationArgs struct {
 	AgreeTerms bool `pulumi:"agreeTerms"`
 	// The human readable name for the organization.
 	Name *string `pulumi:"name"`
-	// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+	// The unique URL slug for this organization.
 	Slug *string `pulumi:"slug"`
 }
 
@@ -126,7 +137,7 @@ type SentryOrganizationArgs struct {
 	AgreeTerms pulumi.BoolInput
 	// The human readable name for the organization.
 	Name pulumi.StringPtrInput
-	// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+	// The unique URL slug for this organization.
 	Slug pulumi.StringPtrInput
 }
 
@@ -153,10 +164,16 @@ func (i *SentryOrganization) ToSentryOrganizationOutputWithContext(ctx context.C
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationOutput)
 }
 
+func (i *SentryOrganization) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganization] {
+	return pulumix.Output[*SentryOrganization]{
+		OutputState: i.ToSentryOrganizationOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryOrganizationArrayInput is an input type that accepts SentryOrganizationArray and SentryOrganizationArrayOutput values.
 // You can construct a concrete instance of `SentryOrganizationArrayInput` via:
 //
-//          SentryOrganizationArray{ SentryOrganizationArgs{...} }
+//	SentryOrganizationArray{ SentryOrganizationArgs{...} }
 type SentryOrganizationArrayInput interface {
 	pulumi.Input
 
@@ -178,10 +195,16 @@ func (i SentryOrganizationArray) ToSentryOrganizationArrayOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationArrayOutput)
 }
 
+func (i SentryOrganizationArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganization] {
+	return pulumix.Output[[]*SentryOrganization]{
+		OutputState: i.ToSentryOrganizationArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SentryOrganizationMapInput is an input type that accepts SentryOrganizationMap and SentryOrganizationMapOutput values.
 // You can construct a concrete instance of `SentryOrganizationMapInput` via:
 //
-//          SentryOrganizationMap{ "key": SentryOrganizationArgs{...} }
+//	SentryOrganizationMap{ "key": SentryOrganizationArgs{...} }
 type SentryOrganizationMapInput interface {
 	pulumi.Input
 
@@ -203,6 +226,12 @@ func (i SentryOrganizationMap) ToSentryOrganizationMapOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationMapOutput)
 }
 
+func (i SentryOrganizationMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganization] {
+	return pulumix.Output[map[string]*SentryOrganization]{
+		OutputState: i.ToSentryOrganizationMapOutputWithContext(ctx).OutputState,
+	}
+}
+
 type SentryOrganizationOutput struct{ *pulumi.OutputState }
 
 func (SentryOrganizationOutput) ElementType() reflect.Type {
@@ -217,9 +246,20 @@ func (o SentryOrganizationOutput) ToSentryOrganizationOutputWithContext(ctx cont
 	return o
 }
 
+func (o SentryOrganizationOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganization] {
+	return pulumix.Output[*SentryOrganization]{
+		OutputState: o.OutputState,
+	}
+}
+
 // You agree to the applicable terms of service and privacy policy.
 func (o SentryOrganizationOutput) AgreeTerms() pulumi.BoolOutput {
 	return o.ApplyT(func(v *SentryOrganization) pulumi.BoolOutput { return v.AgreeTerms }).(pulumi.BoolOutput)
+}
+
+// The internal ID for this organization.
+func (o SentryOrganizationOutput) InternalId() pulumi.StringOutput {
+	return o.ApplyT(func(v *SentryOrganization) pulumi.StringOutput { return v.InternalId }).(pulumi.StringOutput)
 }
 
 // The human readable name for the organization.
@@ -227,7 +267,7 @@ func (o SentryOrganizationOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryOrganization) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
-// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+// The unique URL slug for this organization.
 func (o SentryOrganizationOutput) Slug() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryOrganization) pulumi.StringOutput { return v.Slug }).(pulumi.StringOutput)
 }
@@ -244,6 +284,12 @@ func (o SentryOrganizationArrayOutput) ToSentryOrganizationArrayOutput() SentryO
 
 func (o SentryOrganizationArrayOutput) ToSentryOrganizationArrayOutputWithContext(ctx context.Context) SentryOrganizationArrayOutput {
 	return o
+}
+
+func (o SentryOrganizationArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganization] {
+	return pulumix.Output[[]*SentryOrganization]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryOrganizationArrayOutput) Index(i pulumi.IntInput) SentryOrganizationOutput {
@@ -264,6 +310,12 @@ func (o SentryOrganizationMapOutput) ToSentryOrganizationMapOutput() SentryOrgan
 
 func (o SentryOrganizationMapOutput) ToSentryOrganizationMapOutputWithContext(ctx context.Context) SentryOrganizationMapOutput {
 	return o
+}
+
+func (o SentryOrganizationMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganization] {
+	return pulumix.Output[map[string]*SentryOrganization]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SentryOrganizationMapOutput) MapIndex(k pulumi.StringInput) SentryOrganizationOutput {

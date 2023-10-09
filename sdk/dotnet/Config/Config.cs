@@ -30,11 +30,13 @@ namespace Pulumiverse.Sentry
             }
         }
 
-        private static readonly Pulumi.Config __config = new Pulumi.Config("sentry");
+        private static readonly global::Pulumi.Config __config = new global::Pulumi.Config("sentry");
 
         private static readonly __Value<string?> _baseUrl = new __Value<string?>(() => __config.Get("baseUrl") ?? Utilities.GetEnv("SENTRY_BASE_URL"));
         /// <summary>
-        /// The Sentry Base API URL
+        /// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+        /// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+        /// environment variable.
         /// </summary>
         public static string? BaseUrl
         {
@@ -44,7 +46,8 @@ namespace Pulumiverse.Sentry
 
         private static readonly __Value<string?> _token = new __Value<string?>(() => __config.Get("token") ?? Utilities.GetEnv("SENTRY_TOKEN"));
         /// <summary>
-        /// The authentication token used to connect to Sentry
+        /// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+        /// variable.
         /// </summary>
         public static string? Token
         {

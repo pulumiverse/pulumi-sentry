@@ -20,8 +20,8 @@ class SentryTeamArgs:
         """
         The set of arguments for constructing a SentryTeam resource.
         :param pulumi.Input[str] organization: The slug of the organization the team should be created for.
-        :param pulumi.Input[str] name: The human readable name for the team.
-        :param pulumi.Input[str] slug: The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] name: The name of the team.
+        :param pulumi.Input[str] slug: The optional slug for this team.
         """
         pulumi.set(__self__, "organization", organization)
         if name is not None:
@@ -45,7 +45,7 @@ class SentryTeamArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The human readable name for the team.
+        The name of the team.
         """
         return pulumi.get(self, "name")
 
@@ -57,7 +57,7 @@ class SentryTeamArgs:
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
         """
-        The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        The optional slug for this team.
         """
         return pulumi.get(self, "slug")
 
@@ -70,6 +70,7 @@ class SentryTeamArgs:
 class _SentryTeamState:
     def __init__(__self__, *,
                  has_access: Optional[pulumi.Input[bool]] = None,
+                 internal_id: Optional[pulumi.Input[str]] = None,
                  is_member: Optional[pulumi.Input[bool]] = None,
                  is_pending: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -78,12 +79,16 @@ class _SentryTeamState:
                  team_id: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering SentryTeam resources.
-        :param pulumi.Input[str] name: The human readable name for the team.
+        :param pulumi.Input[str] internal_id: The internal ID for this team.
+        :param pulumi.Input[str] name: The name of the team.
         :param pulumi.Input[str] organization: The slug of the organization the team should be created for.
-        :param pulumi.Input[str] slug: The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The optional slug for this team.
+        :param pulumi.Input[str] team_id: Use `internal_id` instead.
         """
         if has_access is not None:
             pulumi.set(__self__, "has_access", has_access)
+        if internal_id is not None:
+            pulumi.set(__self__, "internal_id", internal_id)
         if is_member is not None:
             pulumi.set(__self__, "is_member", is_member)
         if is_pending is not None:
@@ -95,6 +100,9 @@ class _SentryTeamState:
         if slug is not None:
             pulumi.set(__self__, "slug", slug)
         if team_id is not None:
+            warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
+            pulumi.log.warn("""team_id is deprecated: Use `internal_id` instead.""")
+        if team_id is not None:
             pulumi.set(__self__, "team_id", team_id)
 
     @property
@@ -105,6 +113,18 @@ class _SentryTeamState:
     @has_access.setter
     def has_access(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "has_access", value)
+
+    @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        The internal ID for this team.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @internal_id.setter
+    def internal_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "internal_id", value)
 
     @property
     @pulumi.getter(name="isMember")
@@ -128,7 +148,7 @@ class _SentryTeamState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The human readable name for the team.
+        The name of the team.
         """
         return pulumi.get(self, "name")
 
@@ -152,7 +172,7 @@ class _SentryTeamState:
     @pulumi.getter
     def slug(self) -> Optional[pulumi.Input[str]]:
         """
-        The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        The optional slug for this team.
         """
         return pulumi.get(self, "slug")
 
@@ -163,6 +183,12 @@ class _SentryTeamState:
     @property
     @pulumi.getter(name="teamId")
     def team_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        Use `internal_id` instead.
+        """
+        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
+        pulumi.log.warn("""team_id is deprecated: Use `internal_id` instead.""")
+
         return pulumi.get(self, "team_id")
 
     @team_id.setter
@@ -180,8 +206,6 @@ class SentryTeam(pulumi.CustomResource):
                  slug: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        ## # SentryTeam Resource
-
         Sentry Team resource.
 
         ## Example Usage
@@ -198,7 +222,7 @@ class SentryTeam(pulumi.CustomResource):
 
         ## Import
 
-        This resource can be imported using an ID made up of the organization slug and project slugbash
+        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 
         ```sh
          $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
@@ -206,9 +230,9 @@ class SentryTeam(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] name: The human readable name for the team.
+        :param pulumi.Input[str] name: The name of the team.
         :param pulumi.Input[str] organization: The slug of the organization the team should be created for.
-        :param pulumi.Input[str] slug: The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The optional slug for this team.
         """
         ...
     @overload
@@ -217,8 +241,6 @@ class SentryTeam(pulumi.CustomResource):
                  args: SentryTeamArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        ## # SentryTeam Resource
-
         Sentry Team resource.
 
         ## Example Usage
@@ -235,7 +257,7 @@ class SentryTeam(pulumi.CustomResource):
 
         ## Import
 
-        This resource can be imported using an ID made up of the organization slug and project slugbash
+        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 
         ```sh
          $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
@@ -260,16 +282,9 @@ class SentryTeam(pulumi.CustomResource):
                  organization: Optional[pulumi.Input[str]] = None,
                  slug: Optional[pulumi.Input[str]] = None,
                  __props__=None):
-        if opts is None:
-            opts = pulumi.ResourceOptions()
-        else:
-            opts = copy.copy(opts)
+        opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
-        if opts.version is None:
-            opts.version = _utilities.get_version()
-        if opts.plugin_download_url is None:
-            opts.plugin_download_url = _utilities.get_plugin_download_url()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
@@ -281,6 +296,7 @@ class SentryTeam(pulumi.CustomResource):
             __props__.__dict__["organization"] = organization
             __props__.__dict__["slug"] = slug
             __props__.__dict__["has_access"] = None
+            __props__.__dict__["internal_id"] = None
             __props__.__dict__["is_member"] = None
             __props__.__dict__["is_pending"] = None
             __props__.__dict__["team_id"] = None
@@ -295,6 +311,7 @@ class SentryTeam(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             has_access: Optional[pulumi.Input[bool]] = None,
+            internal_id: Optional[pulumi.Input[str]] = None,
             is_member: Optional[pulumi.Input[bool]] = None,
             is_pending: Optional[pulumi.Input[bool]] = None,
             name: Optional[pulumi.Input[str]] = None,
@@ -308,15 +325,18 @@ class SentryTeam(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] name: The human readable name for the team.
+        :param pulumi.Input[str] internal_id: The internal ID for this team.
+        :param pulumi.Input[str] name: The name of the team.
         :param pulumi.Input[str] organization: The slug of the organization the team should be created for.
-        :param pulumi.Input[str] slug: The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        :param pulumi.Input[str] slug: The optional slug for this team.
+        :param pulumi.Input[str] team_id: Use `internal_id` instead.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = _SentryTeamState.__new__(_SentryTeamState)
 
         __props__.__dict__["has_access"] = has_access
+        __props__.__dict__["internal_id"] = internal_id
         __props__.__dict__["is_member"] = is_member
         __props__.__dict__["is_pending"] = is_pending
         __props__.__dict__["name"] = name
@@ -329,6 +349,14 @@ class SentryTeam(pulumi.CustomResource):
     @pulumi.getter(name="hasAccess")
     def has_access(self) -> pulumi.Output[bool]:
         return pulumi.get(self, "has_access")
+
+    @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> pulumi.Output[str]:
+        """
+        The internal ID for this team.
+        """
+        return pulumi.get(self, "internal_id")
 
     @property
     @pulumi.getter(name="isMember")
@@ -344,7 +372,7 @@ class SentryTeam(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The human readable name for the team.
+        The name of the team.
         """
         return pulumi.get(self, "name")
 
@@ -360,12 +388,18 @@ class SentryTeam(pulumi.CustomResource):
     @pulumi.getter
     def slug(self) -> pulumi.Output[str]:
         """
-        The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+        The optional slug for this team.
         """
         return pulumi.get(self, "slug")
 
     @property
     @pulumi.getter(name="teamId")
     def team_id(self) -> pulumi.Output[str]:
+        """
+        Use `internal_id` instead.
+        """
+        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
+        pulumi.log.warn("""team_id is deprecated: Use `internal_id` instead.""")
+
         return pulumi.get(self, "team_id")
 

@@ -5,18 +5,16 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * ## # sentry.SentryTeam Resource
- *
  * Sentry Team resource.
  *
  * ## Example Usage
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
- * import * as sentry from "@pulumi/sentry";
+ * import * as sentry from "@pulumiverse/sentry";
  *
  * // Create a team
- * const defaultSentryTeam = new sentry.SentryTeam("default", {
+ * const _default = new sentry.SentryTeam("default", {
  *     organization: "my-organization",
  *     slug: "my-team",
  * });
@@ -24,7 +22,7 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * This resource can be imported using an ID made up of the organization slug and project slugbash
+ * import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
  *
  * ```sh
  *  $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
@@ -59,10 +57,14 @@ export class SentryTeam extends pulumi.CustomResource {
     }
 
     public /*out*/ readonly hasAccess!: pulumi.Output<boolean>;
+    /**
+     * The internal ID for this team.
+     */
+    public /*out*/ readonly internalId!: pulumi.Output<string>;
     public /*out*/ readonly isMember!: pulumi.Output<boolean>;
     public /*out*/ readonly isPending!: pulumi.Output<boolean>;
     /**
-     * The human readable name for the team.
+     * The name of the team.
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -70,9 +72,14 @@ export class SentryTeam extends pulumi.CustomResource {
      */
     public readonly organization!: pulumi.Output<string>;
     /**
-     * The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+     * The optional slug for this team.
      */
     public readonly slug!: pulumi.Output<string>;
+    /**
+     * Use `internalId` instead.
+     *
+     * @deprecated Use `internal_id` instead.
+     */
     public /*out*/ readonly teamId!: pulumi.Output<string>;
 
     /**
@@ -89,6 +96,7 @@ export class SentryTeam extends pulumi.CustomResource {
         if (opts.id) {
             const state = argsOrState as SentryTeamState | undefined;
             resourceInputs["hasAccess"] = state ? state.hasAccess : undefined;
+            resourceInputs["internalId"] = state ? state.internalId : undefined;
             resourceInputs["isMember"] = state ? state.isMember : undefined;
             resourceInputs["isPending"] = state ? state.isPending : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
@@ -104,6 +112,7 @@ export class SentryTeam extends pulumi.CustomResource {
             resourceInputs["organization"] = args ? args.organization : undefined;
             resourceInputs["slug"] = args ? args.slug : undefined;
             resourceInputs["hasAccess"] = undefined /*out*/;
+            resourceInputs["internalId"] = undefined /*out*/;
             resourceInputs["isMember"] = undefined /*out*/;
             resourceInputs["isPending"] = undefined /*out*/;
             resourceInputs["teamId"] = undefined /*out*/;
@@ -118,10 +127,14 @@ export class SentryTeam extends pulumi.CustomResource {
  */
 export interface SentryTeamState {
     hasAccess?: pulumi.Input<boolean>;
+    /**
+     * The internal ID for this team.
+     */
+    internalId?: pulumi.Input<string>;
     isMember?: pulumi.Input<boolean>;
     isPending?: pulumi.Input<boolean>;
     /**
-     * The human readable name for the team.
+     * The name of the team.
      */
     name?: pulumi.Input<string>;
     /**
@@ -129,9 +142,14 @@ export interface SentryTeamState {
      */
     organization?: pulumi.Input<string>;
     /**
-     * The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+     * The optional slug for this team.
      */
     slug?: pulumi.Input<string>;
+    /**
+     * Use `internalId` instead.
+     *
+     * @deprecated Use `internal_id` instead.
+     */
     teamId?: pulumi.Input<string>;
 }
 
@@ -140,7 +158,7 @@ export interface SentryTeamState {
  */
 export interface SentryTeamArgs {
     /**
-     * The human readable name for the team.
+     * The name of the team.
      */
     name?: pulumi.Input<string>;
     /**
@@ -148,7 +166,7 @@ export interface SentryTeamArgs {
      */
     organization: pulumi.Input<string>;
     /**
-     * The unique URL slug for this team. If this is not provided a slug is automatically generated based on the name.
+     * The optional slug for this team.
      */
     slug?: pulumi.Input<string>;
 }

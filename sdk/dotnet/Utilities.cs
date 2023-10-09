@@ -75,7 +75,7 @@ namespace Pulumiverse.Sentry
         }
     }
 
-    internal sealed class SentryResourceTypeAttribute : Pulumi.ResourceTypeAttribute
+    internal sealed class SentryResourceTypeAttribute : global::Pulumi.ResourceTypeAttribute
     {
         public SentryResourceTypeAttribute(string type) : base(type, Utilities.Version)
         {

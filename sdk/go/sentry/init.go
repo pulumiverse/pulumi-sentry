@@ -8,6 +8,7 @@ import (
 
 	"github.com/blang/semver"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
 type module struct {
@@ -20,12 +21,22 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
-	case "sentry:index/sentryDefaultKey:SentryDefaultKey":
-		r = &SentryDefaultKey{}
+	case "sentry:index/sentryDashboard:SentryDashboard":
+		r = &SentryDashboard{}
+	case "sentry:index/sentryIssueAlert:SentryIssueAlert":
+		r = &SentryIssueAlert{}
 	case "sentry:index/sentryKey:SentryKey":
 		r = &SentryKey{}
+	case "sentry:index/sentryMetricAlert:SentryMetricAlert":
+		r = &SentryMetricAlert{}
 	case "sentry:index/sentryOrganization:SentryOrganization":
 		r = &SentryOrganization{}
+	case "sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping":
+		r = &SentryOrganizationCodeMapping{}
+	case "sentry:index/sentryOrganizationMember:SentryOrganizationMember":
+		r = &SentryOrganizationMember{}
+	case "sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub":
+		r = &SentryOrganizationRepositoryGithub{}
 	case "sentry:index/sentryPlugin:SentryPlugin":
 		r = &SentryPlugin{}
 	case "sentry:index/sentryProject:SentryProject":
@@ -61,10 +72,18 @@ func (p *pkg) ConstructProvider(ctx *pulumi.Context, name, typ, urn string) (pul
 }
 
 func init() {
-	version, _ := PkgVersion()
+	version, err := internal.PkgVersion()
+	if err != nil {
+		version = semver.Version{Major: 1}
+	}
 	pulumi.RegisterResourceModule(
 		"sentry",
-		"index/sentryDefaultKey",
+		"index/sentryDashboard",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryIssueAlert",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(
@@ -74,7 +93,27 @@ func init() {
 	)
 	pulumi.RegisterResourceModule(
 		"sentry",
+		"index/sentryMetricAlert",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
 		"index/sentryOrganization",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryOrganizationCodeMapping",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryOrganizationMember",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryOrganizationRepositoryGithub",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(

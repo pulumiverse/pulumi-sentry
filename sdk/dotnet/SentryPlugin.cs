@@ -11,59 +11,56 @@ using Pulumi;
 namespace Pulumiverse.Sentry
 {
     /// <summary>
-    /// ## # sentry.SentryPlugin Resource
-    /// 
     /// Sentry Plugin resource.
     /// 
     /// ## Example Usage
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
     /// using Pulumi;
     /// using Sentry = Pulumiverse.Sentry;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     // Create a plugin
+    ///     var @default = new Sentry.SentryPlugin("default", new()
     ///     {
-    ///         // Create a plugin
-    ///         var @default = new Sentry.SentryPlugin("default", new Sentry.SentryPluginArgs
+    ///         Config = 
     ///         {
-    ///             Config = 
-    ///             {
-    ///                 { "webhook", "slack://webhook" },
-    ///             },
-    ///             Organization = "my-organization",
-    ///             Plugin = "slack",
-    ///             Project = "web-app",
-    ///         });
-    ///     }
+    ///             { "webhook", "slack://webhook" },
+    ///         },
+    ///         Organization = "my-organization",
+    ///         Plugin = "slack",
+    ///         Project = "web-app",
+    ///     });
     /// 
-    /// }
+    /// });
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryPlugin:SentryPlugin")]
-    public partial class SentryPlugin : Pulumi.CustomResource
+    public partial class SentryPlugin : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Configuration of the plugin.
+        /// Plugin config.
         /// </summary>
         [Output("config")]
         public Output<ImmutableDictionary<string, object>?> Config { get; private set; } = null!;
 
         /// <summary>
-        /// The slug of the organization the plugin should be enabled for.
+        /// The slug of the organization the project belongs to.
         /// </summary>
         [Output("organization")]
         public Output<string> Organization { get; private set; } = null!;
 
         /// <summary>
-        /// Identifier of the plugin.
+        /// Plugin ID.
         /// </summary>
         [Output("plugin")]
         public Output<string> Plugin { get; private set; } = null!;
 
         /// <summary>
-        /// The slug of the project the plugin should be enabled for.
+        /// The slug of the project to create the plugin for.
         /// </summary>
         [Output("project")]
         public Output<string> Project { get; private set; } = null!;
@@ -113,13 +110,13 @@ namespace Pulumiverse.Sentry
         }
     }
 
-    public sealed class SentryPluginArgs : Pulumi.ResourceArgs
+    public sealed class SentryPluginArgs : global::Pulumi.ResourceArgs
     {
         [Input("config")]
         private InputMap<object>? _config;
 
         /// <summary>
-        /// Configuration of the plugin.
+        /// Plugin config.
         /// </summary>
         public InputMap<object> Config
         {
@@ -128,19 +125,19 @@ namespace Pulumiverse.Sentry
         }
 
         /// <summary>
-        /// The slug of the organization the plugin should be enabled for.
+        /// The slug of the organization the project belongs to.
         /// </summary>
         [Input("organization", required: true)]
         public Input<string> Organization { get; set; } = null!;
 
         /// <summary>
-        /// Identifier of the plugin.
+        /// Plugin ID.
         /// </summary>
         [Input("plugin", required: true)]
         public Input<string> Plugin { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the project the plugin should be enabled for.
+        /// The slug of the project to create the plugin for.
         /// </summary>
         [Input("project", required: true)]
         public Input<string> Project { get; set; } = null!;
@@ -148,15 +145,16 @@ namespace Pulumiverse.Sentry
         public SentryPluginArgs()
         {
         }
+        public static new SentryPluginArgs Empty => new SentryPluginArgs();
     }
 
-    public sealed class SentryPluginState : Pulumi.ResourceArgs
+    public sealed class SentryPluginState : global::Pulumi.ResourceArgs
     {
         [Input("config")]
         private InputMap<object>? _config;
 
         /// <summary>
-        /// Configuration of the plugin.
+        /// Plugin config.
         /// </summary>
         public InputMap<object> Config
         {
@@ -165,19 +163,19 @@ namespace Pulumiverse.Sentry
         }
 
         /// <summary>
-        /// The slug of the organization the plugin should be enabled for.
+        /// The slug of the organization the project belongs to.
         /// </summary>
         [Input("organization")]
         public Input<string>? Organization { get; set; }
 
         /// <summary>
-        /// Identifier of the plugin.
+        /// Plugin ID.
         /// </summary>
         [Input("plugin")]
         public Input<string>? Plugin { get; set; }
 
         /// <summary>
-        /// The slug of the project the plugin should be enabled for.
+        /// The slug of the project to create the plugin for.
         /// </summary>
         [Input("project")]
         public Input<string>? Project { get; set; }
@@ -185,5 +183,6 @@ namespace Pulumiverse.Sentry
         public SentryPluginState()
         {
         }
+        public static new SentryPluginState Empty => new SentryPluginState();
     }
 }

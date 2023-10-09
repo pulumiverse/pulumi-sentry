@@ -13,8 +13,6 @@ namespace Pulumiverse.Sentry
     public static class GetSentryOrganization
     {
         /// <summary>
-        /// ## # sentry.SentryOrganization Data Source
-        /// 
         /// Sentry Organization data source.
         /// 
         /// {{% examples %}}
@@ -22,30 +20,27 @@ namespace Pulumiverse.Sentry
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
+        /// using System.Linq;
         /// using Pulumi;
         /// using Sentry = Pulumi.Sentry;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var org = Sentry.GetSentryOrganization.Invoke(new()
         ///     {
-        ///         var org = Output.Create(Sentry.GetSentryOrganization.InvokeAsync(new Sentry.GetSentryOrganizationArgs
-        ///         {
-        ///             Slug = "my-organization",
-        ///         }));
-        ///     }
+        ///         Slug = "my-organization",
+        ///     });
         /// 
-        /// }
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryOrganizationResult> InvokeAsync(GetSentryOrganizationArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetSentryOrganizationResult>("sentry:index/getSentryOrganization:getSentryOrganization", args ?? new GetSentryOrganizationArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryOrganizationResult>("sentry:index/getSentryOrganization:getSentryOrganization", args ?? new GetSentryOrganizationArgs(), options.WithDefaults());
 
         /// <summary>
-        /// ## # sentry.SentryOrganization Data Source
-        /// 
         /// Sentry Organization data source.
         /// 
         /// {{% examples %}}
@@ -53,30 +48,29 @@ namespace Pulumiverse.Sentry
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
+        /// using System.Linq;
         /// using Pulumi;
         /// using Sentry = Pulumi.Sentry;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var org = Sentry.GetSentryOrganization.Invoke(new()
         ///     {
-        ///         var org = Output.Create(Sentry.GetSentryOrganization.InvokeAsync(new Sentry.GetSentryOrganizationArgs
-        ///         {
-        ///             Slug = "my-organization",
-        ///         }));
-        ///     }
+        ///         Slug = "my-organization",
+        ///     });
         /// 
-        /// }
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryOrganizationResult> Invoke(GetSentryOrganizationInvokeArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.Invoke<GetSentryOrganizationResult>("sentry:index/getSentryOrganization:getSentryOrganization", args ?? new GetSentryOrganizationInvokeArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.Invoke<GetSentryOrganizationResult>("sentry:index/getSentryOrganization:getSentryOrganization", args ?? new GetSentryOrganizationInvokeArgs(), options.WithDefaults());
     }
 
 
-    public sealed class GetSentryOrganizationArgs : Pulumi.InvokeArgs
+    public sealed class GetSentryOrganizationArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
         /// The unique URL slug for this organization.
@@ -87,9 +81,10 @@ namespace Pulumiverse.Sentry
         public GetSentryOrganizationArgs()
         {
         }
+        public static new GetSentryOrganizationArgs Empty => new GetSentryOrganizationArgs();
     }
 
-    public sealed class GetSentryOrganizationInvokeArgs : Pulumi.InvokeArgs
+    public sealed class GetSentryOrganizationInvokeArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
         /// The unique URL slug for this organization.
@@ -100,6 +95,7 @@ namespace Pulumiverse.Sentry
         public GetSentryOrganizationInvokeArgs()
         {
         }
+        public static new GetSentryOrganizationInvokeArgs Empty => new GetSentryOrganizationInvokeArgs();
     }
 
 
@@ -110,6 +106,9 @@ namespace Pulumiverse.Sentry
         /// The provider-assigned unique ID for this managed resource.
         /// </summary>
         public readonly string Id;
+        /// <summary>
+        /// The internal ID for this organization.
+        /// </summary>
         public readonly string InternalId;
         /// <summary>
         /// The human readable name for this organization.

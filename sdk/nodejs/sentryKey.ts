@@ -5,21 +5,27 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * ## # sentry.SentryKey Resource
- *
  * Sentry Key resource.
  *
  * ## Example Usage
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
- * import * as sentry from "@pulumi/sentry";
+ * import * as sentry from "@pulumiverse/sentry";
  *
  * // Create a key
- * const defaultSentryKey = new sentry.SentryKey("default", {
+ * const _default = new sentry.SentryKey("default", {
  *     organization: "my-organization",
  *     project: "web-app",
  * });
+ * ```
+ *
+ * ## Import
+ *
+ * import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+ *
+ * ```sh
+ *  $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
  * ```
  */
 export class SentryKey extends pulumi.CustomResource {
@@ -59,7 +65,7 @@ export class SentryKey extends pulumi.CustomResource {
      */
     public /*out*/ readonly dsnPublic!: pulumi.Output<string>;
     /**
-     * DSN (Deprecated) for the key.
+     * @deprecated DSN (Deprecated) for the key.
      */
     public /*out*/ readonly dsnSecret!: pulumi.Output<string>;
     /**
@@ -165,7 +171,7 @@ export interface SentryKeyState {
      */
     dsnPublic?: pulumi.Input<string>;
     /**
-     * DSN (Deprecated) for the key.
+     * @deprecated DSN (Deprecated) for the key.
      */
     dsnSecret?: pulumi.Input<string>;
     /**

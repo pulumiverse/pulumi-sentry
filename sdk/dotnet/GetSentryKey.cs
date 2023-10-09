@@ -13,8 +13,6 @@ namespace Pulumiverse.Sentry
     public static class GetSentryKey
     {
         /// <summary>
-        /// ## # sentry.SentryKey Data Source
-        /// 
         /// Sentry Key data source.
         /// 
         /// {{% examples %}}
@@ -22,32 +20,36 @@ namespace Pulumiverse.Sentry
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
+        /// using System.Linq;
         /// using Pulumi;
         /// using Sentry = Pulumi.Sentry;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var @default = Sentry.GetSentryKey.Invoke(new()
         ///     {
-        ///         var @default = Output.Create(Sentry.GetSentryKey.InvokeAsync(new Sentry.GetSentryKeyArgs
-        ///         {
-        ///             Name = "Default",
-        ///             Organization = "my-organization",
-        ///             Project = "web-app",
-        ///         }));
-        ///     }
+        ///         Name = "Default",
+        ///         Organization = "my-organization",
+        ///         Project = "web-app",
+        ///     });
         /// 
-        /// }
+        ///     var first = Sentry.GetSentryKey.Invoke(new()
+        ///     {
+        ///         First = true,
+        ///         Organization = "my-organization",
+        ///         Project = "web-app",
+        ///     });
+        /// 
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryKeyResult> InvokeAsync(GetSentryKeyArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyArgs(), options.WithDefaults());
 
         /// <summary>
-        /// ## # sentry.SentryKey Data Source
-        /// 
         /// Sentry Key data source.
         /// 
         /// {{% examples %}}
@@ -55,32 +57,38 @@ namespace Pulumiverse.Sentry
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
+        /// using System.Linq;
         /// using Pulumi;
         /// using Sentry = Pulumi.Sentry;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var @default = Sentry.GetSentryKey.Invoke(new()
         ///     {
-        ///         var @default = Output.Create(Sentry.GetSentryKey.InvokeAsync(new Sentry.GetSentryKeyArgs
-        ///         {
-        ///             Name = "Default",
-        ///             Organization = "my-organization",
-        ///             Project = "web-app",
-        ///         }));
-        ///     }
+        ///         Name = "Default",
+        ///         Organization = "my-organization",
+        ///         Project = "web-app",
+        ///     });
         /// 
-        /// }
+        ///     var first = Sentry.GetSentryKey.Invoke(new()
+        ///     {
+        ///         First = true,
+        ///         Organization = "my-organization",
+        ///         Project = "web-app",
+        ///     });
+        /// 
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryKeyResult> Invoke(GetSentryKeyInvokeArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.Invoke<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyInvokeArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.Invoke<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyInvokeArgs(), options.WithDefaults());
     }
 
 
-    public sealed class GetSentryKeyArgs : Pulumi.InvokeArgs
+    public sealed class GetSentryKeyArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
         /// Boolean flag indicating that we want the first key of the returned keys.
@@ -109,9 +117,10 @@ namespace Pulumiverse.Sentry
         public GetSentryKeyArgs()
         {
         }
+        public static new GetSentryKeyArgs Empty => new GetSentryKeyArgs();
     }
 
-    public sealed class GetSentryKeyInvokeArgs : Pulumi.InvokeArgs
+    public sealed class GetSentryKeyInvokeArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
         /// Boolean flag indicating that we want the first key of the returned keys.
@@ -140,6 +149,7 @@ namespace Pulumiverse.Sentry
         public GetSentryKeyInvokeArgs()
         {
         }
+        public static new GetSentryKeyInvokeArgs Empty => new GetSentryKeyInvokeArgs();
     }
 
 
@@ -154,10 +164,10 @@ namespace Pulumiverse.Sentry
         /// DSN for the key.
         /// </summary>
         public readonly string DsnPublic;
-        /// <summary>
-        /// DSN (Deprecated) for the key.
-        /// </summary>
         public readonly string DsnSecret;
+        /// <summary>
+        /// Boolean flag indicating that we want the first key of the returned keys.
+        /// </summary>
         public readonly bool? First;
         /// <summary>
         /// The provider-assigned unique ID for this managed resource.
@@ -167,8 +177,17 @@ namespace Pulumiverse.Sentry
         /// Flag indicating the key is active.
         /// </summary>
         public readonly bool IsActive;
+        /// <summary>
+        /// The name of the key to retrieve.
+        /// </summary>
         public readonly string? Name;
+        /// <summary>
+        /// The slug of the organization the key should be created for.
+        /// </summary>
         public readonly string Organization;
+        /// <summary>
+        /// The slug of the project the key should be created for.
+        /// </summary>
         public readonly string Project;
         /// <summary>
         /// The ID of the project that the key belongs to.

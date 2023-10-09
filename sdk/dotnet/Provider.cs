@@ -17,16 +17,19 @@ namespace Pulumiverse.Sentry
     /// [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
     /// </summary>
     [SentryResourceType("pulumi:providers:sentry")]
-    public partial class Provider : Pulumi.ProviderResource
+    public partial class Provider : global::Pulumi.ProviderResource
     {
         /// <summary>
-        /// The Sentry Base API URL
+        /// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+        /// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+        /// environment variable.
         /// </summary>
         [Output("baseUrl")]
         public Output<string?> BaseUrl { get; private set; } = null!;
 
         /// <summary>
-        /// The authentication token used to connect to Sentry
+        /// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+        /// variable.
         /// </summary>
         [Output("token")]
         public Output<string?> Token { get; private set; } = null!;
@@ -62,10 +65,12 @@ namespace Pulumiverse.Sentry
         }
     }
 
-    public sealed class ProviderArgs : Pulumi.ResourceArgs
+    public sealed class ProviderArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The Sentry Base API URL
+        /// The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`.
+        /// The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL`
+        /// environment variable.
         /// </summary>
         [Input("baseUrl")]
         public Input<string>? BaseUrl { get; set; }
@@ -74,7 +79,8 @@ namespace Pulumiverse.Sentry
         private Input<string>? _token;
 
         /// <summary>
-        /// The authentication token used to connect to Sentry
+        /// The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment
+        /// variable.
         /// </summary>
         public Input<string>? Token
         {
@@ -91,5 +97,6 @@ namespace Pulumiverse.Sentry
             BaseUrl = Utilities.GetEnv("SENTRY_BASE_URL");
             Token = Utilities.GetEnv("SENTRY_TOKEN");
         }
+        public static new ProviderArgs Empty => new ProviderArgs();
     }
 }

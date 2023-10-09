@@ -11,41 +11,38 @@ using Pulumi;
 namespace Pulumiverse.Sentry
 {
     /// <summary>
-    /// ## # sentry.SentryOrganization Resource
-    /// 
     /// Sentry Organization resource.
     /// 
     /// ## Example Usage
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
     /// using Pulumi;
     /// using Sentry = Pulumiverse.Sentry;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     // Create an organization
+    ///     var @default = new Sentry.SentryOrganization("default", new()
     ///     {
-    ///         // Create an organization
-    ///         var @default = new Sentry.SentryOrganization("default", new Sentry.SentryOrganizationArgs
-    ///         {
-    ///             AgreeTerms = true,
-    ///             Slug = "my-organization",
-    ///         });
-    ///     }
+    ///         AgreeTerms = true,
+    ///         Slug = "my-organization",
+    ///     });
     /// 
-    /// }
+    /// });
     /// ```
     /// 
     /// ## Import
     /// 
-    /// This resource can be imported using an ID made up of the organization slugbash
+    /// import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
     /// 
     /// ```sh
     ///  $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryOrganization:SentryOrganization")]
-    public partial class SentryOrganization : Pulumi.CustomResource
+    public partial class SentryOrganization : global::Pulumi.CustomResource
     {
         /// <summary>
         /// You agree to the applicable terms of service and privacy policy.
@@ -54,13 +51,19 @@ namespace Pulumiverse.Sentry
         public Output<bool> AgreeTerms { get; private set; } = null!;
 
         /// <summary>
+        /// The internal ID for this organization.
+        /// </summary>
+        [Output("internalId")]
+        public Output<string> InternalId { get; private set; } = null!;
+
+        /// <summary>
         /// The human readable name for the organization.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        /// The unique URL slug for this organization.
         /// </summary>
         [Output("slug")]
         public Output<string> Slug { get; private set; } = null!;
@@ -110,7 +113,7 @@ namespace Pulumiverse.Sentry
         }
     }
 
-    public sealed class SentryOrganizationArgs : Pulumi.ResourceArgs
+    public sealed class SentryOrganizationArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// You agree to the applicable terms of service and privacy policy.
@@ -125,7 +128,7 @@ namespace Pulumiverse.Sentry
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        /// The unique URL slug for this organization.
         /// </summary>
         [Input("slug")]
         public Input<string>? Slug { get; set; }
@@ -133,9 +136,10 @@ namespace Pulumiverse.Sentry
         public SentryOrganizationArgs()
         {
         }
+        public static new SentryOrganizationArgs Empty => new SentryOrganizationArgs();
     }
 
-    public sealed class SentryOrganizationState : Pulumi.ResourceArgs
+    public sealed class SentryOrganizationState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// You agree to the applicable terms of service and privacy policy.
@@ -144,13 +148,19 @@ namespace Pulumiverse.Sentry
         public Input<bool>? AgreeTerms { get; set; }
 
         /// <summary>
+        /// The internal ID for this organization.
+        /// </summary>
+        [Input("internalId")]
+        public Input<string>? InternalId { get; set; }
+
+        /// <summary>
         /// The human readable name for the organization.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The unique URL slug for this organization. If this is not provided a slug is automatically generated based on the name.
+        /// The unique URL slug for this organization.
         /// </summary>
         [Input("slug")]
         public Input<string>? Slug { get; set; }
@@ -158,5 +168,6 @@ namespace Pulumiverse.Sentry
         public SentryOrganizationState()
         {
         }
+        public static new SentryOrganizationState Empty => new SentryOrganizationState();
     }
 }
