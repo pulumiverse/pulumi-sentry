@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -39,7 +38,7 @@ import (
 //			}
 //			_, err = sentry.NewSentryOrganizationRepositoryGithub(ctx, "this", &sentry.SentryOrganizationRepositoryGithubArgs{
 //				Organization:  pulumi.String("my-organization"),
-//				IntegrationId: *pulumi.String(github.InternalId),
+//				IntegrationId: pulumi.String(github.InternalId),
 //				Identifier:    pulumi.String("my-github-organization/my-github-repo"),
 //			})
 //			if err != nil {
@@ -53,12 +52,14 @@ import (
 //
 // ## Import
 //
-// import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/ [github-org] and [github-repo] are the slugs to your repo
+// import using the organization slug from the URL:
+//
+// https://sentry.io/organizations/[org-slug]/
+//
+// [github-org] and [github-repo] are the slugs to your repo
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
-//
+// $ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
 // ```
 type SentryOrganizationRepositoryGithub struct {
 	pulumi.CustomResourceState
@@ -179,12 +180,6 @@ func (i *SentryOrganizationRepositoryGithub) ToSentryOrganizationRepositoryGithu
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationRepositoryGithubOutput)
 }
 
-func (i *SentryOrganizationRepositoryGithub) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganizationRepositoryGithub] {
-	return pulumix.Output[*SentryOrganizationRepositoryGithub]{
-		OutputState: i.ToSentryOrganizationRepositoryGithubOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryOrganizationRepositoryGithubArrayInput is an input type that accepts SentryOrganizationRepositoryGithubArray and SentryOrganizationRepositoryGithubArrayOutput values.
 // You can construct a concrete instance of `SentryOrganizationRepositoryGithubArrayInput` via:
 //
@@ -208,12 +203,6 @@ func (i SentryOrganizationRepositoryGithubArray) ToSentryOrganizationRepositoryG
 
 func (i SentryOrganizationRepositoryGithubArray) ToSentryOrganizationRepositoryGithubArrayOutputWithContext(ctx context.Context) SentryOrganizationRepositoryGithubArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationRepositoryGithubArrayOutput)
-}
-
-func (i SentryOrganizationRepositoryGithubArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganizationRepositoryGithub] {
-	return pulumix.Output[[]*SentryOrganizationRepositoryGithub]{
-		OutputState: i.ToSentryOrganizationRepositoryGithubArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryOrganizationRepositoryGithubMapInput is an input type that accepts SentryOrganizationRepositoryGithubMap and SentryOrganizationRepositoryGithubMapOutput values.
@@ -241,12 +230,6 @@ func (i SentryOrganizationRepositoryGithubMap) ToSentryOrganizationRepositoryGit
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationRepositoryGithubMapOutput)
 }
 
-func (i SentryOrganizationRepositoryGithubMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganizationRepositoryGithub] {
-	return pulumix.Output[map[string]*SentryOrganizationRepositoryGithub]{
-		OutputState: i.ToSentryOrganizationRepositoryGithubMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryOrganizationRepositoryGithubOutput struct{ *pulumi.OutputState }
 
 func (SentryOrganizationRepositoryGithubOutput) ElementType() reflect.Type {
@@ -259,12 +242,6 @@ func (o SentryOrganizationRepositoryGithubOutput) ToSentryOrganizationRepository
 
 func (o SentryOrganizationRepositoryGithubOutput) ToSentryOrganizationRepositoryGithubOutputWithContext(ctx context.Context) SentryOrganizationRepositoryGithubOutput {
 	return o
-}
-
-func (o SentryOrganizationRepositoryGithubOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganizationRepositoryGithub] {
-	return pulumix.Output[*SentryOrganizationRepositoryGithub]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The repo identifier. For Github it is {github*org}/{github*repo}.
@@ -301,12 +278,6 @@ func (o SentryOrganizationRepositoryGithubArrayOutput) ToSentryOrganizationRepos
 	return o
 }
 
-func (o SentryOrganizationRepositoryGithubArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganizationRepositoryGithub] {
-	return pulumix.Output[[]*SentryOrganizationRepositoryGithub]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryOrganizationRepositoryGithubArrayOutput) Index(i pulumi.IntInput) SentryOrganizationRepositoryGithubOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryOrganizationRepositoryGithub {
 		return vs[0].([]*SentryOrganizationRepositoryGithub)[vs[1].(int)]
@@ -325,12 +296,6 @@ func (o SentryOrganizationRepositoryGithubMapOutput) ToSentryOrganizationReposit
 
 func (o SentryOrganizationRepositoryGithubMapOutput) ToSentryOrganizationRepositoryGithubMapOutputWithContext(ctx context.Context) SentryOrganizationRepositoryGithubMapOutput {
 	return o
-}
-
-func (o SentryOrganizationRepositoryGithubMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganizationRepositoryGithub] {
-	return pulumix.Output[map[string]*SentryOrganizationRepositoryGithub]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryOrganizationRepositoryGithubMapOutput) MapIndex(k pulumi.StringInput) SentryOrganizationRepositoryGithubOutput {

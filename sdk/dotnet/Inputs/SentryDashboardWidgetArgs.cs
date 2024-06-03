@@ -39,9 +39,6 @@ namespace Pulumiverse.Sentry.Inputs
             set => _queries = value;
         }
 
-        /// <summary>
-        /// Dashboard title.
-        /// </summary>
         [Input("title", required: true)]
         public Input<string> Title { get; set; } = null!;
 

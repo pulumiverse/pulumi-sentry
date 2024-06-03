@@ -15,17 +15,11 @@ namespace Pulumiverse.Sentry.Outputs
     public sealed class GetSentryDashboardWidgetResult
     {
         public readonly string DisplayType;
-        /// <summary>
-        /// The ID of this resource.
-        /// </summary>
         public readonly string Id;
         public readonly string Interval;
         public readonly ImmutableArray<Outputs.GetSentryDashboardWidgetLayoutResult> Layouts;
         public readonly int Limit;
         public readonly ImmutableArray<Outputs.GetSentryDashboardWidgetQueryResult> Queries;
-        /// <summary>
-        /// Dashboard title.
-        /// </summary>
         public readonly string Title;
         public readonly string WidgetType;
 

@@ -222,10 +222,12 @@ class SentryTeam(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 
         ```sh
-         $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
+        $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
         ```
 
         :param str resource_name: The name of the resource.
@@ -257,10 +259,12 @@ class SentryTeam(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 
         ```sh
-         $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
+        $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
         ```
 
         :param str resource_name: The name of the resource.

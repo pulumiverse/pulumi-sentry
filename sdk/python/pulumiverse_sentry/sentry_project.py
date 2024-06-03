@@ -15,6 +15,8 @@ __all__ = ['SentryProjectArgs', 'SentryProject']
 class SentryProjectArgs:
     def __init__(__self__, *,
                  organization: pulumi.Input[str],
+                 default_key: Optional[pulumi.Input[bool]] = None,
+                 default_rules: Optional[pulumi.Input[bool]] = None,
                  digests_max_delay: Optional[pulumi.Input[int]] = None,
                  digests_min_delay: Optional[pulumi.Input[int]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -26,16 +28,22 @@ class SentryProjectArgs:
         """
         The set of arguments for constructing a SentryProject resource.
         :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
+        :param pulumi.Input[bool] default_key: Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+        :param pulumi.Input[bool] default_rules: Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
         :param pulumi.Input[str] name: The name for the project.
-        :param pulumi.Input[str] platform: The optional platform for this project.
+        :param pulumi.Input[str] platform: The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
         :param pulumi.Input[str] slug: The optional slug for this project.
         :param pulumi.Input[str] team: The slug of the team to create the project for. **Deprecated** Use `teams` instead.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The slugs of the teams to create the project for.
         """
         pulumi.set(__self__, "organization", organization)
+        if default_key is not None:
+            pulumi.set(__self__, "default_key", default_key)
+        if default_rules is not None:
+            pulumi.set(__self__, "default_rules", default_rules)
         if digests_max_delay is not None:
             pulumi.set(__self__, "digests_max_delay", digests_max_delay)
         if digests_min_delay is not None:
@@ -67,6 +75,30 @@ class SentryProjectArgs:
     @organization.setter
     def organization(self, value: pulumi.Input[str]):
         pulumi.set(self, "organization", value)
+
+    @property
+    @pulumi.getter(name="defaultKey")
+    def default_key(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+        """
+        return pulumi.get(self, "default_key")
+
+    @default_key.setter
+    def default_key(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "default_key", value)
+
+    @property
+    @pulumi.getter(name="defaultRules")
+    def default_rules(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+        """
+        return pulumi.get(self, "default_rules")
+
+    @default_rules.setter
+    def default_rules(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "default_rules", value)
 
     @property
     @pulumi.getter(name="digestsMaxDelay")
@@ -108,7 +140,7 @@ class SentryProjectArgs:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        The optional platform for this project.
+        The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         """
         return pulumi.get(self, "platform")
 
@@ -172,6 +204,8 @@ class SentryProjectArgs:
 class _SentryProjectState:
     def __init__(__self__, *,
                  color: Optional[pulumi.Input[str]] = None,
+                 default_key: Optional[pulumi.Input[bool]] = None,
+                 default_rules: Optional[pulumi.Input[bool]] = None,
                  digests_max_delay: Optional[pulumi.Input[int]] = None,
                  digests_min_delay: Optional[pulumi.Input[int]] = None,
                  features: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -189,12 +223,14 @@ class _SentryProjectState:
                  teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         Input properties used for looking up and filtering SentryProject resources.
+        :param pulumi.Input[bool] default_key: Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+        :param pulumi.Input[bool] default_rules: Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
         :param pulumi.Input[str] internal_id: The internal ID for this project.
         :param pulumi.Input[str] name: The name for the project.
         :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
-        :param pulumi.Input[str] platform: The optional platform for this project.
+        :param pulumi.Input[str] platform: The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         :param pulumi.Input[str] project_id: Use `internal_id` instead.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
         :param pulumi.Input[str] slug: The optional slug for this project.
@@ -203,6 +239,10 @@ class _SentryProjectState:
         """
         if color is not None:
             pulumi.set(__self__, "color", color)
+        if default_key is not None:
+            pulumi.set(__self__, "default_key", default_key)
+        if default_rules is not None:
+            pulumi.set(__self__, "default_rules", default_rules)
         if digests_max_delay is not None:
             pulumi.set(__self__, "digests_max_delay", digests_max_delay)
         if digests_min_delay is not None:
@@ -251,6 +291,30 @@ class _SentryProjectState:
     @color.setter
     def color(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "color", value)
+
+    @property
+    @pulumi.getter(name="defaultKey")
+    def default_key(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+        """
+        return pulumi.get(self, "default_key")
+
+    @default_key.setter
+    def default_key(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "default_key", value)
+
+    @property
+    @pulumi.getter(name="defaultRules")
+    def default_rules(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+        """
+        return pulumi.get(self, "default_rules")
+
+    @default_rules.setter
+    def default_rules(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "default_rules", value)
 
     @property
     @pulumi.getter(name="digestsMaxDelay")
@@ -346,7 +410,7 @@ class _SentryProjectState:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        The optional platform for this project.
+        The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         """
         return pulumi.get(self, "platform")
 
@@ -435,6 +499,8 @@ class SentryProject(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 default_key: Optional[pulumi.Input[bool]] = None,
+                 default_rules: Optional[pulumi.Input[bool]] = None,
                  digests_max_delay: Optional[pulumi.Input[int]] = None,
                  digests_min_delay: Optional[pulumi.Input[int]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -456,6 +522,7 @@ class SentryProject(pulumi.CustomResource):
 
         # Create a project
         default = sentry.SentryProject("default",
+            default_rules=False,
             organization="my-organization",
             platform="javascript",
             resolve_age=720,
@@ -468,19 +535,23 @@ class SentryProject(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/projects/[project-slug]/
 
         ```sh
-         $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+        $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
         ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[bool] default_key: Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+        :param pulumi.Input[bool] default_rules: Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
         :param pulumi.Input[str] name: The name for the project.
         :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
-        :param pulumi.Input[str] platform: The optional platform for this project.
+        :param pulumi.Input[str] platform: The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
         :param pulumi.Input[str] slug: The optional slug for this project.
         :param pulumi.Input[str] team: The slug of the team to create the project for. **Deprecated** Use `teams` instead.
@@ -503,6 +574,7 @@ class SentryProject(pulumi.CustomResource):
 
         # Create a project
         default = sentry.SentryProject("default",
+            default_rules=False,
             organization="my-organization",
             platform="javascript",
             resolve_age=720,
@@ -515,10 +587,12 @@ class SentryProject(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/projects/[project-slug]/
 
         ```sh
-         $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+        $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
         ```
 
         :param str resource_name: The name of the resource.
@@ -536,6 +610,8 @@ class SentryProject(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 default_key: Optional[pulumi.Input[bool]] = None,
+                 default_rules: Optional[pulumi.Input[bool]] = None,
                  digests_max_delay: Optional[pulumi.Input[int]] = None,
                  digests_min_delay: Optional[pulumi.Input[int]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -554,6 +630,8 @@ class SentryProject(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = SentryProjectArgs.__new__(SentryProjectArgs)
 
+            __props__.__dict__["default_key"] = default_key
+            __props__.__dict__["default_rules"] = default_rules
             __props__.__dict__["digests_max_delay"] = digests_max_delay
             __props__.__dict__["digests_min_delay"] = digests_min_delay
             __props__.__dict__["name"] = name
@@ -563,9 +641,6 @@ class SentryProject(pulumi.CustomResource):
             __props__.__dict__["platform"] = platform
             __props__.__dict__["resolve_age"] = resolve_age
             __props__.__dict__["slug"] = slug
-            if team is not None and not opts.urn:
-                warnings.warn("""Use `teams` instead.""", DeprecationWarning)
-                pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
             __props__.__dict__["team"] = team
             __props__.__dict__["teams"] = teams
             __props__.__dict__["color"] = None
@@ -586,6 +661,8 @@ class SentryProject(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             color: Optional[pulumi.Input[str]] = None,
+            default_key: Optional[pulumi.Input[bool]] = None,
+            default_rules: Optional[pulumi.Input[bool]] = None,
             digests_max_delay: Optional[pulumi.Input[int]] = None,
             digests_min_delay: Optional[pulumi.Input[int]] = None,
             features: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -608,12 +685,14 @@ class SentryProject(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[bool] default_key: Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+        :param pulumi.Input[bool] default_rules: Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
         :param pulumi.Input[int] digests_max_delay: The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         :param pulumi.Input[int] digests_min_delay: The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
         :param pulumi.Input[str] internal_id: The internal ID for this project.
         :param pulumi.Input[str] name: The name for the project.
         :param pulumi.Input[str] organization: The slug of the organization the project belongs to.
-        :param pulumi.Input[str] platform: The optional platform for this project.
+        :param pulumi.Input[str] platform: The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         :param pulumi.Input[str] project_id: Use `internal_id` instead.
         :param pulumi.Input[int] resolve_age: Hours in which an issue is automatically resolve if not seen after this amount of time.
         :param pulumi.Input[str] slug: The optional slug for this project.
@@ -625,6 +704,8 @@ class SentryProject(pulumi.CustomResource):
         __props__ = _SentryProjectState.__new__(_SentryProjectState)
 
         __props__.__dict__["color"] = color
+        __props__.__dict__["default_key"] = default_key
+        __props__.__dict__["default_rules"] = default_rules
         __props__.__dict__["digests_max_delay"] = digests_max_delay
         __props__.__dict__["digests_min_delay"] = digests_min_delay
         __props__.__dict__["features"] = features
@@ -646,6 +727,22 @@ class SentryProject(pulumi.CustomResource):
     @pulumi.getter
     def color(self) -> pulumi.Output[str]:
         return pulumi.get(self, "color")
+
+    @property
+    @pulumi.getter(name="defaultKey")
+    def default_key(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+        """
+        return pulumi.get(self, "default_key")
+
+    @property
+    @pulumi.getter(name="defaultRules")
+    def default_rules(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+        """
+        return pulumi.get(self, "default_rules")
 
     @property
     @pulumi.getter(name="digestsMaxDelay")
@@ -709,7 +806,7 @@ class SentryProject(pulumi.CustomResource):
     @pulumi.getter
     def platform(self) -> pulumi.Output[str]:
         """
-        The optional platform for this project.
+        The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         """
         return pulumi.get(self, "platform")
 

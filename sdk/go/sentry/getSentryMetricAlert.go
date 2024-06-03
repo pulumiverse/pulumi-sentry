@@ -8,10 +8,10 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
+// ## Example Usage
 func LookupSentryMetricAlert(ctx *pulumi.Context, args *LookupSentryMetricAlertArgs, opts ...pulumi.InvokeOption) (*LookupSentryMetricAlertResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupSentryMetricAlertResult
@@ -97,12 +97,6 @@ func (o LookupSentryMetricAlertResultOutput) ToLookupSentryMetricAlertResultOutp
 
 func (o LookupSentryMetricAlertResultOutput) ToLookupSentryMetricAlertResultOutputWithContext(ctx context.Context) LookupSentryMetricAlertResultOutput {
 	return o
-}
-
-func (o LookupSentryMetricAlertResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryMetricAlertResult] {
-	return pulumix.Output[LookupSentryMetricAlertResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o LookupSentryMetricAlertResultOutput) Aggregate() pulumi.StringOutput {

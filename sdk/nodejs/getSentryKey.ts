@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * Sentry Key data source.
+ * Retrieve a Project's Client Key.
  *
  * ## Example Usage
  *
@@ -30,6 +30,7 @@ export function getSentryKey(args: GetSentryKeyArgs, opts?: pulumi.InvokeOptions
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryKey:getSentryKey", {
         "first": args.first,
+        "id": args.id,
         "name": args.name,
         "organization": args.organization,
         "project": args.project,
@@ -45,15 +46,19 @@ export interface GetSentryKeyArgs {
      */
     first?: boolean;
     /**
-     * The name of the key to retrieve.
+     * The ID of this resource.
+     */
+    id?: string;
+    /**
+     * The name of the client key.
      */
     name?: string;
     /**
-     * The slug of the organization the key should be created for.
+     * The slug of the organization the resource belongs to.
      */
     organization: string;
     /**
-     * The slug of the project the key should be created for.
+     * The slug of the project the resource belongs to.
      */
     project: string;
 }
@@ -63,15 +68,15 @@ export interface GetSentryKeyArgs {
  */
 export interface GetSentryKeyResult {
     /**
-     * DSN for the Content Security Policy (CSP) for the key.
+     * Security header endpoint for features like CSP and Expect-CT reports.
      */
     readonly dsnCsp: string;
     /**
-     * DSN for the key.
+     * The DSN tells the SDK where to send the events to.
      */
     readonly dsnPublic: string;
     /**
-     * @deprecated DSN (Deprecated) for the key.
+     * Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
      */
     readonly dsnSecret: string;
     /**
@@ -79,31 +84,27 @@ export interface GetSentryKeyResult {
      */
     readonly first?: boolean;
     /**
-     * The provider-assigned unique ID for this managed resource.
+     * The ID of this resource.
      */
-    readonly id: string;
+    readonly id?: string;
     /**
-     * Flag indicating the key is active.
-     */
-    readonly isActive: boolean;
-    /**
-     * The name of the key to retrieve.
+     * The name of the client key.
      */
     readonly name?: string;
     /**
-     * The slug of the organization the key should be created for.
+     * The slug of the organization the resource belongs to.
      */
     readonly organization: string;
     /**
-     * The slug of the project the key should be created for.
+     * The slug of the project the resource belongs to.
      */
     readonly project: string;
     /**
      * The ID of the project that the key belongs to.
      */
-    readonly projectId: number;
+    readonly projectId: string;
     /**
-     * Public key portion of the client key.
+     * The public key.
      */
     readonly public: string;
     /**
@@ -115,12 +116,12 @@ export interface GetSentryKeyResult {
      */
     readonly rateLimitWindow: number;
     /**
-     * Secret key portion of the client key.
+     * The secret key.
      */
     readonly secret: string;
 }
 /**
- * Sentry Key data source.
+ * Retrieve a Project's Client Key.
  *
  * ## Example Usage
  *
@@ -153,15 +154,19 @@ export interface GetSentryKeyOutputArgs {
      */
     first?: pulumi.Input<boolean>;
     /**
-     * The name of the key to retrieve.
+     * The ID of this resource.
+     */
+    id?: pulumi.Input<string>;
+    /**
+     * The name of the client key.
      */
     name?: pulumi.Input<string>;
     /**
-     * The slug of the organization the key should be created for.
+     * The slug of the organization the resource belongs to.
      */
     organization: pulumi.Input<string>;
     /**
-     * The slug of the project the key should be created for.
+     * The slug of the project the resource belongs to.
      */
     project: pulumi.Input<string>;
 }

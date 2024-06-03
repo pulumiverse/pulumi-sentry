@@ -6,6 +6,9 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## Example Usage
+ */
 export function getSentryDashboard(args: GetSentryDashboardArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryDashboardResult> {
 
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
@@ -54,6 +57,9 @@ export interface GetSentryDashboardResult {
      */
     readonly widgets: outputs.GetSentryDashboardWidget[];
 }
+/**
+ * ## Example Usage
+ */
 export function getSentryDashboardOutput(args: GetSentryDashboardOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryDashboardResult> {
     return pulumi.output(args).apply((a: any) => getSentryDashboard(a, opts))
 }

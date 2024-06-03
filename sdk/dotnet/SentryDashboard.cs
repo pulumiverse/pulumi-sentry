@@ -218,7 +218,7 @@ namespace Pulumiverse.Sentry
     ///             new Sentry.Inputs.SentryDashboardWidgetArgs
     ///             {
     ///                 Title = "Errors by Country",
-    ///                 DisplayType = "world_map",
+    ///                 DisplayType = "table",
     ///                 Interval = "5m",
     ///                 WidgetType = "discover",
     ///                 Queries = new[]
@@ -227,6 +227,8 @@ namespace Pulumiverse.Sentry
     ///                     {
     ///                         Fields = new[]
     ///                         {
+    ///                             "geo.country_code",
+    ///                             "geo.region",
     ///                             "count()",
     ///                         },
     ///                         Aggregates = new[]
@@ -522,6 +524,16 @@ namespace Pulumiverse.Sentry
     ///     });
     /// 
     /// });
+    /// ```
+    /// 
+    /// ## Import
+    /// 
+    /// import using the dashboard id from the URL:
+    /// 
+    /// https://sentry.io/dashboard/[dashboard-id]
+    /// 
+    /// ```sh
+    /// $ pulumi import sentry:index/sentryDashboard:SentryDashboard default org-slug/dashboard-id
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryDashboard:SentryDashboard")]

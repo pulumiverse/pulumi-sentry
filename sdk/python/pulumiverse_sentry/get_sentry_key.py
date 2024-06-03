@@ -21,7 +21,7 @@ class GetSentryKeyResult:
     """
     A collection of values returned by getSentryKey.
     """
-    def __init__(__self__, dsn_csp=None, dsn_public=None, dsn_secret=None, first=None, id=None, is_active=None, name=None, organization=None, project=None, project_id=None, public=None, rate_limit_count=None, rate_limit_window=None, secret=None):
+    def __init__(__self__, dsn_csp=None, dsn_public=None, dsn_secret=None, first=None, id=None, name=None, organization=None, project=None, project_id=None, public=None, rate_limit_count=None, rate_limit_window=None, secret=None):
         if dsn_csp and not isinstance(dsn_csp, str):
             raise TypeError("Expected argument 'dsn_csp' to be a str")
         pulumi.set(__self__, "dsn_csp", dsn_csp)
@@ -37,9 +37,6 @@ class GetSentryKeyResult:
         if id and not isinstance(id, str):
             raise TypeError("Expected argument 'id' to be a str")
         pulumi.set(__self__, "id", id)
-        if is_active and not isinstance(is_active, bool):
-            raise TypeError("Expected argument 'is_active' to be a bool")
-        pulumi.set(__self__, "is_active", is_active)
         if name and not isinstance(name, str):
             raise TypeError("Expected argument 'name' to be a str")
         pulumi.set(__self__, "name", name)
@@ -49,8 +46,8 @@ class GetSentryKeyResult:
         if project and not isinstance(project, str):
             raise TypeError("Expected argument 'project' to be a str")
         pulumi.set(__self__, "project", project)
-        if project_id and not isinstance(project_id, int):
-            raise TypeError("Expected argument 'project_id' to be a int")
+        if project_id and not isinstance(project_id, str):
+            raise TypeError("Expected argument 'project_id' to be a str")
         pulumi.set(__self__, "project_id", project_id)
         if public and not isinstance(public, str):
             raise TypeError("Expected argument 'public' to be a str")
@@ -69,7 +66,7 @@ class GetSentryKeyResult:
     @pulumi.getter(name="dsnCsp")
     def dsn_csp(self) -> str:
         """
-        DSN for the Content Security Policy (CSP) for the key.
+        Security header endpoint for features like CSP and Expect-CT reports.
         """
         return pulumi.get(self, "dsn_csp")
 
@@ -77,16 +74,16 @@ class GetSentryKeyResult:
     @pulumi.getter(name="dsnPublic")
     def dsn_public(self) -> str:
         """
-        DSN for the key.
+        The DSN tells the SDK where to send the events to.
         """
         return pulumi.get(self, "dsn_public")
 
     @property
     @pulumi.getter(name="dsnSecret")
     def dsn_secret(self) -> str:
-        warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
-        pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
-
+        """
+        Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
+        """
         return pulumi.get(self, "dsn_secret")
 
     @property
@@ -99,25 +96,17 @@ class GetSentryKeyResult:
 
     @property
     @pulumi.getter
-    def id(self) -> str:
+    def id(self) -> Optional[str]:
         """
-        The provider-assigned unique ID for this managed resource.
+        The ID of this resource.
         """
         return pulumi.get(self, "id")
-
-    @property
-    @pulumi.getter(name="isActive")
-    def is_active(self) -> bool:
-        """
-        Flag indicating the key is active.
-        """
-        return pulumi.get(self, "is_active")
 
     @property
     @pulumi.getter
     def name(self) -> Optional[str]:
         """
-        The name of the key to retrieve.
+        The name of the client key.
         """
         return pulumi.get(self, "name")
 
@@ -125,7 +114,7 @@ class GetSentryKeyResult:
     @pulumi.getter
     def organization(self) -> str:
         """
-        The slug of the organization the key should be created for.
+        The slug of the organization the resource belongs to.
         """
         return pulumi.get(self, "organization")
 
@@ -133,13 +122,13 @@ class GetSentryKeyResult:
     @pulumi.getter
     def project(self) -> str:
         """
-        The slug of the project the key should be created for.
+        The slug of the project the resource belongs to.
         """
         return pulumi.get(self, "project")
 
     @property
     @pulumi.getter(name="projectId")
-    def project_id(self) -> int:
+    def project_id(self) -> str:
         """
         The ID of the project that the key belongs to.
         """
@@ -149,7 +138,7 @@ class GetSentryKeyResult:
     @pulumi.getter
     def public(self) -> str:
         """
-        Public key portion of the client key.
+        The public key.
         """
         return pulumi.get(self, "public")
 
@@ -173,7 +162,7 @@ class GetSentryKeyResult:
     @pulumi.getter
     def secret(self) -> str:
         """
-        Secret key portion of the client key.
+        The secret key.
         """
         return pulumi.get(self, "secret")
 
@@ -189,7 +178,6 @@ class AwaitableGetSentryKeyResult(GetSentryKeyResult):
             dsn_secret=self.dsn_secret,
             first=self.first,
             id=self.id,
-            is_active=self.is_active,
             name=self.name,
             organization=self.organization,
             project=self.project,
@@ -201,12 +189,13 @@ class AwaitableGetSentryKeyResult(GetSentryKeyResult):
 
 
 def get_sentry_key(first: Optional[bool] = None,
+                   id: Optional[str] = None,
                    name: Optional[str] = None,
                    organization: Optional[str] = None,
                    project: Optional[str] = None,
                    opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSentryKeyResult:
     """
-    Sentry Key data source.
+    Retrieve a Project's Client Key.
 
     ## Example Usage
 
@@ -224,12 +213,14 @@ def get_sentry_key(first: Optional[bool] = None,
 
 
     :param bool first: Boolean flag indicating that we want the first key of the returned keys.
-    :param str name: The name of the key to retrieve.
-    :param str organization: The slug of the organization the key should be created for.
-    :param str project: The slug of the project the key should be created for.
+    :param str id: The ID of this resource.
+    :param str name: The name of the client key.
+    :param str organization: The slug of the organization the resource belongs to.
+    :param str project: The slug of the project the resource belongs to.
     """
     __args__ = dict()
     __args__['first'] = first
+    __args__['id'] = id
     __args__['name'] = name
     __args__['organization'] = organization
     __args__['project'] = project
@@ -242,7 +233,6 @@ def get_sentry_key(first: Optional[bool] = None,
         dsn_secret=pulumi.get(__ret__, 'dsn_secret'),
         first=pulumi.get(__ret__, 'first'),
         id=pulumi.get(__ret__, 'id'),
-        is_active=pulumi.get(__ret__, 'is_active'),
         name=pulumi.get(__ret__, 'name'),
         organization=pulumi.get(__ret__, 'organization'),
         project=pulumi.get(__ret__, 'project'),
@@ -255,12 +245,13 @@ def get_sentry_key(first: Optional[bool] = None,
 
 @_utilities.lift_output_func(get_sentry_key)
 def get_sentry_key_output(first: Optional[pulumi.Input[Optional[bool]]] = None,
+                          id: Optional[pulumi.Input[Optional[str]]] = None,
                           name: Optional[pulumi.Input[Optional[str]]] = None,
                           organization: Optional[pulumi.Input[str]] = None,
                           project: Optional[pulumi.Input[str]] = None,
                           opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryKeyResult]:
     """
-    Sentry Key data source.
+    Retrieve a Project's Client Key.
 
     ## Example Usage
 
@@ -278,8 +269,9 @@ def get_sentry_key_output(first: Optional[pulumi.Input[Optional[bool]]] = None,
 
 
     :param bool first: Boolean flag indicating that we want the first key of the returned keys.
-    :param str name: The name of the key to retrieve.
-    :param str organization: The slug of the organization the key should be created for.
-    :param str project: The slug of the project the key should be created for.
+    :param str id: The ID of this resource.
+    :param str name: The name of the client key.
+    :param str organization: The slug of the organization the resource belongs to.
+    :param str project: The slug of the project the resource belongs to.
     """
     ...

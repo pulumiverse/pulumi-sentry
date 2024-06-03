@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -29,6 +28,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Create an organization
 //			_, err := sentry.NewSentryOrganization(ctx, "default", &sentry.SentryOrganizationArgs{
 //				AgreeTerms: pulumi.Bool(true),
 //				Slug:       pulumi.String("my-organization"),
@@ -44,12 +44,12 @@ import (
 //
 // ## Import
 //
-// import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
+// import using the organization slug from the URL:
+//
+// https://sentry.io/organizations/[org-slug]/issues/
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
-//
+// $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
 // ```
 type SentryOrganization struct {
 	pulumi.CustomResourceState
@@ -164,12 +164,6 @@ func (i *SentryOrganization) ToSentryOrganizationOutputWithContext(ctx context.C
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationOutput)
 }
 
-func (i *SentryOrganization) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganization] {
-	return pulumix.Output[*SentryOrganization]{
-		OutputState: i.ToSentryOrganizationOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryOrganizationArrayInput is an input type that accepts SentryOrganizationArray and SentryOrganizationArrayOutput values.
 // You can construct a concrete instance of `SentryOrganizationArrayInput` via:
 //
@@ -193,12 +187,6 @@ func (i SentryOrganizationArray) ToSentryOrganizationArrayOutput() SentryOrganiz
 
 func (i SentryOrganizationArray) ToSentryOrganizationArrayOutputWithContext(ctx context.Context) SentryOrganizationArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationArrayOutput)
-}
-
-func (i SentryOrganizationArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganization] {
-	return pulumix.Output[[]*SentryOrganization]{
-		OutputState: i.ToSentryOrganizationArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryOrganizationMapInput is an input type that accepts SentryOrganizationMap and SentryOrganizationMapOutput values.
@@ -226,12 +214,6 @@ func (i SentryOrganizationMap) ToSentryOrganizationMapOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationMapOutput)
 }
 
-func (i SentryOrganizationMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganization] {
-	return pulumix.Output[map[string]*SentryOrganization]{
-		OutputState: i.ToSentryOrganizationMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryOrganizationOutput struct{ *pulumi.OutputState }
 
 func (SentryOrganizationOutput) ElementType() reflect.Type {
@@ -244,12 +226,6 @@ func (o SentryOrganizationOutput) ToSentryOrganizationOutput() SentryOrganizatio
 
 func (o SentryOrganizationOutput) ToSentryOrganizationOutputWithContext(ctx context.Context) SentryOrganizationOutput {
 	return o
-}
-
-func (o SentryOrganizationOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganization] {
-	return pulumix.Output[*SentryOrganization]{
-		OutputState: o.OutputState,
-	}
 }
 
 // You agree to the applicable terms of service and privacy policy.
@@ -286,12 +262,6 @@ func (o SentryOrganizationArrayOutput) ToSentryOrganizationArrayOutputWithContex
 	return o
 }
 
-func (o SentryOrganizationArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganization] {
-	return pulumix.Output[[]*SentryOrganization]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryOrganizationArrayOutput) Index(i pulumi.IntInput) SentryOrganizationOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryOrganization {
 		return vs[0].([]*SentryOrganization)[vs[1].(int)]
@@ -310,12 +280,6 @@ func (o SentryOrganizationMapOutput) ToSentryOrganizationMapOutput() SentryOrgan
 
 func (o SentryOrganizationMapOutput) ToSentryOrganizationMapOutputWithContext(ctx context.Context) SentryOrganizationMapOutput {
 	return o
-}
-
-func (o SentryOrganizationMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganization] {
-	return pulumix.Output[map[string]*SentryOrganization]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryOrganizationMapOutput) MapIndex(k pulumi.StringInput) SentryOrganizationOutput {

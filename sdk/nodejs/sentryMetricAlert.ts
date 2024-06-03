@@ -46,6 +46,7 @@ import * as utilities from "./utilities";
  *                 type: "slack",
  *                 targetType: "specific",
  *                 targetIdentifier: "#slack-channel",
+ *                 inputChannelId: "C0XXXXXXXXX",
  *                 integrationId: slack.then(slack => slack.id),
  *             }],
  *             alertThreshold: 300,
@@ -63,10 +64,18 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+ * import using the organization, project slugs and rule id from the URL:
+ *
+ * https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+ *
+ * https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+ *
+ * or
+ *
+ * https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+ * $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
  * ```
  */
 export class SentryMetricAlert extends pulumi.CustomResource {
@@ -101,6 +110,10 @@ export class SentryMetricAlert extends pulumi.CustomResource {
      * The aggregation criteria to apply
      */
     public readonly aggregate!: pulumi.Output<string>;
+    /**
+     * An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+     */
+    public readonly comparisonDelta!: pulumi.Output<number | undefined>;
     /**
      * The Sentry Alert category
      */
@@ -165,6 +178,7 @@ export class SentryMetricAlert extends pulumi.CustomResource {
         if (opts.id) {
             const state = argsOrState as SentryMetricAlertState | undefined;
             resourceInputs["aggregate"] = state ? state.aggregate : undefined;
+            resourceInputs["comparisonDelta"] = state ? state.comparisonDelta : undefined;
             resourceInputs["dataset"] = state ? state.dataset : undefined;
             resourceInputs["environment"] = state ? state.environment : undefined;
             resourceInputs["eventTypes"] = state ? state.eventTypes : undefined;
@@ -202,6 +216,7 @@ export class SentryMetricAlert extends pulumi.CustomResource {
                 throw new Error("Missing required property 'triggers'");
             }
             resourceInputs["aggregate"] = args ? args.aggregate : undefined;
+            resourceInputs["comparisonDelta"] = args ? args.comparisonDelta : undefined;
             resourceInputs["dataset"] = args ? args.dataset : undefined;
             resourceInputs["environment"] = args ? args.environment : undefined;
             resourceInputs["eventTypes"] = args ? args.eventTypes : undefined;
@@ -229,6 +244,10 @@ export interface SentryMetricAlertState {
      * The aggregation criteria to apply
      */
     aggregate?: pulumi.Input<string>;
+    /**
+     * An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+     */
+    comparisonDelta?: pulumi.Input<number>;
     /**
      * The Sentry Alert category
      */
@@ -288,6 +307,10 @@ export interface SentryMetricAlertArgs {
      * The aggregation criteria to apply
      */
     aggregate: pulumi.Input<string>;
+    /**
+     * An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+     */
+    comparisonDelta?: pulumi.Input<number>;
     /**
      * The Sentry Alert category
      */

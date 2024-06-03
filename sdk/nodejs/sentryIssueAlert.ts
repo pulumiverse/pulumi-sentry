@@ -5,118 +5,16 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * Sentry Issue Alert resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an issue alert on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules). Since v0.11.2, you should also omit the name property of each condition, filter, and action.
- *
  * ## Example Usage
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as sentry from "@pulumi/sentry";
- * import * as sentry from "@pulumiverse/sentry";
- *
- * const slack = sentry.getSentryOrganizationIntegration({
- *     organization: sentry_project.test.organization,
- *     providerKey: "slack",
- *     name: "Slack Workspace",
- * });
- * const main = new sentry.SentryIssueAlert("main", {
- *     organization: sentry_project.main.organization,
- *     project: sentry_project.main.id,
- *     actionMatch: "any",
- *     filterMatch: "any",
- *     frequency: 30,
- *     conditions: [
- *         {
- *             id: "sentry.rules.conditions.first_seen_event.FirstSeenEventCondition",
- *         },
- *         {
- *             id: "sentry.rules.conditions.regression_event.RegressionEventCondition",
- *         },
- *         {
- *             id: "sentry.rules.conditions.event_frequency.EventFrequencyCondition",
- *             value: 100,
- *             comparisonType: "count",
- *             interval: "1h",
- *         },
- *         {
- *             id: "sentry.rules.conditions.event_frequency.EventUniqueUserFrequencyCondition",
- *             value: 100,
- *             comparisonType: "count",
- *             interval: "1h",
- *         },
- *         {
- *             id: "sentry.rules.conditions.event_frequency.EventFrequencyPercentCondition",
- *             value: "50.0",
- *             comparisonType: "count",
- *             interval: "1h",
- *         },
- *     ],
- *     filters: [
- *         {
- *             id: "sentry.rules.filters.age_comparison.AgeComparisonFilter",
- *             value: 10,
- *             time: "minute",
- *             comparison_type: "older",
- *         },
- *         {
- *             id: "sentry.rules.filters.issue_occurrences.IssueOccurrencesFilter",
- *             value: 10,
- *         },
- *         {
- *             id: "sentry.rules.filters.assigned_to.AssignedToFilter",
- *             targetType: "Team",
- *             targetIdentifier: sentry_team.main.team_id,
- *         },
- *         {
- *             id: "sentry.rules.filters.latest_release.LatestReleaseFilter",
- *         },
- *         {
- *             id: "sentry.rules.filters.event_attribute.EventAttributeFilter",
- *             attribute: "message",
- *             match: "co",
- *             value: "test",
- *         },
- *         {
- *             id: "sentry.rules.filters.tagged_event.TaggedEventFilter",
- *             key: "test",
- *             match: "co",
- *             value: "test",
- *         },
- *         {
- *             id: "sentry.rules.filters.level.LevelFilter",
- *             match: "eq",
- *             level: "50",
- *         },
- *     ],
- *     actions: [
- *         {
- *             id: "sentry.mail.actions.NotifyEmailAction",
- *             targetType: "IssueOwners",
- *             targetIdentifier: "",
- *         },
- *         {
- *             id: "sentry.mail.actions.NotifyEmailAction",
- *             targetType: "Team",
- *             targetIdentifier: sentry_team.main.team_id,
- *         },
- *         {
- *             id: "sentry.rules.actions.notify_event.NotifyEventAction",
- *         },
- *         {
- *             id: "sentry.integrations.slack.notify_action.SlackNotifyServiceAction",
- *             channel: "#general",
- *             workspace: slack.then(slack => slack.internalId),
- *         },
- *     ],
- * });
- * ```
  *
  * ## Import
  *
- * import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/alerts/rules/[project-slug]/[rule-id]/details/
+ * import using the organization, project slugs and rule id from the URL:
+ *
+ * https://sentry.io/organizations/[org-slug]/alerts/rules/[project-slug]/[rule-id]/details/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryIssueAlert:SentryIssueAlert default org-slug/project-slug/rule-id
+ * $ pulumi import sentry:index/sentryIssueAlert:SentryIssueAlert default org-slug/project-slug/rule-id
  * ```
  */
 export class SentryIssueAlert extends pulumi.CustomResource {
@@ -152,51 +50,45 @@ export class SentryIssueAlert extends pulumi.CustomResource {
      */
     public readonly actionMatch!: pulumi.Output<string>;
     /**
-     * List of actions.
+     * List of actions. In JSON string format.
      */
-    public readonly actions!: pulumi.Output<{[key: string]: any}[]>;
+    public readonly actions!: pulumi.Output<string>;
     /**
-     * List of conditions.
+     * List of conditions. In JSON string format.
      */
-    public readonly conditions!: pulumi.Output<{[key: string]: any}[]>;
+    public readonly conditions!: pulumi.Output<string>;
     /**
      * Perform issue alert in a specific environment.
      */
-    public readonly environment!: pulumi.Output<string>;
+    public readonly environment!: pulumi.Output<string | undefined>;
     /**
-     * Trigger actions if `all`, `any`, or `none` of the specified filters match.
+     * A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
      */
-    public readonly filterMatch!: pulumi.Output<string>;
+    public readonly filterMatch!: pulumi.Output<string | undefined>;
     /**
-     * List of filters.
+     * A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
      */
-    public readonly filters!: pulumi.Output<{[key: string]: any}[] | undefined>;
+    public readonly filters!: pulumi.Output<string | undefined>;
     /**
-     * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+     * Perform actions at most once every `X` minutes for this issue.
      */
     public readonly frequency!: pulumi.Output<number>;
-    /**
-     * The internal ID for this issue alert.
-     */
-    public /*out*/ readonly internalId!: pulumi.Output<string>;
     /**
      * The issue alert name.
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The slug of the organization the issue alert belongs to.
+     * The slug of the organization the resource belongs to.
      */
     public readonly organization!: pulumi.Output<string>;
     /**
-     * The slug of the project to create the issue alert for.
+     * The ID of the team or user that owns the rule.
+     */
+    public readonly owner!: pulumi.Output<string | undefined>;
+    /**
+     * The slug of the project the resource belongs to.
      */
     public readonly project!: pulumi.Output<string>;
-    /**
-     * Use `project` (singular) instead.
-     *
-     * @deprecated Use `project` (singular) instead.
-     */
-    public /*out*/ readonly projects!: pulumi.Output<string[]>;
 
     /**
      * Create a SentryIssueAlert resource with the given unique name, arguments, and options.
@@ -218,11 +110,10 @@ export class SentryIssueAlert extends pulumi.CustomResource {
             resourceInputs["filterMatch"] = state ? state.filterMatch : undefined;
             resourceInputs["filters"] = state ? state.filters : undefined;
             resourceInputs["frequency"] = state ? state.frequency : undefined;
-            resourceInputs["internalId"] = state ? state.internalId : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
             resourceInputs["organization"] = state ? state.organization : undefined;
+            resourceInputs["owner"] = state ? state.owner : undefined;
             resourceInputs["project"] = state ? state.project : undefined;
-            resourceInputs["projects"] = state ? state.projects : undefined;
         } else {
             const args = argsOrState as SentryIssueAlertArgs | undefined;
             if ((!args || args.actionMatch === undefined) && !opts.urn) {
@@ -233,9 +124,6 @@ export class SentryIssueAlert extends pulumi.CustomResource {
             }
             if ((!args || args.conditions === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'conditions'");
-            }
-            if ((!args || args.filterMatch === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'filterMatch'");
             }
             if ((!args || args.frequency === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'frequency'");
@@ -255,9 +143,8 @@ export class SentryIssueAlert extends pulumi.CustomResource {
             resourceInputs["frequency"] = args ? args.frequency : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["organization"] = args ? args.organization : undefined;
+            resourceInputs["owner"] = args ? args.owner : undefined;
             resourceInputs["project"] = args ? args.project : undefined;
-            resourceInputs["internalId"] = undefined /*out*/;
-            resourceInputs["projects"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(SentryIssueAlert.__pulumiType, name, resourceInputs, opts);
@@ -273,51 +160,45 @@ export interface SentryIssueAlertState {
      */
     actionMatch?: pulumi.Input<string>;
     /**
-     * List of actions.
+     * List of actions. In JSON string format.
      */
-    actions?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    actions?: pulumi.Input<string>;
     /**
-     * List of conditions.
+     * List of conditions. In JSON string format.
      */
-    conditions?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    conditions?: pulumi.Input<string>;
     /**
      * Perform issue alert in a specific environment.
      */
     environment?: pulumi.Input<string>;
     /**
-     * Trigger actions if `all`, `any`, or `none` of the specified filters match.
+     * A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
      */
     filterMatch?: pulumi.Input<string>;
     /**
-     * List of filters.
+     * A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
      */
-    filters?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    filters?: pulumi.Input<string>;
     /**
-     * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+     * Perform actions at most once every `X` minutes for this issue.
      */
     frequency?: pulumi.Input<number>;
-    /**
-     * The internal ID for this issue alert.
-     */
-    internalId?: pulumi.Input<string>;
     /**
      * The issue alert name.
      */
     name?: pulumi.Input<string>;
     /**
-     * The slug of the organization the issue alert belongs to.
+     * The slug of the organization the resource belongs to.
      */
     organization?: pulumi.Input<string>;
     /**
-     * The slug of the project to create the issue alert for.
+     * The ID of the team or user that owns the rule.
+     */
+    owner?: pulumi.Input<string>;
+    /**
+     * The slug of the project the resource belongs to.
      */
     project?: pulumi.Input<string>;
-    /**
-     * Use `project` (singular) instead.
-     *
-     * @deprecated Use `project` (singular) instead.
-     */
-    projects?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 /**
@@ -329,27 +210,27 @@ export interface SentryIssueAlertArgs {
      */
     actionMatch: pulumi.Input<string>;
     /**
-     * List of actions.
+     * List of actions. In JSON string format.
      */
-    actions: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    actions: pulumi.Input<string>;
     /**
-     * List of conditions.
+     * List of conditions. In JSON string format.
      */
-    conditions: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    conditions: pulumi.Input<string>;
     /**
      * Perform issue alert in a specific environment.
      */
     environment?: pulumi.Input<string>;
     /**
-     * Trigger actions if `all`, `any`, or `none` of the specified filters match.
+     * A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
      */
-    filterMatch: pulumi.Input<string>;
+    filterMatch?: pulumi.Input<string>;
     /**
-     * List of filters.
+     * A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
      */
-    filters?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    filters?: pulumi.Input<string>;
     /**
-     * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+     * Perform actions at most once every `X` minutes for this issue.
      */
     frequency: pulumi.Input<number>;
     /**
@@ -357,11 +238,15 @@ export interface SentryIssueAlertArgs {
      */
     name?: pulumi.Input<string>;
     /**
-     * The slug of the organization the issue alert belongs to.
+     * The slug of the organization the resource belongs to.
      */
     organization: pulumi.Input<string>;
     /**
-     * The slug of the project to create the issue alert for.
+     * The ID of the team or user that owns the rule.
+     */
+    owner?: pulumi.Input<string>;
+    /**
+     * The slug of the project the resource belongs to.
      */
     project: pulumi.Input<string>;
 }

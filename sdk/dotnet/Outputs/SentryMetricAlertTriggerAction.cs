@@ -18,6 +18,10 @@ namespace Pulumiverse.Sentry.Outputs
         /// The ID of this resource.
         /// </summary>
         public readonly string? Id;
+        /// <summary>
+        /// Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+        /// </summary>
+        public readonly string? InputChannelId;
         public readonly int? IntegrationId;
         public readonly string? TargetIdentifier;
         public readonly string TargetType;
@@ -26,6 +30,8 @@ namespace Pulumiverse.Sentry.Outputs
         [OutputConstructor]
         private SentryMetricAlertTriggerAction(
             string? id,
+
+            string? inputChannelId,
 
             int? integrationId,
 
@@ -36,6 +42,7 @@ namespace Pulumiverse.Sentry.Outputs
             string type)
         {
             Id = id;
+            InputChannelId = inputChannelId;
             IntegrationId = integrationId;
             TargetIdentifier = targetIdentifier;
             TargetType = targetType;

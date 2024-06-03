@@ -18,7 +18,7 @@ def readme():
 
 
 setup(name='pulumiverse_sentry',
-      python_requires='>=3.7',
+      python_requires='>=3.8',
       version=VERSION,
       description="A Pulumi package for creating and managing Sentry resources.",
       long_description=readme(),

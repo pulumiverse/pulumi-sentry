@@ -17,12 +17,12 @@
 package main
 
 import (
-	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
+	"context"
+
+	"github.com/pulumi/pulumi-terraform-bridge/pf/tfbridge"
 	sentry "github.com/pulumiverse/pulumi-sentry/provider"
-	"github.com/pulumiverse/pulumi-sentry/provider/pkg/version"
 )
 
 func main() {
-	// Modify the path to point to the new provider
-	tfbridge.Main("sentry", version.Version, sentry.Provider(), pulumiSchema)
+	tfbridge.MainWithMuxer(context.Background(), "sentry", sentry.Provider(), pulumiSchema)
 }

@@ -26,6 +26,7 @@ namespace Pulumiverse.Sentry
     ///     // Create a project
     ///     var @default = new Sentry.SentryProject("default", new()
     ///     {
+    ///         DefaultRules = false,
     ///         Organization = "my-organization",
     ///         Platform = "javascript",
     ///         ResolveAge = 720,
@@ -42,10 +43,12 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+    /// import using the organization and team slugs from the URL:
+    /// 
+    /// https://sentry.io/settings/[org-slug]/projects/[project-slug]/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+    /// $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryProject:SentryProject")]
@@ -53,6 +56,18 @@ namespace Pulumiverse.Sentry
     {
         [Output("color")]
         public Output<string> Color { get; private set; } = null!;
+
+        /// <summary>
+        /// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry.SentryKey` resource.
+        /// </summary>
+        [Output("defaultKey")]
+        public Output<bool?> DefaultKey { get; private set; } = null!;
+
+        /// <summary>
+        /// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+        /// </summary>
+        [Output("defaultRules")]
+        public Output<bool?> DefaultRules { get; private set; } = null!;
 
         /// <summary>
         /// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
@@ -94,7 +109,7 @@ namespace Pulumiverse.Sentry
         public Output<string> Organization { get; private set; } = null!;
 
         /// <summary>
-        /// The optional platform for this project.
+        /// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         /// </summary>
         [Output("platform")]
         public Output<string> Platform { get; private set; } = null!;
@@ -180,6 +195,18 @@ namespace Pulumiverse.Sentry
     public sealed class SentryProjectArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry.SentryKey` resource.
+        /// </summary>
+        [Input("defaultKey")]
+        public Input<bool>? DefaultKey { get; set; }
+
+        /// <summary>
+        /// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+        /// </summary>
+        [Input("defaultRules")]
+        public Input<bool>? DefaultRules { get; set; }
+
+        /// <summary>
         /// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         /// </summary>
         [Input("digestsMaxDelay")]
@@ -204,7 +231,7 @@ namespace Pulumiverse.Sentry
         public Input<string> Organization { get; set; } = null!;
 
         /// <summary>
-        /// The optional platform for this project.
+        /// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         /// </summary>
         [Input("platform")]
         public Input<string>? Platform { get; set; }
@@ -251,6 +278,18 @@ namespace Pulumiverse.Sentry
         public Input<string>? Color { get; set; }
 
         /// <summary>
+        /// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry.SentryKey` resource.
+        /// </summary>
+        [Input("defaultKey")]
+        public Input<bool>? DefaultKey { get; set; }
+
+        /// <summary>
+        /// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+        /// </summary>
+        [Input("defaultRules")]
+        public Input<bool>? DefaultRules { get; set; }
+
+        /// <summary>
         /// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
         /// </summary>
         [Input("digestsMaxDelay")]
@@ -295,7 +334,7 @@ namespace Pulumiverse.Sentry
         public Input<string>? Organization { get; set; }
 
         /// <summary>
-        /// The optional platform for this project.
+        /// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
         /// </summary>
         [Input("platform")]
         public Input<string>? Platform { get; set; }

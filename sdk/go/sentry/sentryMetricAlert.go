@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -65,7 +64,8 @@ import (
 //								Type:             pulumi.String("slack"),
 //								TargetType:       pulumi.String("specific"),
 //								TargetIdentifier: pulumi.String("#slack-channel"),
-//								IntegrationId:    *pulumi.String(slack.Id),
+//								InputChannelId:   pulumi.String("C0XXXXXXXXX"),
+//								IntegrationId:    pulumi.String(slack.Id),
 //							},
 //						},
 //						AlertThreshold: pulumi.Float64(300),
@@ -90,18 +90,26 @@ import (
 //
 // ## Import
 //
-// import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+// import using the organization, project slugs and rule id from the URL:
+//
+// https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+//
+// https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+//
+// or
+//
+// https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
-//
+// $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
 // ```
 type SentryMetricAlert struct {
 	pulumi.CustomResourceState
 
 	// The aggregation criteria to apply
 	Aggregate pulumi.StringOutput `pulumi:"aggregate"`
+	// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+	ComparisonDelta pulumi.Float64PtrOutput `pulumi:"comparisonDelta"`
 	// The Sentry Alert category
 	Dataset pulumi.StringPtrOutput `pulumi:"dataset"`
 	// Perform Alert rule in a specific environment
@@ -182,6 +190,8 @@ func GetSentryMetricAlert(ctx *pulumi.Context,
 type sentryMetricAlertState struct {
 	// The aggregation criteria to apply
 	Aggregate *string `pulumi:"aggregate"`
+	// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+	ComparisonDelta *float64 `pulumi:"comparisonDelta"`
 	// The Sentry Alert category
 	Dataset *string `pulumi:"dataset"`
 	// Perform Alert rule in a specific environment
@@ -212,6 +222,8 @@ type sentryMetricAlertState struct {
 type SentryMetricAlertState struct {
 	// The aggregation criteria to apply
 	Aggregate pulumi.StringPtrInput
+	// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+	ComparisonDelta pulumi.Float64PtrInput
 	// The Sentry Alert category
 	Dataset pulumi.StringPtrInput
 	// Perform Alert rule in a specific environment
@@ -246,6 +258,8 @@ func (SentryMetricAlertState) ElementType() reflect.Type {
 type sentryMetricAlertArgs struct {
 	// The aggregation criteria to apply
 	Aggregate string `pulumi:"aggregate"`
+	// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+	ComparisonDelta *float64 `pulumi:"comparisonDelta"`
 	// The Sentry Alert category
 	Dataset *string `pulumi:"dataset"`
 	// Perform Alert rule in a specific environment
@@ -275,6 +289,8 @@ type sentryMetricAlertArgs struct {
 type SentryMetricAlertArgs struct {
 	// The aggregation criteria to apply
 	Aggregate pulumi.StringInput
+	// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+	ComparisonDelta pulumi.Float64PtrInput
 	// The Sentry Alert category
 	Dataset pulumi.StringPtrInput
 	// Perform Alert rule in a specific environment
@@ -323,12 +339,6 @@ func (i *SentryMetricAlert) ToSentryMetricAlertOutputWithContext(ctx context.Con
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertOutput)
 }
 
-func (i *SentryMetricAlert) ToOutput(ctx context.Context) pulumix.Output[*SentryMetricAlert] {
-	return pulumix.Output[*SentryMetricAlert]{
-		OutputState: i.ToSentryMetricAlertOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryMetricAlertArrayInput is an input type that accepts SentryMetricAlertArray and SentryMetricAlertArrayOutput values.
 // You can construct a concrete instance of `SentryMetricAlertArrayInput` via:
 //
@@ -352,12 +362,6 @@ func (i SentryMetricAlertArray) ToSentryMetricAlertArrayOutput() SentryMetricAle
 
 func (i SentryMetricAlertArray) ToSentryMetricAlertArrayOutputWithContext(ctx context.Context) SentryMetricAlertArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertArrayOutput)
-}
-
-func (i SentryMetricAlertArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryMetricAlert] {
-	return pulumix.Output[[]*SentryMetricAlert]{
-		OutputState: i.ToSentryMetricAlertArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryMetricAlertMapInput is an input type that accepts SentryMetricAlertMap and SentryMetricAlertMapOutput values.
@@ -385,12 +389,6 @@ func (i SentryMetricAlertMap) ToSentryMetricAlertMapOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertMapOutput)
 }
 
-func (i SentryMetricAlertMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryMetricAlert] {
-	return pulumix.Output[map[string]*SentryMetricAlert]{
-		OutputState: i.ToSentryMetricAlertMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryMetricAlertOutput struct{ *pulumi.OutputState }
 
 func (SentryMetricAlertOutput) ElementType() reflect.Type {
@@ -405,15 +403,14 @@ func (o SentryMetricAlertOutput) ToSentryMetricAlertOutputWithContext(ctx contex
 	return o
 }
 
-func (o SentryMetricAlertOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryMetricAlert] {
-	return pulumix.Output[*SentryMetricAlert]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The aggregation criteria to apply
 func (o SentryMetricAlertOutput) Aggregate() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryMetricAlert) pulumi.StringOutput { return v.Aggregate }).(pulumi.StringOutput)
+}
+
+// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+func (o SentryMetricAlertOutput) ComparisonDelta() pulumi.Float64PtrOutput {
+	return o.ApplyT(func(v *SentryMetricAlert) pulumi.Float64PtrOutput { return v.ComparisonDelta }).(pulumi.Float64PtrOutput)
 }
 
 // The Sentry Alert category
@@ -494,12 +491,6 @@ func (o SentryMetricAlertArrayOutput) ToSentryMetricAlertArrayOutputWithContext(
 	return o
 }
 
-func (o SentryMetricAlertArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryMetricAlert] {
-	return pulumix.Output[[]*SentryMetricAlert]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryMetricAlertArrayOutput) Index(i pulumi.IntInput) SentryMetricAlertOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryMetricAlert {
 		return vs[0].([]*SentryMetricAlert)[vs[1].(int)]
@@ -518,12 +509,6 @@ func (o SentryMetricAlertMapOutput) ToSentryMetricAlertMapOutput() SentryMetricA
 
 func (o SentryMetricAlertMapOutput) ToSentryMetricAlertMapOutputWithContext(ctx context.Context) SentryMetricAlertMapOutput {
 	return o
-}
-
-func (o SentryMetricAlertMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryMetricAlert] {
-	return pulumix.Output[map[string]*SentryMetricAlert]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryMetricAlertMapOutput) MapIndex(k pulumi.StringInput) SentryMetricAlertOutput {

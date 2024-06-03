@@ -5,6 +5,16 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export { GetSentryAllKeysArgs, GetSentryAllKeysResult, GetSentryAllKeysOutputArgs } from "./getSentryAllKeys";
+export const getSentryAllKeys: typeof import("./getSentryAllKeys").getSentryAllKeys = null as any;
+export const getSentryAllKeysOutput: typeof import("./getSentryAllKeys").getSentryAllKeysOutput = null as any;
+utilities.lazyLoad(exports, ["getSentryAllKeys","getSentryAllKeysOutput"], () => require("./getSentryAllKeys"));
+
+export { GetSentryAllProjectsArgs, GetSentryAllProjectsResult, GetSentryAllProjectsOutputArgs } from "./getSentryAllProjects";
+export const getSentryAllProjects: typeof import("./getSentryAllProjects").getSentryAllProjects = null as any;
+export const getSentryAllProjectsOutput: typeof import("./getSentryAllProjects").getSentryAllProjectsOutput = null as any;
+utilities.lazyLoad(exports, ["getSentryAllProjects","getSentryAllProjectsOutput"], () => require("./getSentryAllProjects"));
+
 export { GetSentryDashboardArgs, GetSentryDashboardResult, GetSentryDashboardOutputArgs } from "./getSentryDashboard";
 export const getSentryDashboard: typeof import("./getSentryDashboard").getSentryDashboard = null as any;
 export const getSentryDashboardOutput: typeof import("./getSentryDashboard").getSentryDashboardOutput = null as any;
@@ -35,6 +45,16 @@ export const getSentryOrganizationIntegration: typeof import("./getSentryOrganiz
 export const getSentryOrganizationIntegrationOutput: typeof import("./getSentryOrganizationIntegration").getSentryOrganizationIntegrationOutput = null as any;
 utilities.lazyLoad(exports, ["getSentryOrganizationIntegration","getSentryOrganizationIntegrationOutput"], () => require("./getSentryOrganizationIntegration"));
 
+export { GetSentryOrganizationMemberArgs, GetSentryOrganizationMemberResult, GetSentryOrganizationMemberOutputArgs } from "./getSentryOrganizationMember";
+export const getSentryOrganizationMember: typeof import("./getSentryOrganizationMember").getSentryOrganizationMember = null as any;
+export const getSentryOrganizationMemberOutput: typeof import("./getSentryOrganizationMember").getSentryOrganizationMemberOutput = null as any;
+utilities.lazyLoad(exports, ["getSentryOrganizationMember","getSentryOrganizationMemberOutput"], () => require("./getSentryOrganizationMember"));
+
+export { GetSentryProjectArgs, GetSentryProjectResult, GetSentryProjectOutputArgs } from "./getSentryProject";
+export const getSentryProject: typeof import("./getSentryProject").getSentryProject = null as any;
+export const getSentryProjectOutput: typeof import("./getSentryProject").getSentryProjectOutput = null as any;
+utilities.lazyLoad(exports, ["getSentryProject","getSentryProjectOutput"], () => require("./getSentryProject"));
+
 export { GetSentryTeamArgs, GetSentryTeamResult, GetSentryTeamOutputArgs } from "./getSentryTeam";
 export const getSentryTeam: typeof import("./getSentryTeam").getSentryTeam = null as any;
 export const getSentryTeamOutput: typeof import("./getSentryTeam").getSentryTeamOutput = null as any;
@@ -45,10 +65,25 @@ export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
 utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
 
+export { SentryAllProjectsSpikeProtectionArgs, SentryAllProjectsSpikeProtectionState } from "./sentryAllProjectsSpikeProtection";
+export type SentryAllProjectsSpikeProtection = import("./sentryAllProjectsSpikeProtection").SentryAllProjectsSpikeProtection;
+export const SentryAllProjectsSpikeProtection: typeof import("./sentryAllProjectsSpikeProtection").SentryAllProjectsSpikeProtection = null as any;
+utilities.lazyLoad(exports, ["SentryAllProjectsSpikeProtection"], () => require("./sentryAllProjectsSpikeProtection"));
+
 export { SentryDashboardArgs, SentryDashboardState } from "./sentryDashboard";
 export type SentryDashboard = import("./sentryDashboard").SentryDashboard;
 export const SentryDashboard: typeof import("./sentryDashboard").SentryDashboard = null as any;
 utilities.lazyLoad(exports, ["SentryDashboard"], () => require("./sentryDashboard"));
+
+export { SentryIntegrationOpsgenieArgs, SentryIntegrationOpsgenieState } from "./sentryIntegrationOpsgenie";
+export type SentryIntegrationOpsgenie = import("./sentryIntegrationOpsgenie").SentryIntegrationOpsgenie;
+export const SentryIntegrationOpsgenie: typeof import("./sentryIntegrationOpsgenie").SentryIntegrationOpsgenie = null as any;
+utilities.lazyLoad(exports, ["SentryIntegrationOpsgenie"], () => require("./sentryIntegrationOpsgenie"));
+
+export { SentryIntegrationPagerDutyArgs, SentryIntegrationPagerDutyState } from "./sentryIntegrationPagerDuty";
+export type SentryIntegrationPagerDuty = import("./sentryIntegrationPagerDuty").SentryIntegrationPagerDuty;
+export const SentryIntegrationPagerDuty: typeof import("./sentryIntegrationPagerDuty").SentryIntegrationPagerDuty = null as any;
+utilities.lazyLoad(exports, ["SentryIntegrationPagerDuty"], () => require("./sentryIntegrationPagerDuty"));
 
 export { SentryIssueAlertArgs, SentryIssueAlertState } from "./sentryIssueAlert";
 export type SentryIssueAlert = import("./sentryIssueAlert").SentryIssueAlert;
@@ -64,6 +99,11 @@ export { SentryMetricAlertArgs, SentryMetricAlertState } from "./sentryMetricAle
 export type SentryMetricAlert = import("./sentryMetricAlert").SentryMetricAlert;
 export const SentryMetricAlert: typeof import("./sentryMetricAlert").SentryMetricAlert = null as any;
 utilities.lazyLoad(exports, ["SentryMetricAlert"], () => require("./sentryMetricAlert"));
+
+export { SentryNotificationActionArgs, SentryNotificationActionState } from "./sentryNotificationAction";
+export type SentryNotificationAction = import("./sentryNotificationAction").SentryNotificationAction;
+export const SentryNotificationAction: typeof import("./sentryNotificationAction").SentryNotificationAction = null as any;
+utilities.lazyLoad(exports, ["SentryNotificationAction"], () => require("./sentryNotificationAction"));
 
 export { SentryOrganizationArgs, SentryOrganizationState } from "./sentryOrganization";
 export type SentryOrganization = import("./sentryOrganization").SentryOrganization;
@@ -95,15 +135,30 @@ export type SentryProject = import("./sentryProject").SentryProject;
 export const SentryProject: typeof import("./sentryProject").SentryProject = null as any;
 utilities.lazyLoad(exports, ["SentryProject"], () => require("./sentryProject"));
 
-export { SentryRuleArgs, SentryRuleState } from "./sentryRule";
-export type SentryRule = import("./sentryRule").SentryRule;
-export const SentryRule: typeof import("./sentryRule").SentryRule = null as any;
-utilities.lazyLoad(exports, ["SentryRule"], () => require("./sentryRule"));
+export { SentryProjectInboundDataFilterArgs, SentryProjectInboundDataFilterState } from "./sentryProjectInboundDataFilter";
+export type SentryProjectInboundDataFilter = import("./sentryProjectInboundDataFilter").SentryProjectInboundDataFilter;
+export const SentryProjectInboundDataFilter: typeof import("./sentryProjectInboundDataFilter").SentryProjectInboundDataFilter = null as any;
+utilities.lazyLoad(exports, ["SentryProjectInboundDataFilter"], () => require("./sentryProjectInboundDataFilter"));
+
+export { SentryProjectSpikeProtectionArgs, SentryProjectSpikeProtectionState } from "./sentryProjectSpikeProtection";
+export type SentryProjectSpikeProtection = import("./sentryProjectSpikeProtection").SentryProjectSpikeProtection;
+export const SentryProjectSpikeProtection: typeof import("./sentryProjectSpikeProtection").SentryProjectSpikeProtection = null as any;
+utilities.lazyLoad(exports, ["SentryProjectSpikeProtection"], () => require("./sentryProjectSpikeProtection"));
+
+export { SentryProjectSymbolSourceArgs, SentryProjectSymbolSourceState } from "./sentryProjectSymbolSource";
+export type SentryProjectSymbolSource = import("./sentryProjectSymbolSource").SentryProjectSymbolSource;
+export const SentryProjectSymbolSource: typeof import("./sentryProjectSymbolSource").SentryProjectSymbolSource = null as any;
+utilities.lazyLoad(exports, ["SentryProjectSymbolSource"], () => require("./sentryProjectSymbolSource"));
 
 export { SentryTeamArgs, SentryTeamState } from "./sentryTeam";
 export type SentryTeam = import("./sentryTeam").SentryTeam;
 export const SentryTeam: typeof import("./sentryTeam").SentryTeam = null as any;
 utilities.lazyLoad(exports, ["SentryTeam"], () => require("./sentryTeam"));
+
+export { SentryTeamMemberArgs, SentryTeamMemberState } from "./sentryTeamMember";
+export type SentryTeamMember = import("./sentryTeamMember").SentryTeamMember;
+export const SentryTeamMember: typeof import("./sentryTeamMember").SentryTeamMember = null as any;
+utilities.lazyLoad(exports, ["SentryTeamMember"], () => require("./sentryTeamMember"));
 
 
 // Export sub-modules:
@@ -119,14 +174,22 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "sentry:index/sentryAllProjectsSpikeProtection:SentryAllProjectsSpikeProtection":
+                return new SentryAllProjectsSpikeProtection(name, <any>undefined, { urn })
             case "sentry:index/sentryDashboard:SentryDashboard":
                 return new SentryDashboard(name, <any>undefined, { urn })
+            case "sentry:index/sentryIntegrationOpsgenie:SentryIntegrationOpsgenie":
+                return new SentryIntegrationOpsgenie(name, <any>undefined, { urn })
+            case "sentry:index/sentryIntegrationPagerDuty:SentryIntegrationPagerDuty":
+                return new SentryIntegrationPagerDuty(name, <any>undefined, { urn })
             case "sentry:index/sentryIssueAlert:SentryIssueAlert":
                 return new SentryIssueAlert(name, <any>undefined, { urn })
             case "sentry:index/sentryKey:SentryKey":
                 return new SentryKey(name, <any>undefined, { urn })
             case "sentry:index/sentryMetricAlert:SentryMetricAlert":
                 return new SentryMetricAlert(name, <any>undefined, { urn })
+            case "sentry:index/sentryNotificationAction:SentryNotificationAction":
+                return new SentryNotificationAction(name, <any>undefined, { urn })
             case "sentry:index/sentryOrganization:SentryOrganization":
                 return new SentryOrganization(name, <any>undefined, { urn })
             case "sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping":
@@ -139,27 +202,40 @@ const _module = {
                 return new SentryPlugin(name, <any>undefined, { urn })
             case "sentry:index/sentryProject:SentryProject":
                 return new SentryProject(name, <any>undefined, { urn })
-            case "sentry:index/sentryRule:SentryRule":
-                return new SentryRule(name, <any>undefined, { urn })
+            case "sentry:index/sentryProjectInboundDataFilter:SentryProjectInboundDataFilter":
+                return new SentryProjectInboundDataFilter(name, <any>undefined, { urn })
+            case "sentry:index/sentryProjectSpikeProtection:SentryProjectSpikeProtection":
+                return new SentryProjectSpikeProtection(name, <any>undefined, { urn })
+            case "sentry:index/sentryProjectSymbolSource:SentryProjectSymbolSource":
+                return new SentryProjectSymbolSource(name, <any>undefined, { urn })
             case "sentry:index/sentryTeam:SentryTeam":
                 return new SentryTeam(name, <any>undefined, { urn })
+            case "sentry:index/sentryTeamMember:SentryTeamMember":
+                return new SentryTeamMember(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
     },
 };
+pulumi.runtime.registerResourceModule("sentry", "index/sentryAllProjectsSpikeProtection", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryDashboard", _module)
+pulumi.runtime.registerResourceModule("sentry", "index/sentryIntegrationOpsgenie", _module)
+pulumi.runtime.registerResourceModule("sentry", "index/sentryIntegrationPagerDuty", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryIssueAlert", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryKey", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryMetricAlert", _module)
+pulumi.runtime.registerResourceModule("sentry", "index/sentryNotificationAction", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryOrganization", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryOrganizationCodeMapping", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryOrganizationMember", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryOrganizationRepositoryGithub", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryPlugin", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryProject", _module)
-pulumi.runtime.registerResourceModule("sentry", "index/sentryRule", _module)
+pulumi.runtime.registerResourceModule("sentry", "index/sentryProjectInboundDataFilter", _module)
+pulumi.runtime.registerResourceModule("sentry", "index/sentryProjectSpikeProtection", _module)
+pulumi.runtime.registerResourceModule("sentry", "index/sentryProjectSymbolSource", _module)
 pulumi.runtime.registerResourceModule("sentry", "index/sentryTeam", _module)
+pulumi.runtime.registerResourceModule("sentry", "index/sentryTeamMember", _module)
 pulumi.runtime.registerResourcePackage("sentry", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {

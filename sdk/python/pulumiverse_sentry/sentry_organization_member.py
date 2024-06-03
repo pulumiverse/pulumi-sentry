@@ -16,20 +16,16 @@ class SentryOrganizationMemberArgs:
     def __init__(__self__, *,
                  email: pulumi.Input[str],
                  organization: pulumi.Input[str],
-                 role: pulumi.Input[str],
-                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+                 role: pulumi.Input[str]):
         """
         The set of arguments for constructing a SentryOrganizationMember resource.
         :param pulumi.Input[str] email: The email of the organization member.
         :param pulumi.Input[str] organization: The slug of the organization the user should be invited to.
         :param pulumi.Input[str] role: This is the role of the organization member.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The teams the organization member should be added to.
         """
         pulumi.set(__self__, "email", email)
         pulumi.set(__self__, "organization", organization)
         pulumi.set(__self__, "role", role)
-        if teams is not None:
-            pulumi.set(__self__, "teams", teams)
 
     @property
     @pulumi.getter
@@ -67,18 +63,6 @@ class SentryOrganizationMemberArgs:
     def role(self, value: pulumi.Input[str]):
         pulumi.set(self, "role", value)
 
-    @property
-    @pulumi.getter
-    def teams(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        The teams the organization member should be added to.
-        """
-        return pulumi.get(self, "teams")
-
-    @teams.setter
-    def teams(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "teams", value)
-
 
 @pulumi.input_type
 class _SentryOrganizationMemberState:
@@ -88,8 +72,7 @@ class _SentryOrganizationMemberState:
                  internal_id: Optional[pulumi.Input[str]] = None,
                  organization: Optional[pulumi.Input[str]] = None,
                  pending: Optional[pulumi.Input[bool]] = None,
-                 role: Optional[pulumi.Input[str]] = None,
-                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+                 role: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering SentryOrganizationMember resources.
         :param pulumi.Input[str] email: The email of the organization member.
@@ -98,7 +81,6 @@ class _SentryOrganizationMemberState:
         :param pulumi.Input[str] organization: The slug of the organization the user should be invited to.
         :param pulumi.Input[bool] pending: The invite is pending.
         :param pulumi.Input[str] role: This is the role of the organization member.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The teams the organization member should be added to.
         """
         if email is not None:
             pulumi.set(__self__, "email", email)
@@ -112,8 +94,6 @@ class _SentryOrganizationMemberState:
             pulumi.set(__self__, "pending", pending)
         if role is not None:
             pulumi.set(__self__, "role", role)
-        if teams is not None:
-            pulumi.set(__self__, "teams", teams)
 
     @property
     @pulumi.getter
@@ -187,18 +167,6 @@ class _SentryOrganizationMemberState:
     def role(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "role", value)
 
-    @property
-    @pulumi.getter
-    def teams(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        The teams the organization member should be added to.
-        """
-        return pulumi.get(self, "teams")
-
-    @teams.setter
-    def teams(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "teams", value)
-
 
 class SentryOrganizationMember(pulumi.CustomResource):
     @overload
@@ -208,9 +176,10 @@ class SentryOrganizationMember(pulumi.CustomResource):
                  email: Optional[pulumi.Input[str]] = None,
                  organization: Optional[pulumi.Input[str]] = None,
                  role: Optional[pulumi.Input[str]] = None,
-                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
+        Resource for managing Sentry organization members. To add a member to a team, use the `SentryTeamMember` resource.
+
         ## Example Usage
 
         ```python
@@ -221,16 +190,17 @@ class SentryOrganizationMember(pulumi.CustomResource):
         john_doe = sentry.SentryOrganizationMember("johnDoe",
             email="test@example.com",
             organization="my-organization",
-            role="member",
-            teams=["my-team"])
+            role="member")
         ```
 
         ## Import
 
-        import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+        import using the organization, membership id from the URL:
+
+        https://sentry.io/settings/[org-slug]/members/[member-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
+        $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -238,7 +208,6 @@ class SentryOrganizationMember(pulumi.CustomResource):
         :param pulumi.Input[str] email: The email of the organization member.
         :param pulumi.Input[str] organization: The slug of the organization the user should be invited to.
         :param pulumi.Input[str] role: This is the role of the organization member.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The teams the organization member should be added to.
         """
         ...
     @overload
@@ -247,6 +216,8 @@ class SentryOrganizationMember(pulumi.CustomResource):
                  args: SentryOrganizationMemberArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
+        Resource for managing Sentry organization members. To add a member to a team, use the `SentryTeamMember` resource.
+
         ## Example Usage
 
         ```python
@@ -257,16 +228,17 @@ class SentryOrganizationMember(pulumi.CustomResource):
         john_doe = sentry.SentryOrganizationMember("johnDoe",
             email="test@example.com",
             organization="my-organization",
-            role="member",
-            teams=["my-team"])
+            role="member")
         ```
 
         ## Import
 
-        import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+        import using the organization, membership id from the URL:
+
+        https://sentry.io/settings/[org-slug]/members/[member-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
+        $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -287,7 +259,6 @@ class SentryOrganizationMember(pulumi.CustomResource):
                  email: Optional[pulumi.Input[str]] = None,
                  organization: Optional[pulumi.Input[str]] = None,
                  role: Optional[pulumi.Input[str]] = None,
-                 teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -306,7 +277,6 @@ class SentryOrganizationMember(pulumi.CustomResource):
             if role is None and not opts.urn:
                 raise TypeError("Missing required property 'role'")
             __props__.__dict__["role"] = role
-            __props__.__dict__["teams"] = teams
             __props__.__dict__["expired"] = None
             __props__.__dict__["internal_id"] = None
             __props__.__dict__["pending"] = None
@@ -325,8 +295,7 @@ class SentryOrganizationMember(pulumi.CustomResource):
             internal_id: Optional[pulumi.Input[str]] = None,
             organization: Optional[pulumi.Input[str]] = None,
             pending: Optional[pulumi.Input[bool]] = None,
-            role: Optional[pulumi.Input[str]] = None,
-            teams: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None) -> 'SentryOrganizationMember':
+            role: Optional[pulumi.Input[str]] = None) -> 'SentryOrganizationMember':
         """
         Get an existing SentryOrganizationMember resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -340,7 +309,6 @@ class SentryOrganizationMember(pulumi.CustomResource):
         :param pulumi.Input[str] organization: The slug of the organization the user should be invited to.
         :param pulumi.Input[bool] pending: The invite is pending.
         :param pulumi.Input[str] role: This is the role of the organization member.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] teams: The teams the organization member should be added to.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -352,7 +320,6 @@ class SentryOrganizationMember(pulumi.CustomResource):
         __props__.__dict__["organization"] = organization
         __props__.__dict__["pending"] = pending
         __props__.__dict__["role"] = role
-        __props__.__dict__["teams"] = teams
         return SentryOrganizationMember(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -402,12 +369,4 @@ class SentryOrganizationMember(pulumi.CustomResource):
         This is the role of the organization member.
         """
         return pulumi.get(self, "role")
-
-    @property
-    @pulumi.getter
-    def teams(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        """
-        The teams the organization member should be added to.
-        """
-        return pulumi.get(self, "teams")
 

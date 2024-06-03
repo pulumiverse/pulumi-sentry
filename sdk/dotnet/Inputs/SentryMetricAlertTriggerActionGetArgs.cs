@@ -19,6 +19,12 @@ namespace Pulumiverse.Sentry.Inputs
         [Input("id")]
         public Input<string>? Id { get; set; }
 
+        /// <summary>
+        /// Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+        /// </summary>
+        [Input("inputChannelId")]
+        public Input<string>? InputChannelId { get; set; }
+
         [Input("integrationId")]
         public Input<int>? IntegrationId { get; set; }
 

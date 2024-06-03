@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * Sentry Organization Integration data source.
+ * Sentry Organization Integration data source. See the [Sentry documentation](https://docs.sentry.io/api/integrations/list-an-organizations-available-integrations/) for more information.
  *
  * ## Example Usage
  *
@@ -40,15 +40,15 @@ export function getSentryOrganizationIntegration(args: GetSentryOrganizationInte
  */
 export interface GetSentryOrganizationIntegrationArgs {
     /**
-     * The name of the organization integration.
+     * The name of the integration.
      */
     name: string;
     /**
-     * The slug of the organization the integration belongs to.
+     * The slug of the organization.
      */
     organization: string;
     /**
-     * The key of the organization integration provider.
+     * Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).
      */
     providerKey: string;
 }
@@ -58,28 +58,30 @@ export interface GetSentryOrganizationIntegrationArgs {
  */
 export interface GetSentryOrganizationIntegrationResult {
     /**
-     * The provider-assigned unique ID for this managed resource.
+     * The ID of this resource.
      */
     readonly id: string;
     /**
-     * The internal ID for this organization integration.
+     * The internal ID for this organization integration. **Deprecated** Use `id` instead.
+     *
+     * @deprecated This field is deprecated and will be removed in a future version. Use `id` instead.
      */
     readonly internalId: string;
     /**
-     * The name of the organization integration.
+     * The name of the integration.
      */
     readonly name: string;
     /**
-     * The slug of the organization the integration belongs to.
+     * The slug of the organization.
      */
     readonly organization: string;
     /**
-     * The key of the organization integration provider.
+     * Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).
      */
     readonly providerKey: string;
 }
 /**
- * Sentry Organization Integration data source.
+ * Sentry Organization Integration data source. See the [Sentry documentation](https://docs.sentry.io/api/integrations/list-an-organizations-available-integrations/) for more information.
  *
  * ## Example Usage
  *
@@ -108,15 +110,15 @@ export function getSentryOrganizationIntegrationOutput(args: GetSentryOrganizati
  */
 export interface GetSentryOrganizationIntegrationOutputArgs {
     /**
-     * The name of the organization integration.
+     * The name of the integration.
      */
     name: pulumi.Input<string>;
     /**
-     * The slug of the organization the integration belongs to.
+     * The slug of the organization.
      */
     organization: pulumi.Input<string>;
     /**
-     * The key of the organization integration provider.
+     * Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).
      */
     providerKey: pulumi.Input<string>;
 }

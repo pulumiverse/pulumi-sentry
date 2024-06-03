@@ -8,10 +8,10 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
+// ## Example Usage
 func LookupSentryDashboard(ctx *pulumi.Context, args *LookupSentryDashboardArgs, opts ...pulumi.InvokeOption) (*LookupSentryDashboardResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupSentryDashboardResult
@@ -82,12 +82,6 @@ func (o LookupSentryDashboardResultOutput) ToLookupSentryDashboardResultOutput()
 
 func (o LookupSentryDashboardResultOutput) ToLookupSentryDashboardResultOutputWithContext(ctx context.Context) LookupSentryDashboardResultOutput {
 	return o
-}
-
-func (o LookupSentryDashboardResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryDashboardResult] {
-	return pulumix.Output[LookupSentryDashboardResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The provider-assigned unique ID for this managed resource.

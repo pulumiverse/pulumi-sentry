@@ -11,146 +11,16 @@ using Pulumi;
 namespace Pulumiverse.Sentry
 {
     /// <summary>
-    /// Sentry Issue Alert resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an issue alert on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules). Since v0.11.2, you should also omit the name property of each condition, filter, and action.
-    /// 
     /// ## Example Usage
-    /// 
-    /// ```csharp
-    /// using System.Collections.Generic;
-    /// using System.Linq;
-    /// using Pulumi;
-    /// using Sentry = Pulumi.Sentry;
-    /// using Sentry = Pulumiverse.Sentry;
-    /// 
-    /// return await Deployment.RunAsync(() =&gt; 
-    /// {
-    ///     var slack = Sentry.GetSentryOrganizationIntegration.Invoke(new()
-    ///     {
-    ///         Organization = sentry_project.Test.Organization,
-    ///         ProviderKey = "slack",
-    ///         Name = "Slack Workspace",
-    ///     });
-    /// 
-    ///     var main = new Sentry.SentryIssueAlert("main", new()
-    ///     {
-    ///         Organization = sentry_project.Main.Organization,
-    ///         Project = sentry_project.Main.Id,
-    ///         ActionMatch = "any",
-    ///         FilterMatch = "any",
-    ///         Frequency = 30,
-    ///         Conditions = new[]
-    ///         {
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.conditions.first_seen_event.FirstSeenEventCondition" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.conditions.regression_event.RegressionEventCondition" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.conditions.event_frequency.EventFrequencyCondition" },
-    ///                 { "value", 100 },
-    ///                 { "comparisonType", "count" },
-    ///                 { "interval", "1h" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.conditions.event_frequency.EventUniqueUserFrequencyCondition" },
-    ///                 { "value", 100 },
-    ///                 { "comparisonType", "count" },
-    ///                 { "interval", "1h" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.conditions.event_frequency.EventFrequencyPercentCondition" },
-    ///                 { "value", "50.0" },
-    ///                 { "comparisonType", "count" },
-    ///                 { "interval", "1h" },
-    ///             },
-    ///         },
-    ///         Filters = new[]
-    ///         {
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.filters.age_comparison.AgeComparisonFilter" },
-    ///                 { "value", 10 },
-    ///                 { "time", "minute" },
-    ///                 { "comparison_type", "older" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.filters.issue_occurrences.IssueOccurrencesFilter" },
-    ///                 { "value", 10 },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.filters.assigned_to.AssignedToFilter" },
-    ///                 { "targetType", "Team" },
-    ///                 { "targetIdentifier", sentry_team.Main.Team_id },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.filters.latest_release.LatestReleaseFilter" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.filters.event_attribute.EventAttributeFilter" },
-    ///                 { "attribute", "message" },
-    ///                 { "match", "co" },
-    ///                 { "value", "test" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.filters.tagged_event.TaggedEventFilter" },
-    ///                 { "key", "test" },
-    ///                 { "match", "co" },
-    ///                 { "value", "test" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.filters.level.LevelFilter" },
-    ///                 { "match", "eq" },
-    ///                 { "level", "50" },
-    ///             },
-    ///         },
-    ///         Actions = new[]
-    ///         {
-    ///             
-    ///             {
-    ///                 { "id", "sentry.mail.actions.NotifyEmailAction" },
-    ///                 { "targetType", "IssueOwners" },
-    ///                 { "targetIdentifier", "" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.mail.actions.NotifyEmailAction" },
-    ///                 { "targetType", "Team" },
-    ///                 { "targetIdentifier", sentry_team.Main.Team_id },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.rules.actions.notify_event.NotifyEventAction" },
-    ///             },
-    ///             
-    ///             {
-    ///                 { "id", "sentry.integrations.slack.notify_action.SlackNotifyServiceAction" },
-    ///                 { "channel", "#general" },
-    ///                 { "workspace", slack.Apply(getSentryOrganizationIntegrationResult =&gt; getSentryOrganizationIntegrationResult.InternalId) },
-    ///             },
-    ///         },
-    ///     });
-    /// 
-    /// });
-    /// ```
     /// 
     /// ## Import
     /// 
-    /// import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/alerts/rules/[project-slug]/[rule-id]/details/
+    /// import using the organization, project slugs and rule id from the URL:
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/alerts/rules/[project-slug]/[rule-id]/details/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryIssueAlert:SentryIssueAlert default org-slug/project-slug/rule-id
+    /// $ pulumi import sentry:index/sentryIssueAlert:SentryIssueAlert default org-slug/project-slug/rule-id
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryIssueAlert:SentryIssueAlert")]
@@ -163,46 +33,40 @@ namespace Pulumiverse.Sentry
         public Output<string> ActionMatch { get; private set; } = null!;
 
         /// <summary>
-        /// List of actions.
+        /// List of actions. In JSON string format.
         /// </summary>
         [Output("actions")]
-        public Output<ImmutableArray<ImmutableDictionary<string, object>>> Actions { get; private set; } = null!;
+        public Output<string> Actions { get; private set; } = null!;
 
         /// <summary>
-        /// List of conditions.
+        /// List of conditions. In JSON string format.
         /// </summary>
         [Output("conditions")]
-        public Output<ImmutableArray<ImmutableDictionary<string, object>>> Conditions { get; private set; } = null!;
+        public Output<string> Conditions { get; private set; } = null!;
 
         /// <summary>
         /// Perform issue alert in a specific environment.
         /// </summary>
         [Output("environment")]
-        public Output<string> Environment { get; private set; } = null!;
+        public Output<string?> Environment { get; private set; } = null!;
 
         /// <summary>
-        /// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        /// A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
         /// </summary>
         [Output("filterMatch")]
-        public Output<string> FilterMatch { get; private set; } = null!;
+        public Output<string?> FilterMatch { get; private set; } = null!;
 
         /// <summary>
-        /// List of filters.
+        /// A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
         /// </summary>
         [Output("filters")]
-        public Output<ImmutableArray<ImmutableDictionary<string, object>>> Filters { get; private set; } = null!;
+        public Output<string?> Filters { get; private set; } = null!;
 
         /// <summary>
-        /// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+        /// Perform actions at most once every `X` minutes for this issue.
         /// </summary>
         [Output("frequency")]
         public Output<int> Frequency { get; private set; } = null!;
-
-        /// <summary>
-        /// The internal ID for this issue alert.
-        /// </summary>
-        [Output("internalId")]
-        public Output<string> InternalId { get; private set; } = null!;
 
         /// <summary>
         /// The issue alert name.
@@ -211,22 +75,22 @@ namespace Pulumiverse.Sentry
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The slug of the organization the issue alert belongs to.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         [Output("organization")]
         public Output<string> Organization { get; private set; } = null!;
 
         /// <summary>
-        /// The slug of the project to create the issue alert for.
+        /// The ID of the team or user that owns the rule.
+        /// </summary>
+        [Output("owner")]
+        public Output<string?> Owner { get; private set; } = null!;
+
+        /// <summary>
+        /// The slug of the project the resource belongs to.
         /// </summary>
         [Output("project")]
         public Output<string> Project { get; private set; } = null!;
-
-        /// <summary>
-        /// Use `project` (singular) instead.
-        /// </summary>
-        [Output("projects")]
-        public Output<ImmutableArray<string>> Projects { get; private set; } = null!;
 
 
         /// <summary>
@@ -281,29 +145,17 @@ namespace Pulumiverse.Sentry
         [Input("actionMatch", required: true)]
         public Input<string> ActionMatch { get; set; } = null!;
 
+        /// <summary>
+        /// List of actions. In JSON string format.
+        /// </summary>
         [Input("actions", required: true)]
-        private InputList<ImmutableDictionary<string, object>>? _actions;
+        public Input<string> Actions { get; set; } = null!;
 
         /// <summary>
-        /// List of actions.
+        /// List of conditions. In JSON string format.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Actions
-        {
-            get => _actions ?? (_actions = new InputList<ImmutableDictionary<string, object>>());
-            set => _actions = value;
-        }
-
         [Input("conditions", required: true)]
-        private InputList<ImmutableDictionary<string, object>>? _conditions;
-
-        /// <summary>
-        /// List of conditions.
-        /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Conditions
-        {
-            get => _conditions ?? (_conditions = new InputList<ImmutableDictionary<string, object>>());
-            set => _conditions = value;
-        }
+        public Input<string> Conditions { get; set; } = null!;
 
         /// <summary>
         /// Perform issue alert in a specific environment.
@@ -312,25 +164,19 @@ namespace Pulumiverse.Sentry
         public Input<string>? Environment { get; set; }
 
         /// <summary>
-        /// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        /// A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
         /// </summary>
-        [Input("filterMatch", required: true)]
-        public Input<string> FilterMatch { get; set; } = null!;
+        [Input("filterMatch")]
+        public Input<string>? FilterMatch { get; set; }
 
+        /// <summary>
+        /// A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
+        /// </summary>
         [Input("filters")]
-        private InputList<ImmutableDictionary<string, object>>? _filters;
+        public Input<string>? Filters { get; set; }
 
         /// <summary>
-        /// List of filters.
-        /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Filters
-        {
-            get => _filters ?? (_filters = new InputList<ImmutableDictionary<string, object>>());
-            set => _filters = value;
-        }
-
-        /// <summary>
-        /// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+        /// Perform actions at most once every `X` minutes for this issue.
         /// </summary>
         [Input("frequency", required: true)]
         public Input<int> Frequency { get; set; } = null!;
@@ -342,13 +188,19 @@ namespace Pulumiverse.Sentry
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The slug of the organization the issue alert belongs to.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         [Input("organization", required: true)]
         public Input<string> Organization { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the project to create the issue alert for.
+        /// The ID of the team or user that owns the rule.
+        /// </summary>
+        [Input("owner")]
+        public Input<string>? Owner { get; set; }
+
+        /// <summary>
+        /// The slug of the project the resource belongs to.
         /// </summary>
         [Input("project", required: true)]
         public Input<string> Project { get; set; } = null!;
@@ -367,29 +219,17 @@ namespace Pulumiverse.Sentry
         [Input("actionMatch")]
         public Input<string>? ActionMatch { get; set; }
 
+        /// <summary>
+        /// List of actions. In JSON string format.
+        /// </summary>
         [Input("actions")]
-        private InputList<ImmutableDictionary<string, object>>? _actions;
+        public Input<string>? Actions { get; set; }
 
         /// <summary>
-        /// List of actions.
+        /// List of conditions. In JSON string format.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Actions
-        {
-            get => _actions ?? (_actions = new InputList<ImmutableDictionary<string, object>>());
-            set => _actions = value;
-        }
-
         [Input("conditions")]
-        private InputList<ImmutableDictionary<string, object>>? _conditions;
-
-        /// <summary>
-        /// List of conditions.
-        /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Conditions
-        {
-            get => _conditions ?? (_conditions = new InputList<ImmutableDictionary<string, object>>());
-            set => _conditions = value;
-        }
+        public Input<string>? Conditions { get; set; }
 
         /// <summary>
         /// Perform issue alert in a specific environment.
@@ -398,34 +238,22 @@ namespace Pulumiverse.Sentry
         public Input<string>? Environment { get; set; }
 
         /// <summary>
-        /// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        /// A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
         /// </summary>
         [Input("filterMatch")]
         public Input<string>? FilterMatch { get; set; }
 
-        [Input("filters")]
-        private InputList<ImmutableDictionary<string, object>>? _filters;
-
         /// <summary>
-        /// List of filters.
+        /// A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Filters
-        {
-            get => _filters ?? (_filters = new InputList<ImmutableDictionary<string, object>>());
-            set => _filters = value;
-        }
+        [Input("filters")]
+        public Input<string>? Filters { get; set; }
 
         /// <summary>
-        /// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+        /// Perform actions at most once every `X` minutes for this issue.
         /// </summary>
         [Input("frequency")]
         public Input<int>? Frequency { get; set; }
-
-        /// <summary>
-        /// The internal ID for this issue alert.
-        /// </summary>
-        [Input("internalId")]
-        public Input<string>? InternalId { get; set; }
 
         /// <summary>
         /// The issue alert name.
@@ -434,29 +262,22 @@ namespace Pulumiverse.Sentry
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The slug of the organization the issue alert belongs to.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         [Input("organization")]
         public Input<string>? Organization { get; set; }
 
         /// <summary>
-        /// The slug of the project to create the issue alert for.
+        /// The ID of the team or user that owns the rule.
+        /// </summary>
+        [Input("owner")]
+        public Input<string>? Owner { get; set; }
+
+        /// <summary>
+        /// The slug of the project the resource belongs to.
         /// </summary>
         [Input("project")]
         public Input<string>? Project { get; set; }
-
-        [Input("projects")]
-        private InputList<string>? _projects;
-
-        /// <summary>
-        /// Use `project` (singular) instead.
-        /// </summary>
-        [Obsolete(@"Use `project` (singular) instead.")]
-        public InputList<string> Projects
-        {
-            get => _projects ?? (_projects = new InputList<string>());
-            set => _projects = value;
-        }
 
         public SentryIssueAlertState()
         {

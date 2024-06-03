@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -29,6 +28,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Create a team
 //			_, err := sentry.NewSentryTeam(ctx, "default", &sentry.SentryTeamArgs{
 //				Organization: pulumi.String("my-organization"),
 //				Slug:         pulumi.String("my-team"),
@@ -44,12 +44,12 @@ import (
 //
 // ## Import
 //
-// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
+// import using the organization and team slugs from the URL:
+//
+// https://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
-//
+// $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
 // ```
 type SentryTeam struct {
 	pulumi.CustomResourceState
@@ -67,7 +67,7 @@ type SentryTeam struct {
 	Slug pulumi.StringOutput `pulumi:"slug"`
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	TeamId pulumi.StringOutput `pulumi:"teamId"`
 }
 
@@ -117,7 +117,7 @@ type sentryTeamState struct {
 	Slug *string `pulumi:"slug"`
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	TeamId *string `pulumi:"teamId"`
 }
 
@@ -135,7 +135,7 @@ type SentryTeamState struct {
 	Slug pulumi.StringPtrInput
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	TeamId pulumi.StringPtrInput
 }
 
@@ -185,12 +185,6 @@ func (i *SentryTeam) ToSentryTeamOutputWithContext(ctx context.Context) SentryTe
 	return pulumi.ToOutputWithContext(ctx, i).(SentryTeamOutput)
 }
 
-func (i *SentryTeam) ToOutput(ctx context.Context) pulumix.Output[*SentryTeam] {
-	return pulumix.Output[*SentryTeam]{
-		OutputState: i.ToSentryTeamOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryTeamArrayInput is an input type that accepts SentryTeamArray and SentryTeamArrayOutput values.
 // You can construct a concrete instance of `SentryTeamArrayInput` via:
 //
@@ -214,12 +208,6 @@ func (i SentryTeamArray) ToSentryTeamArrayOutput() SentryTeamArrayOutput {
 
 func (i SentryTeamArray) ToSentryTeamArrayOutputWithContext(ctx context.Context) SentryTeamArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryTeamArrayOutput)
-}
-
-func (i SentryTeamArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryTeam] {
-	return pulumix.Output[[]*SentryTeam]{
-		OutputState: i.ToSentryTeamArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryTeamMapInput is an input type that accepts SentryTeamMap and SentryTeamMapOutput values.
@@ -247,12 +235,6 @@ func (i SentryTeamMap) ToSentryTeamMapOutputWithContext(ctx context.Context) Sen
 	return pulumi.ToOutputWithContext(ctx, i).(SentryTeamMapOutput)
 }
 
-func (i SentryTeamMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryTeam] {
-	return pulumix.Output[map[string]*SentryTeam]{
-		OutputState: i.ToSentryTeamMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryTeamOutput struct{ *pulumi.OutputState }
 
 func (SentryTeamOutput) ElementType() reflect.Type {
@@ -265,12 +247,6 @@ func (o SentryTeamOutput) ToSentryTeamOutput() SentryTeamOutput {
 
 func (o SentryTeamOutput) ToSentryTeamOutputWithContext(ctx context.Context) SentryTeamOutput {
 	return o
-}
-
-func (o SentryTeamOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryTeam] {
-	return pulumix.Output[*SentryTeam]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryTeamOutput) HasAccess() pulumi.BoolOutput {
@@ -307,7 +283,7 @@ func (o SentryTeamOutput) Slug() pulumi.StringOutput {
 
 // Use `internalId` instead.
 //
-// Deprecated: Use `internal_id` instead.
+// Deprecated: Use `internalId` instead.
 func (o SentryTeamOutput) TeamId() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryTeam) pulumi.StringOutput { return v.TeamId }).(pulumi.StringOutput)
 }
@@ -324,12 +300,6 @@ func (o SentryTeamArrayOutput) ToSentryTeamArrayOutput() SentryTeamArrayOutput {
 
 func (o SentryTeamArrayOutput) ToSentryTeamArrayOutputWithContext(ctx context.Context) SentryTeamArrayOutput {
 	return o
-}
-
-func (o SentryTeamArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryTeam] {
-	return pulumix.Output[[]*SentryTeam]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryTeamArrayOutput) Index(i pulumi.IntInput) SentryTeamOutput {
@@ -350,12 +320,6 @@ func (o SentryTeamMapOutput) ToSentryTeamMapOutput() SentryTeamMapOutput {
 
 func (o SentryTeamMapOutput) ToSentryTeamMapOutputWithContext(ctx context.Context) SentryTeamMapOutput {
 	return o
-}
-
-func (o SentryTeamMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryTeam] {
-	return pulumix.Output[map[string]*SentryTeam]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryTeamMapOutput) MapIndex(k pulumi.StringInput) SentryTeamOutput {

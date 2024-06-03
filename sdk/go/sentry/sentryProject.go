@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -29,7 +28,9 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Create a project
 //			_, err := sentry.NewSentryProject(ctx, "default", &sentry.SentryProjectArgs{
+//				DefaultRules: pulumi.Bool(false),
 //				Organization: pulumi.String("my-organization"),
 //				Platform:     pulumi.String("javascript"),
 //				ResolveAge:   pulumi.Int(720),
@@ -50,17 +51,21 @@ import (
 //
 // ## Import
 //
-// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+// import using the organization and team slugs from the URL:
+//
+// https://sentry.io/settings/[org-slug]/projects/[project-slug]/
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
-//
+// $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
 // ```
 type SentryProject struct {
 	pulumi.CustomResourceState
 
 	Color pulumi.StringOutput `pulumi:"color"`
+	// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+	DefaultKey pulumi.BoolPtrOutput `pulumi:"defaultKey"`
+	// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+	DefaultRules pulumi.BoolPtrOutput `pulumi:"defaultRules"`
 	// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
 	DigestsMaxDelay pulumi.IntOutput `pulumi:"digestsMaxDelay"`
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
@@ -75,11 +80,11 @@ type SentryProject struct {
 	Name pulumi.StringOutput `pulumi:"name"`
 	// The slug of the organization the project belongs to.
 	Organization pulumi.StringOutput `pulumi:"organization"`
-	// The optional platform for this project.
+	// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
 	Platform pulumi.StringOutput `pulumi:"platform"`
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	ProjectId pulumi.StringOutput `pulumi:"projectId"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntOutput `pulumi:"resolveAge"`
@@ -128,6 +133,10 @@ func GetSentryProject(ctx *pulumi.Context,
 // Input properties used for looking up and filtering SentryProject resources.
 type sentryProjectState struct {
 	Color *string `pulumi:"color"`
+	// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+	DefaultKey *bool `pulumi:"defaultKey"`
+	// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+	DefaultRules *bool `pulumi:"defaultRules"`
 	// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
 	DigestsMaxDelay *int `pulumi:"digestsMaxDelay"`
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
@@ -142,11 +151,11 @@ type sentryProjectState struct {
 	Name *string `pulumi:"name"`
 	// The slug of the organization the project belongs to.
 	Organization *string `pulumi:"organization"`
-	// The optional platform for this project.
+	// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
 	Platform *string `pulumi:"platform"`
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	ProjectId *string `pulumi:"projectId"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge *int `pulumi:"resolveAge"`
@@ -163,6 +172,10 @@ type sentryProjectState struct {
 
 type SentryProjectState struct {
 	Color pulumi.StringPtrInput
+	// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+	DefaultKey pulumi.BoolPtrInput
+	// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+	DefaultRules pulumi.BoolPtrInput
 	// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
 	DigestsMaxDelay pulumi.IntPtrInput
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
@@ -177,11 +190,11 @@ type SentryProjectState struct {
 	Name pulumi.StringPtrInput
 	// The slug of the organization the project belongs to.
 	Organization pulumi.StringPtrInput
-	// The optional platform for this project.
+	// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
 	Platform pulumi.StringPtrInput
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	ProjectId pulumi.StringPtrInput
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntPtrInput
@@ -201,6 +214,10 @@ func (SentryProjectState) ElementType() reflect.Type {
 }
 
 type sentryProjectArgs struct {
+	// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+	DefaultKey *bool `pulumi:"defaultKey"`
+	// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+	DefaultRules *bool `pulumi:"defaultRules"`
 	// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
 	DigestsMaxDelay *int `pulumi:"digestsMaxDelay"`
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
@@ -209,7 +226,7 @@ type sentryProjectArgs struct {
 	Name *string `pulumi:"name"`
 	// The slug of the organization the project belongs to.
 	Organization string `pulumi:"organization"`
-	// The optional platform for this project.
+	// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
 	Platform *string `pulumi:"platform"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge *int `pulumi:"resolveAge"`
@@ -225,6 +242,10 @@ type sentryProjectArgs struct {
 
 // The set of arguments for constructing a SentryProject resource.
 type SentryProjectArgs struct {
+	// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+	DefaultKey pulumi.BoolPtrInput
+	// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+	DefaultRules pulumi.BoolPtrInput
 	// The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
 	DigestsMaxDelay pulumi.IntPtrInput
 	// The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.
@@ -233,7 +254,7 @@ type SentryProjectArgs struct {
 	Name pulumi.StringPtrInput
 	// The slug of the organization the project belongs to.
 	Organization pulumi.StringInput
-	// The optional platform for this project.
+	// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
 	Platform pulumi.StringPtrInput
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntPtrInput
@@ -270,12 +291,6 @@ func (i *SentryProject) ToSentryProjectOutputWithContext(ctx context.Context) Se
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectOutput)
 }
 
-func (i *SentryProject) ToOutput(ctx context.Context) pulumix.Output[*SentryProject] {
-	return pulumix.Output[*SentryProject]{
-		OutputState: i.ToSentryProjectOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryProjectArrayInput is an input type that accepts SentryProjectArray and SentryProjectArrayOutput values.
 // You can construct a concrete instance of `SentryProjectArrayInput` via:
 //
@@ -299,12 +314,6 @@ func (i SentryProjectArray) ToSentryProjectArrayOutput() SentryProjectArrayOutpu
 
 func (i SentryProjectArray) ToSentryProjectArrayOutputWithContext(ctx context.Context) SentryProjectArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectArrayOutput)
-}
-
-func (i SentryProjectArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryProject] {
-	return pulumix.Output[[]*SentryProject]{
-		OutputState: i.ToSentryProjectArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryProjectMapInput is an input type that accepts SentryProjectMap and SentryProjectMapOutput values.
@@ -332,12 +341,6 @@ func (i SentryProjectMap) ToSentryProjectMapOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectMapOutput)
 }
 
-func (i SentryProjectMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryProject] {
-	return pulumix.Output[map[string]*SentryProject]{
-		OutputState: i.ToSentryProjectMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryProjectOutput struct{ *pulumi.OutputState }
 
 func (SentryProjectOutput) ElementType() reflect.Type {
@@ -352,14 +355,18 @@ func (o SentryProjectOutput) ToSentryProjectOutputWithContext(ctx context.Contex
 	return o
 }
 
-func (o SentryProjectOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryProject] {
-	return pulumix.Output[*SentryProject]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryProjectOutput) Color() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Color }).(pulumi.StringOutput)
+}
+
+// Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `SentryKey` resource.
+func (o SentryProjectOutput) DefaultKey() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.BoolPtrOutput { return v.DefaultKey }).(pulumi.BoolPtrOutput)
+}
+
+// Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+func (o SentryProjectOutput) DefaultRules() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *SentryProject) pulumi.BoolPtrOutput { return v.DefaultRules }).(pulumi.BoolPtrOutput)
 }
 
 // The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
@@ -400,14 +407,14 @@ func (o SentryProjectOutput) Organization() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Organization }).(pulumi.StringOutput)
 }
 
-// The optional platform for this project.
+// The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
 func (o SentryProjectOutput) Platform() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.Platform }).(pulumi.StringOutput)
 }
 
 // Use `internalId` instead.
 //
-// Deprecated: Use `internal_id` instead.
+// Deprecated: Use `internalId` instead.
 func (o SentryProjectOutput) ProjectId() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.ProjectId }).(pulumi.StringOutput)
 }
@@ -452,12 +459,6 @@ func (o SentryProjectArrayOutput) ToSentryProjectArrayOutputWithContext(ctx cont
 	return o
 }
 
-func (o SentryProjectArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryProject] {
-	return pulumix.Output[[]*SentryProject]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryProjectArrayOutput) Index(i pulumi.IntInput) SentryProjectOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryProject {
 		return vs[0].([]*SentryProject)[vs[1].(int)]
@@ -476,12 +477,6 @@ func (o SentryProjectMapOutput) ToSentryProjectMapOutput() SentryProjectMapOutpu
 
 func (o SentryProjectMapOutput) ToSentryProjectMapOutputWithContext(ctx context.Context) SentryProjectMapOutput {
 	return o
-}
-
-func (o SentryProjectMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryProject] {
-	return pulumix.Output[map[string]*SentryProject]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryProjectMapOutput) MapIndex(k pulumi.StringInput) SentryProjectOutput {

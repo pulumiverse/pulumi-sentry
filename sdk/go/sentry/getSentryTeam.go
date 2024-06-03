@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -113,12 +112,6 @@ func (o LookupSentryTeamResultOutput) ToLookupSentryTeamResultOutput() LookupSen
 
 func (o LookupSentryTeamResultOutput) ToLookupSentryTeamResultOutputWithContext(ctx context.Context) LookupSentryTeamResultOutput {
 	return o
-}
-
-func (o LookupSentryTeamResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryTeamResult] {
-	return pulumix.Output[LookupSentryTeamResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o LookupSentryTeamResultOutput) HasAccess() pulumi.BoolOutput {

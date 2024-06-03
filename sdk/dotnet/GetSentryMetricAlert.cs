@@ -12,9 +12,15 @@ namespace Pulumiverse.Sentry
 {
     public static class GetSentryMetricAlert
     {
+        /// <summary>
+        /// ## Example Usage
+        /// </summary>
         public static Task<GetSentryMetricAlertResult> InvokeAsync(GetSentryMetricAlertArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryMetricAlertResult>("sentry:index/getSentryMetricAlert:getSentryMetricAlert", args ?? new GetSentryMetricAlertArgs(), options.WithDefaults());
 
+        /// <summary>
+        /// ## Example Usage
+        /// </summary>
         public static Output<GetSentryMetricAlertResult> Invoke(GetSentryMetricAlertInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryMetricAlertResult>("sentry:index/getSentryMetricAlert:getSentryMetricAlert", args ?? new GetSentryMetricAlertInvokeArgs(), options.WithDefaults());
     }

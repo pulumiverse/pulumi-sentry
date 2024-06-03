@@ -15,9 +15,6 @@ export interface SentryDashboardWidget {
     layout: pulumi.Input<inputs.SentryDashboardWidgetLayout>;
     limit?: pulumi.Input<number>;
     queries: pulumi.Input<pulumi.Input<inputs.SentryDashboardWidgetQuery>[]>;
-    /**
-     * Dashboard title.
-     */
     title: pulumi.Input<string>;
     widgetType?: pulumi.Input<string>;
 }
@@ -52,13 +49,7 @@ export interface SentryMetricAlertTrigger {
      */
     id?: pulumi.Input<string>;
     label: pulumi.Input<string>;
-    /**
-     * The value at which the Alert rule resolves
-     */
     resolveThreshold?: pulumi.Input<number>;
-    /**
-     * The type of threshold
-     */
     thresholdType: pulumi.Input<number>;
 }
 
@@ -67,8 +58,23 @@ export interface SentryMetricAlertTriggerAction {
      * The ID of this resource.
      */
     id?: pulumi.Input<string>;
+    /**
+     * Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+     */
+    inputChannelId?: pulumi.Input<string>;
     integrationId?: pulumi.Input<number>;
     targetIdentifier?: pulumi.Input<string>;
     targetType: pulumi.Input<string>;
+    type: pulumi.Input<string>;
+}
+
+export interface SentryProjectSymbolSourceLayout {
+    /**
+     * The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+     */
+    casing: pulumi.Input<string>;
+    /**
+     * The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstoreIndex2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+     */
     type: pulumi.Input<string>;
 }

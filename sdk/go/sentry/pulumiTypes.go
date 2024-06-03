@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -17,14 +16,13 @@ var _ = internal.GetEnvOrDefault
 type SentryDashboardWidget struct {
 	DisplayType string `pulumi:"displayType"`
 	// The ID of this resource.
-	Id       *string                      `pulumi:"id"`
-	Interval *string                      `pulumi:"interval"`
-	Layout   SentryDashboardWidgetLayout  `pulumi:"layout"`
-	Limit    *int                         `pulumi:"limit"`
-	Queries  []SentryDashboardWidgetQuery `pulumi:"queries"`
-	// Dashboard title.
-	Title      string  `pulumi:"title"`
-	WidgetType *string `pulumi:"widgetType"`
+	Id         *string                      `pulumi:"id"`
+	Interval   *string                      `pulumi:"interval"`
+	Layout     SentryDashboardWidgetLayout  `pulumi:"layout"`
+	Limit      *int                         `pulumi:"limit"`
+	Queries    []SentryDashboardWidgetQuery `pulumi:"queries"`
+	Title      string                       `pulumi:"title"`
+	WidgetType *string                      `pulumi:"widgetType"`
 }
 
 // SentryDashboardWidgetInput is an input type that accepts SentryDashboardWidgetArgs and SentryDashboardWidgetOutput values.
@@ -41,14 +39,13 @@ type SentryDashboardWidgetInput interface {
 type SentryDashboardWidgetArgs struct {
 	DisplayType pulumi.StringInput `pulumi:"displayType"`
 	// The ID of this resource.
-	Id       pulumi.StringPtrInput                `pulumi:"id"`
-	Interval pulumi.StringPtrInput                `pulumi:"interval"`
-	Layout   SentryDashboardWidgetLayoutInput     `pulumi:"layout"`
-	Limit    pulumi.IntPtrInput                   `pulumi:"limit"`
-	Queries  SentryDashboardWidgetQueryArrayInput `pulumi:"queries"`
-	// Dashboard title.
-	Title      pulumi.StringInput    `pulumi:"title"`
-	WidgetType pulumi.StringPtrInput `pulumi:"widgetType"`
+	Id         pulumi.StringPtrInput                `pulumi:"id"`
+	Interval   pulumi.StringPtrInput                `pulumi:"interval"`
+	Layout     SentryDashboardWidgetLayoutInput     `pulumi:"layout"`
+	Limit      pulumi.IntPtrInput                   `pulumi:"limit"`
+	Queries    SentryDashboardWidgetQueryArrayInput `pulumi:"queries"`
+	Title      pulumi.StringInput                   `pulumi:"title"`
+	WidgetType pulumi.StringPtrInput                `pulumi:"widgetType"`
 }
 
 func (SentryDashboardWidgetArgs) ElementType() reflect.Type {
@@ -61,12 +58,6 @@ func (i SentryDashboardWidgetArgs) ToSentryDashboardWidgetOutput() SentryDashboa
 
 func (i SentryDashboardWidgetArgs) ToSentryDashboardWidgetOutputWithContext(ctx context.Context) SentryDashboardWidgetOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardWidgetOutput)
-}
-
-func (i SentryDashboardWidgetArgs) ToOutput(ctx context.Context) pulumix.Output[SentryDashboardWidget] {
-	return pulumix.Output[SentryDashboardWidget]{
-		OutputState: i.ToSentryDashboardWidgetOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryDashboardWidgetArrayInput is an input type that accepts SentryDashboardWidgetArray and SentryDashboardWidgetArrayOutput values.
@@ -94,12 +85,6 @@ func (i SentryDashboardWidgetArray) ToSentryDashboardWidgetArrayOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardWidgetArrayOutput)
 }
 
-func (i SentryDashboardWidgetArray) ToOutput(ctx context.Context) pulumix.Output[[]SentryDashboardWidget] {
-	return pulumix.Output[[]SentryDashboardWidget]{
-		OutputState: i.ToSentryDashboardWidgetArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryDashboardWidgetOutput struct{ *pulumi.OutputState }
 
 func (SentryDashboardWidgetOutput) ElementType() reflect.Type {
@@ -112,12 +97,6 @@ func (o SentryDashboardWidgetOutput) ToSentryDashboardWidgetOutput() SentryDashb
 
 func (o SentryDashboardWidgetOutput) ToSentryDashboardWidgetOutputWithContext(ctx context.Context) SentryDashboardWidgetOutput {
 	return o
-}
-
-func (o SentryDashboardWidgetOutput) ToOutput(ctx context.Context) pulumix.Output[SentryDashboardWidget] {
-	return pulumix.Output[SentryDashboardWidget]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryDashboardWidgetOutput) DisplayType() pulumi.StringOutput {
@@ -145,7 +124,6 @@ func (o SentryDashboardWidgetOutput) Queries() SentryDashboardWidgetQueryArrayOu
 	return o.ApplyT(func(v SentryDashboardWidget) []SentryDashboardWidgetQuery { return v.Queries }).(SentryDashboardWidgetQueryArrayOutput)
 }
 
-// Dashboard title.
 func (o SentryDashboardWidgetOutput) Title() pulumi.StringOutput {
 	return o.ApplyT(func(v SentryDashboardWidget) string { return v.Title }).(pulumi.StringOutput)
 }
@@ -166,12 +144,6 @@ func (o SentryDashboardWidgetArrayOutput) ToSentryDashboardWidgetArrayOutput() S
 
 func (o SentryDashboardWidgetArrayOutput) ToSentryDashboardWidgetArrayOutputWithContext(ctx context.Context) SentryDashboardWidgetArrayOutput {
 	return o
-}
-
-func (o SentryDashboardWidgetArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]SentryDashboardWidget] {
-	return pulumix.Output[[]SentryDashboardWidget]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryDashboardWidgetArrayOutput) Index(i pulumi.IntInput) SentryDashboardWidgetOutput {
@@ -219,12 +191,6 @@ func (i SentryDashboardWidgetLayoutArgs) ToSentryDashboardWidgetLayoutOutputWith
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardWidgetLayoutOutput)
 }
 
-func (i SentryDashboardWidgetLayoutArgs) ToOutput(ctx context.Context) pulumix.Output[SentryDashboardWidgetLayout] {
-	return pulumix.Output[SentryDashboardWidgetLayout]{
-		OutputState: i.ToSentryDashboardWidgetLayoutOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryDashboardWidgetLayoutOutput struct{ *pulumi.OutputState }
 
 func (SentryDashboardWidgetLayoutOutput) ElementType() reflect.Type {
@@ -237,12 +203,6 @@ func (o SentryDashboardWidgetLayoutOutput) ToSentryDashboardWidgetLayoutOutput()
 
 func (o SentryDashboardWidgetLayoutOutput) ToSentryDashboardWidgetLayoutOutputWithContext(ctx context.Context) SentryDashboardWidgetLayoutOutput {
 	return o
-}
-
-func (o SentryDashboardWidgetLayoutOutput) ToOutput(ctx context.Context) pulumix.Output[SentryDashboardWidgetLayout] {
-	return pulumix.Output[SentryDashboardWidgetLayout]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryDashboardWidgetLayoutOutput) H() pulumi.IntOutput {
@@ -312,12 +272,6 @@ func (i SentryDashboardWidgetQueryArgs) ToSentryDashboardWidgetQueryOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardWidgetQueryOutput)
 }
 
-func (i SentryDashboardWidgetQueryArgs) ToOutput(ctx context.Context) pulumix.Output[SentryDashboardWidgetQuery] {
-	return pulumix.Output[SentryDashboardWidgetQuery]{
-		OutputState: i.ToSentryDashboardWidgetQueryOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryDashboardWidgetQueryArrayInput is an input type that accepts SentryDashboardWidgetQueryArray and SentryDashboardWidgetQueryArrayOutput values.
 // You can construct a concrete instance of `SentryDashboardWidgetQueryArrayInput` via:
 //
@@ -343,12 +297,6 @@ func (i SentryDashboardWidgetQueryArray) ToSentryDashboardWidgetQueryArrayOutput
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardWidgetQueryArrayOutput)
 }
 
-func (i SentryDashboardWidgetQueryArray) ToOutput(ctx context.Context) pulumix.Output[[]SentryDashboardWidgetQuery] {
-	return pulumix.Output[[]SentryDashboardWidgetQuery]{
-		OutputState: i.ToSentryDashboardWidgetQueryArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryDashboardWidgetQueryOutput struct{ *pulumi.OutputState }
 
 func (SentryDashboardWidgetQueryOutput) ElementType() reflect.Type {
@@ -361,12 +309,6 @@ func (o SentryDashboardWidgetQueryOutput) ToSentryDashboardWidgetQueryOutput() S
 
 func (o SentryDashboardWidgetQueryOutput) ToSentryDashboardWidgetQueryOutputWithContext(ctx context.Context) SentryDashboardWidgetQueryOutput {
 	return o
-}
-
-func (o SentryDashboardWidgetQueryOutput) ToOutput(ctx context.Context) pulumix.Output[SentryDashboardWidgetQuery] {
-	return pulumix.Output[SentryDashboardWidgetQuery]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryDashboardWidgetQueryOutput) Aggregates() pulumi.StringArrayOutput {
@@ -416,12 +358,6 @@ func (o SentryDashboardWidgetQueryArrayOutput) ToSentryDashboardWidgetQueryArray
 	return o
 }
 
-func (o SentryDashboardWidgetQueryArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]SentryDashboardWidgetQuery] {
-	return pulumix.Output[[]SentryDashboardWidgetQuery]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryDashboardWidgetQueryArrayOutput) Index(i pulumi.IntInput) SentryDashboardWidgetQueryOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) SentryDashboardWidgetQuery {
 		return vs[0].([]SentryDashboardWidgetQuery)[vs[1].(int)]
@@ -432,12 +368,10 @@ type SentryMetricAlertTrigger struct {
 	Actions        []SentryMetricAlertTriggerAction `pulumi:"actions"`
 	AlertThreshold float64                          `pulumi:"alertThreshold"`
 	// The ID of this resource.
-	Id    *string `pulumi:"id"`
-	Label string  `pulumi:"label"`
-	// The value at which the Alert rule resolves
+	Id               *string  `pulumi:"id"`
+	Label            string   `pulumi:"label"`
 	ResolveThreshold *float64 `pulumi:"resolveThreshold"`
-	// The type of threshold
-	ThresholdType int `pulumi:"thresholdType"`
+	ThresholdType    int      `pulumi:"thresholdType"`
 }
 
 // SentryMetricAlertTriggerInput is an input type that accepts SentryMetricAlertTriggerArgs and SentryMetricAlertTriggerOutput values.
@@ -455,12 +389,10 @@ type SentryMetricAlertTriggerArgs struct {
 	Actions        SentryMetricAlertTriggerActionArrayInput `pulumi:"actions"`
 	AlertThreshold pulumi.Float64Input                      `pulumi:"alertThreshold"`
 	// The ID of this resource.
-	Id    pulumi.StringPtrInput `pulumi:"id"`
-	Label pulumi.StringInput    `pulumi:"label"`
-	// The value at which the Alert rule resolves
+	Id               pulumi.StringPtrInput  `pulumi:"id"`
+	Label            pulumi.StringInput     `pulumi:"label"`
 	ResolveThreshold pulumi.Float64PtrInput `pulumi:"resolveThreshold"`
-	// The type of threshold
-	ThresholdType pulumi.IntInput `pulumi:"thresholdType"`
+	ThresholdType    pulumi.IntInput        `pulumi:"thresholdType"`
 }
 
 func (SentryMetricAlertTriggerArgs) ElementType() reflect.Type {
@@ -473,12 +405,6 @@ func (i SentryMetricAlertTriggerArgs) ToSentryMetricAlertTriggerOutput() SentryM
 
 func (i SentryMetricAlertTriggerArgs) ToSentryMetricAlertTriggerOutputWithContext(ctx context.Context) SentryMetricAlertTriggerOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertTriggerOutput)
-}
-
-func (i SentryMetricAlertTriggerArgs) ToOutput(ctx context.Context) pulumix.Output[SentryMetricAlertTrigger] {
-	return pulumix.Output[SentryMetricAlertTrigger]{
-		OutputState: i.ToSentryMetricAlertTriggerOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryMetricAlertTriggerArrayInput is an input type that accepts SentryMetricAlertTriggerArray and SentryMetricAlertTriggerArrayOutput values.
@@ -506,12 +432,6 @@ func (i SentryMetricAlertTriggerArray) ToSentryMetricAlertTriggerArrayOutputWith
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertTriggerArrayOutput)
 }
 
-func (i SentryMetricAlertTriggerArray) ToOutput(ctx context.Context) pulumix.Output[[]SentryMetricAlertTrigger] {
-	return pulumix.Output[[]SentryMetricAlertTrigger]{
-		OutputState: i.ToSentryMetricAlertTriggerArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryMetricAlertTriggerOutput struct{ *pulumi.OutputState }
 
 func (SentryMetricAlertTriggerOutput) ElementType() reflect.Type {
@@ -524,12 +444,6 @@ func (o SentryMetricAlertTriggerOutput) ToSentryMetricAlertTriggerOutput() Sentr
 
 func (o SentryMetricAlertTriggerOutput) ToSentryMetricAlertTriggerOutputWithContext(ctx context.Context) SentryMetricAlertTriggerOutput {
 	return o
-}
-
-func (o SentryMetricAlertTriggerOutput) ToOutput(ctx context.Context) pulumix.Output[SentryMetricAlertTrigger] {
-	return pulumix.Output[SentryMetricAlertTrigger]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryMetricAlertTriggerOutput) Actions() SentryMetricAlertTriggerActionArrayOutput {
@@ -549,12 +463,10 @@ func (o SentryMetricAlertTriggerOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v SentryMetricAlertTrigger) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// The value at which the Alert rule resolves
 func (o SentryMetricAlertTriggerOutput) ResolveThreshold() pulumi.Float64PtrOutput {
 	return o.ApplyT(func(v SentryMetricAlertTrigger) *float64 { return v.ResolveThreshold }).(pulumi.Float64PtrOutput)
 }
 
-// The type of threshold
 func (o SentryMetricAlertTriggerOutput) ThresholdType() pulumi.IntOutput {
 	return o.ApplyT(func(v SentryMetricAlertTrigger) int { return v.ThresholdType }).(pulumi.IntOutput)
 }
@@ -573,12 +485,6 @@ func (o SentryMetricAlertTriggerArrayOutput) ToSentryMetricAlertTriggerArrayOutp
 	return o
 }
 
-func (o SentryMetricAlertTriggerArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]SentryMetricAlertTrigger] {
-	return pulumix.Output[[]SentryMetricAlertTrigger]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryMetricAlertTriggerArrayOutput) Index(i pulumi.IntInput) SentryMetricAlertTriggerOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) SentryMetricAlertTrigger {
 		return vs[0].([]SentryMetricAlertTrigger)[vs[1].(int)]
@@ -587,7 +493,9 @@ func (o SentryMetricAlertTriggerArrayOutput) Index(i pulumi.IntInput) SentryMetr
 
 type SentryMetricAlertTriggerAction struct {
 	// The ID of this resource.
-	Id               *string `pulumi:"id"`
+	Id *string `pulumi:"id"`
+	// Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+	InputChannelId   *string `pulumi:"inputChannelId"`
 	IntegrationId    *int    `pulumi:"integrationId"`
 	TargetIdentifier *string `pulumi:"targetIdentifier"`
 	TargetType       string  `pulumi:"targetType"`
@@ -607,7 +515,9 @@ type SentryMetricAlertTriggerActionInput interface {
 
 type SentryMetricAlertTriggerActionArgs struct {
 	// The ID of this resource.
-	Id               pulumi.StringPtrInput `pulumi:"id"`
+	Id pulumi.StringPtrInput `pulumi:"id"`
+	// Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+	InputChannelId   pulumi.StringPtrInput `pulumi:"inputChannelId"`
 	IntegrationId    pulumi.IntPtrInput    `pulumi:"integrationId"`
 	TargetIdentifier pulumi.StringPtrInput `pulumi:"targetIdentifier"`
 	TargetType       pulumi.StringInput    `pulumi:"targetType"`
@@ -624,12 +534,6 @@ func (i SentryMetricAlertTriggerActionArgs) ToSentryMetricAlertTriggerActionOutp
 
 func (i SentryMetricAlertTriggerActionArgs) ToSentryMetricAlertTriggerActionOutputWithContext(ctx context.Context) SentryMetricAlertTriggerActionOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertTriggerActionOutput)
-}
-
-func (i SentryMetricAlertTriggerActionArgs) ToOutput(ctx context.Context) pulumix.Output[SentryMetricAlertTriggerAction] {
-	return pulumix.Output[SentryMetricAlertTriggerAction]{
-		OutputState: i.ToSentryMetricAlertTriggerActionOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryMetricAlertTriggerActionArrayInput is an input type that accepts SentryMetricAlertTriggerActionArray and SentryMetricAlertTriggerActionArrayOutput values.
@@ -657,12 +561,6 @@ func (i SentryMetricAlertTriggerActionArray) ToSentryMetricAlertTriggerActionArr
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertTriggerActionArrayOutput)
 }
 
-func (i SentryMetricAlertTriggerActionArray) ToOutput(ctx context.Context) pulumix.Output[[]SentryMetricAlertTriggerAction] {
-	return pulumix.Output[[]SentryMetricAlertTriggerAction]{
-		OutputState: i.ToSentryMetricAlertTriggerActionArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryMetricAlertTriggerActionOutput struct{ *pulumi.OutputState }
 
 func (SentryMetricAlertTriggerActionOutput) ElementType() reflect.Type {
@@ -677,15 +575,14 @@ func (o SentryMetricAlertTriggerActionOutput) ToSentryMetricAlertTriggerActionOu
 	return o
 }
 
-func (o SentryMetricAlertTriggerActionOutput) ToOutput(ctx context.Context) pulumix.Output[SentryMetricAlertTriggerAction] {
-	return pulumix.Output[SentryMetricAlertTriggerAction]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The ID of this resource.
 func (o SentryMetricAlertTriggerActionOutput) Id() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v SentryMetricAlertTriggerAction) *string { return v.Id }).(pulumi.StringPtrOutput)
+}
+
+// Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+func (o SentryMetricAlertTriggerActionOutput) InputChannelId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v SentryMetricAlertTriggerAction) *string { return v.InputChannelId }).(pulumi.StringPtrOutput)
 }
 
 func (o SentryMetricAlertTriggerActionOutput) IntegrationId() pulumi.IntPtrOutput {
@@ -718,29 +615,524 @@ func (o SentryMetricAlertTriggerActionArrayOutput) ToSentryMetricAlertTriggerAct
 	return o
 }
 
-func (o SentryMetricAlertTriggerActionArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]SentryMetricAlertTriggerAction] {
-	return pulumix.Output[[]SentryMetricAlertTriggerAction]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryMetricAlertTriggerActionArrayOutput) Index(i pulumi.IntInput) SentryMetricAlertTriggerActionOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) SentryMetricAlertTriggerAction {
 		return vs[0].([]SentryMetricAlertTriggerAction)[vs[1].(int)]
 	}).(SentryMetricAlertTriggerActionOutput)
 }
 
-type GetSentryDashboardWidget struct {
-	DisplayType string `pulumi:"displayType"`
+type SentryProjectSymbolSourceLayout struct {
+	// The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+	Casing string `pulumi:"casing"`
+	// The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstoreIndex2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+	Type string `pulumi:"type"`
+}
+
+// SentryProjectSymbolSourceLayoutInput is an input type that accepts SentryProjectSymbolSourceLayoutArgs and SentryProjectSymbolSourceLayoutOutput values.
+// You can construct a concrete instance of `SentryProjectSymbolSourceLayoutInput` via:
+//
+//	SentryProjectSymbolSourceLayoutArgs{...}
+type SentryProjectSymbolSourceLayoutInput interface {
+	pulumi.Input
+
+	ToSentryProjectSymbolSourceLayoutOutput() SentryProjectSymbolSourceLayoutOutput
+	ToSentryProjectSymbolSourceLayoutOutputWithContext(context.Context) SentryProjectSymbolSourceLayoutOutput
+}
+
+type SentryProjectSymbolSourceLayoutArgs struct {
+	// The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+	Casing pulumi.StringInput `pulumi:"casing"`
+	// The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstoreIndex2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+	Type pulumi.StringInput `pulumi:"type"`
+}
+
+func (SentryProjectSymbolSourceLayoutArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*SentryProjectSymbolSourceLayout)(nil)).Elem()
+}
+
+func (i SentryProjectSymbolSourceLayoutArgs) ToSentryProjectSymbolSourceLayoutOutput() SentryProjectSymbolSourceLayoutOutput {
+	return i.ToSentryProjectSymbolSourceLayoutOutputWithContext(context.Background())
+}
+
+func (i SentryProjectSymbolSourceLayoutArgs) ToSentryProjectSymbolSourceLayoutOutputWithContext(ctx context.Context) SentryProjectSymbolSourceLayoutOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectSymbolSourceLayoutOutput)
+}
+
+func (i SentryProjectSymbolSourceLayoutArgs) ToSentryProjectSymbolSourceLayoutPtrOutput() SentryProjectSymbolSourceLayoutPtrOutput {
+	return i.ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(context.Background())
+}
+
+func (i SentryProjectSymbolSourceLayoutArgs) ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(ctx context.Context) SentryProjectSymbolSourceLayoutPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectSymbolSourceLayoutOutput).ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(ctx)
+}
+
+// SentryProjectSymbolSourceLayoutPtrInput is an input type that accepts SentryProjectSymbolSourceLayoutArgs, SentryProjectSymbolSourceLayoutPtr and SentryProjectSymbolSourceLayoutPtrOutput values.
+// You can construct a concrete instance of `SentryProjectSymbolSourceLayoutPtrInput` via:
+//
+//	        SentryProjectSymbolSourceLayoutArgs{...}
+//
+//	or:
+//
+//	        nil
+type SentryProjectSymbolSourceLayoutPtrInput interface {
+	pulumi.Input
+
+	ToSentryProjectSymbolSourceLayoutPtrOutput() SentryProjectSymbolSourceLayoutPtrOutput
+	ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(context.Context) SentryProjectSymbolSourceLayoutPtrOutput
+}
+
+type sentryProjectSymbolSourceLayoutPtrType SentryProjectSymbolSourceLayoutArgs
+
+func SentryProjectSymbolSourceLayoutPtr(v *SentryProjectSymbolSourceLayoutArgs) SentryProjectSymbolSourceLayoutPtrInput {
+	return (*sentryProjectSymbolSourceLayoutPtrType)(v)
+}
+
+func (*sentryProjectSymbolSourceLayoutPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**SentryProjectSymbolSourceLayout)(nil)).Elem()
+}
+
+func (i *sentryProjectSymbolSourceLayoutPtrType) ToSentryProjectSymbolSourceLayoutPtrOutput() SentryProjectSymbolSourceLayoutPtrOutput {
+	return i.ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(context.Background())
+}
+
+func (i *sentryProjectSymbolSourceLayoutPtrType) ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(ctx context.Context) SentryProjectSymbolSourceLayoutPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectSymbolSourceLayoutPtrOutput)
+}
+
+type SentryProjectSymbolSourceLayoutOutput struct{ *pulumi.OutputState }
+
+func (SentryProjectSymbolSourceLayoutOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*SentryProjectSymbolSourceLayout)(nil)).Elem()
+}
+
+func (o SentryProjectSymbolSourceLayoutOutput) ToSentryProjectSymbolSourceLayoutOutput() SentryProjectSymbolSourceLayoutOutput {
+	return o
+}
+
+func (o SentryProjectSymbolSourceLayoutOutput) ToSentryProjectSymbolSourceLayoutOutputWithContext(ctx context.Context) SentryProjectSymbolSourceLayoutOutput {
+	return o
+}
+
+func (o SentryProjectSymbolSourceLayoutOutput) ToSentryProjectSymbolSourceLayoutPtrOutput() SentryProjectSymbolSourceLayoutPtrOutput {
+	return o.ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(context.Background())
+}
+
+func (o SentryProjectSymbolSourceLayoutOutput) ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(ctx context.Context) SentryProjectSymbolSourceLayoutPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v SentryProjectSymbolSourceLayout) *SentryProjectSymbolSourceLayout {
+		return &v
+	}).(SentryProjectSymbolSourceLayoutPtrOutput)
+}
+
+// The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+func (o SentryProjectSymbolSourceLayoutOutput) Casing() pulumi.StringOutput {
+	return o.ApplyT(func(v SentryProjectSymbolSourceLayout) string { return v.Casing }).(pulumi.StringOutput)
+}
+
+// The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstoreIndex2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+func (o SentryProjectSymbolSourceLayoutOutput) Type() pulumi.StringOutput {
+	return o.ApplyT(func(v SentryProjectSymbolSourceLayout) string { return v.Type }).(pulumi.StringOutput)
+}
+
+type SentryProjectSymbolSourceLayoutPtrOutput struct{ *pulumi.OutputState }
+
+func (SentryProjectSymbolSourceLayoutPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**SentryProjectSymbolSourceLayout)(nil)).Elem()
+}
+
+func (o SentryProjectSymbolSourceLayoutPtrOutput) ToSentryProjectSymbolSourceLayoutPtrOutput() SentryProjectSymbolSourceLayoutPtrOutput {
+	return o
+}
+
+func (o SentryProjectSymbolSourceLayoutPtrOutput) ToSentryProjectSymbolSourceLayoutPtrOutputWithContext(ctx context.Context) SentryProjectSymbolSourceLayoutPtrOutput {
+	return o
+}
+
+func (o SentryProjectSymbolSourceLayoutPtrOutput) Elem() SentryProjectSymbolSourceLayoutOutput {
+	return o.ApplyT(func(v *SentryProjectSymbolSourceLayout) SentryProjectSymbolSourceLayout {
+		if v != nil {
+			return *v
+		}
+		var ret SentryProjectSymbolSourceLayout
+		return ret
+	}).(SentryProjectSymbolSourceLayoutOutput)
+}
+
+// The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+func (o SentryProjectSymbolSourceLayoutPtrOutput) Casing() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *SentryProjectSymbolSourceLayout) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Casing
+	}).(pulumi.StringPtrOutput)
+}
+
+// The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstoreIndex2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+func (o SentryProjectSymbolSourceLayoutPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *SentryProjectSymbolSourceLayout) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+type GetSentryAllKeysKey struct {
+	// Security header endpoint for features like CSP and Expect-CT reports.
+	DsnCsp string `pulumi:"dsnCsp"`
+	// The DSN tells the SDK where to send the events to.
+	DsnPublic string `pulumi:"dsnPublic"`
+	// Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
+	DsnSecret string `pulumi:"dsnSecret"`
 	// The ID of this resource.
-	Id       string                           `pulumi:"id"`
-	Interval string                           `pulumi:"interval"`
-	Layouts  []GetSentryDashboardWidgetLayout `pulumi:"layouts"`
-	Limit    int                              `pulumi:"limit"`
-	Queries  []GetSentryDashboardWidgetQuery  `pulumi:"queries"`
-	// Dashboard title.
-	Title      string `pulumi:"title"`
-	WidgetType string `pulumi:"widgetType"`
+	Id string `pulumi:"id"`
+	// The name of the client key.
+	Name string `pulumi:"name"`
+	// The slug of the organization the resource belongs to.
+	Organization string `pulumi:"organization"`
+	// The slug of the project the resource belongs to.
+	Project string `pulumi:"project"`
+	// The ID of the project that the key belongs to.
+	ProjectId string `pulumi:"projectId"`
+	// The public key.
+	Public string `pulumi:"public"`
+	// Number of events that can be reported within the rate limit window.
+	RateLimitCount int `pulumi:"rateLimitCount"`
+	// Length of time that will be considered when checking the rate limit.
+	RateLimitWindow int `pulumi:"rateLimitWindow"`
+	// The secret key.
+	Secret string `pulumi:"secret"`
+}
+
+// GetSentryAllKeysKeyInput is an input type that accepts GetSentryAllKeysKeyArgs and GetSentryAllKeysKeyOutput values.
+// You can construct a concrete instance of `GetSentryAllKeysKeyInput` via:
+//
+//	GetSentryAllKeysKeyArgs{...}
+type GetSentryAllKeysKeyInput interface {
+	pulumi.Input
+
+	ToGetSentryAllKeysKeyOutput() GetSentryAllKeysKeyOutput
+	ToGetSentryAllKeysKeyOutputWithContext(context.Context) GetSentryAllKeysKeyOutput
+}
+
+type GetSentryAllKeysKeyArgs struct {
+	// Security header endpoint for features like CSP and Expect-CT reports.
+	DsnCsp pulumi.StringInput `pulumi:"dsnCsp"`
+	// The DSN tells the SDK where to send the events to.
+	DsnPublic pulumi.StringInput `pulumi:"dsnPublic"`
+	// Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
+	DsnSecret pulumi.StringInput `pulumi:"dsnSecret"`
+	// The ID of this resource.
+	Id pulumi.StringInput `pulumi:"id"`
+	// The name of the client key.
+	Name pulumi.StringInput `pulumi:"name"`
+	// The slug of the organization the resource belongs to.
+	Organization pulumi.StringInput `pulumi:"organization"`
+	// The slug of the project the resource belongs to.
+	Project pulumi.StringInput `pulumi:"project"`
+	// The ID of the project that the key belongs to.
+	ProjectId pulumi.StringInput `pulumi:"projectId"`
+	// The public key.
+	Public pulumi.StringInput `pulumi:"public"`
+	// Number of events that can be reported within the rate limit window.
+	RateLimitCount pulumi.IntInput `pulumi:"rateLimitCount"`
+	// Length of time that will be considered when checking the rate limit.
+	RateLimitWindow pulumi.IntInput `pulumi:"rateLimitWindow"`
+	// The secret key.
+	Secret pulumi.StringInput `pulumi:"secret"`
+}
+
+func (GetSentryAllKeysKeyArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetSentryAllKeysKey)(nil)).Elem()
+}
+
+func (i GetSentryAllKeysKeyArgs) ToGetSentryAllKeysKeyOutput() GetSentryAllKeysKeyOutput {
+	return i.ToGetSentryAllKeysKeyOutputWithContext(context.Background())
+}
+
+func (i GetSentryAllKeysKeyArgs) ToGetSentryAllKeysKeyOutputWithContext(ctx context.Context) GetSentryAllKeysKeyOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetSentryAllKeysKeyOutput)
+}
+
+// GetSentryAllKeysKeyArrayInput is an input type that accepts GetSentryAllKeysKeyArray and GetSentryAllKeysKeyArrayOutput values.
+// You can construct a concrete instance of `GetSentryAllKeysKeyArrayInput` via:
+//
+//	GetSentryAllKeysKeyArray{ GetSentryAllKeysKeyArgs{...} }
+type GetSentryAllKeysKeyArrayInput interface {
+	pulumi.Input
+
+	ToGetSentryAllKeysKeyArrayOutput() GetSentryAllKeysKeyArrayOutput
+	ToGetSentryAllKeysKeyArrayOutputWithContext(context.Context) GetSentryAllKeysKeyArrayOutput
+}
+
+type GetSentryAllKeysKeyArray []GetSentryAllKeysKeyInput
+
+func (GetSentryAllKeysKeyArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetSentryAllKeysKey)(nil)).Elem()
+}
+
+func (i GetSentryAllKeysKeyArray) ToGetSentryAllKeysKeyArrayOutput() GetSentryAllKeysKeyArrayOutput {
+	return i.ToGetSentryAllKeysKeyArrayOutputWithContext(context.Background())
+}
+
+func (i GetSentryAllKeysKeyArray) ToGetSentryAllKeysKeyArrayOutputWithContext(ctx context.Context) GetSentryAllKeysKeyArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetSentryAllKeysKeyArrayOutput)
+}
+
+type GetSentryAllKeysKeyOutput struct{ *pulumi.OutputState }
+
+func (GetSentryAllKeysKeyOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetSentryAllKeysKey)(nil)).Elem()
+}
+
+func (o GetSentryAllKeysKeyOutput) ToGetSentryAllKeysKeyOutput() GetSentryAllKeysKeyOutput {
+	return o
+}
+
+func (o GetSentryAllKeysKeyOutput) ToGetSentryAllKeysKeyOutputWithContext(ctx context.Context) GetSentryAllKeysKeyOutput {
+	return o
+}
+
+// Security header endpoint for features like CSP and Expect-CT reports.
+func (o GetSentryAllKeysKeyOutput) DsnCsp() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.DsnCsp }).(pulumi.StringOutput)
+}
+
+// The DSN tells the SDK where to send the events to.
+func (o GetSentryAllKeysKeyOutput) DsnPublic() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.DsnPublic }).(pulumi.StringOutput)
+}
+
+// Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
+func (o GetSentryAllKeysKeyOutput) DsnSecret() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.DsnSecret }).(pulumi.StringOutput)
+}
+
+// The ID of this resource.
+func (o GetSentryAllKeysKeyOutput) Id() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.Id }).(pulumi.StringOutput)
+}
+
+// The name of the client key.
+func (o GetSentryAllKeysKeyOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.Name }).(pulumi.StringOutput)
+}
+
+// The slug of the organization the resource belongs to.
+func (o GetSentryAllKeysKeyOutput) Organization() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.Organization }).(pulumi.StringOutput)
+}
+
+// The slug of the project the resource belongs to.
+func (o GetSentryAllKeysKeyOutput) Project() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.Project }).(pulumi.StringOutput)
+}
+
+// The ID of the project that the key belongs to.
+func (o GetSentryAllKeysKeyOutput) ProjectId() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.ProjectId }).(pulumi.StringOutput)
+}
+
+// The public key.
+func (o GetSentryAllKeysKeyOutput) Public() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.Public }).(pulumi.StringOutput)
+}
+
+// Number of events that can be reported within the rate limit window.
+func (o GetSentryAllKeysKeyOutput) RateLimitCount() pulumi.IntOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) int { return v.RateLimitCount }).(pulumi.IntOutput)
+}
+
+// Length of time that will be considered when checking the rate limit.
+func (o GetSentryAllKeysKeyOutput) RateLimitWindow() pulumi.IntOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) int { return v.RateLimitWindow }).(pulumi.IntOutput)
+}
+
+// The secret key.
+func (o GetSentryAllKeysKeyOutput) Secret() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllKeysKey) string { return v.Secret }).(pulumi.StringOutput)
+}
+
+type GetSentryAllKeysKeyArrayOutput struct{ *pulumi.OutputState }
+
+func (GetSentryAllKeysKeyArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetSentryAllKeysKey)(nil)).Elem()
+}
+
+func (o GetSentryAllKeysKeyArrayOutput) ToGetSentryAllKeysKeyArrayOutput() GetSentryAllKeysKeyArrayOutput {
+	return o
+}
+
+func (o GetSentryAllKeysKeyArrayOutput) ToGetSentryAllKeysKeyArrayOutputWithContext(ctx context.Context) GetSentryAllKeysKeyArrayOutput {
+	return o
+}
+
+func (o GetSentryAllKeysKeyArrayOutput) Index(i pulumi.IntInput) GetSentryAllKeysKeyOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetSentryAllKeysKey {
+		return vs[0].([]GetSentryAllKeysKey)[vs[1].(int)]
+	}).(GetSentryAllKeysKeyOutput)
+}
+
+type GetSentryAllProjectsProject struct {
+	// The color of this project.
+	Color string `pulumi:"color"`
+	// The date this project was created.
+	DateCreated string `pulumi:"dateCreated"`
+	// The features of this project.
+	Features []string `pulumi:"features"`
+	// The internal ID of this project.
+	InternalId string `pulumi:"internalId"`
+	// The name of this project.
+	Name string `pulumi:"name"`
+	// The platform of this project.
+	Platform string `pulumi:"platform"`
+	// The slug of this project.
+	Slug string `pulumi:"slug"`
+}
+
+// GetSentryAllProjectsProjectInput is an input type that accepts GetSentryAllProjectsProjectArgs and GetSentryAllProjectsProjectOutput values.
+// You can construct a concrete instance of `GetSentryAllProjectsProjectInput` via:
+//
+//	GetSentryAllProjectsProjectArgs{...}
+type GetSentryAllProjectsProjectInput interface {
+	pulumi.Input
+
+	ToGetSentryAllProjectsProjectOutput() GetSentryAllProjectsProjectOutput
+	ToGetSentryAllProjectsProjectOutputWithContext(context.Context) GetSentryAllProjectsProjectOutput
+}
+
+type GetSentryAllProjectsProjectArgs struct {
+	// The color of this project.
+	Color pulumi.StringInput `pulumi:"color"`
+	// The date this project was created.
+	DateCreated pulumi.StringInput `pulumi:"dateCreated"`
+	// The features of this project.
+	Features pulumi.StringArrayInput `pulumi:"features"`
+	// The internal ID of this project.
+	InternalId pulumi.StringInput `pulumi:"internalId"`
+	// The name of this project.
+	Name pulumi.StringInput `pulumi:"name"`
+	// The platform of this project.
+	Platform pulumi.StringInput `pulumi:"platform"`
+	// The slug of this project.
+	Slug pulumi.StringInput `pulumi:"slug"`
+}
+
+func (GetSentryAllProjectsProjectArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetSentryAllProjectsProject)(nil)).Elem()
+}
+
+func (i GetSentryAllProjectsProjectArgs) ToGetSentryAllProjectsProjectOutput() GetSentryAllProjectsProjectOutput {
+	return i.ToGetSentryAllProjectsProjectOutputWithContext(context.Background())
+}
+
+func (i GetSentryAllProjectsProjectArgs) ToGetSentryAllProjectsProjectOutputWithContext(ctx context.Context) GetSentryAllProjectsProjectOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetSentryAllProjectsProjectOutput)
+}
+
+// GetSentryAllProjectsProjectArrayInput is an input type that accepts GetSentryAllProjectsProjectArray and GetSentryAllProjectsProjectArrayOutput values.
+// You can construct a concrete instance of `GetSentryAllProjectsProjectArrayInput` via:
+//
+//	GetSentryAllProjectsProjectArray{ GetSentryAllProjectsProjectArgs{...} }
+type GetSentryAllProjectsProjectArrayInput interface {
+	pulumi.Input
+
+	ToGetSentryAllProjectsProjectArrayOutput() GetSentryAllProjectsProjectArrayOutput
+	ToGetSentryAllProjectsProjectArrayOutputWithContext(context.Context) GetSentryAllProjectsProjectArrayOutput
+}
+
+type GetSentryAllProjectsProjectArray []GetSentryAllProjectsProjectInput
+
+func (GetSentryAllProjectsProjectArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetSentryAllProjectsProject)(nil)).Elem()
+}
+
+func (i GetSentryAllProjectsProjectArray) ToGetSentryAllProjectsProjectArrayOutput() GetSentryAllProjectsProjectArrayOutput {
+	return i.ToGetSentryAllProjectsProjectArrayOutputWithContext(context.Background())
+}
+
+func (i GetSentryAllProjectsProjectArray) ToGetSentryAllProjectsProjectArrayOutputWithContext(ctx context.Context) GetSentryAllProjectsProjectArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetSentryAllProjectsProjectArrayOutput)
+}
+
+type GetSentryAllProjectsProjectOutput struct{ *pulumi.OutputState }
+
+func (GetSentryAllProjectsProjectOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetSentryAllProjectsProject)(nil)).Elem()
+}
+
+func (o GetSentryAllProjectsProjectOutput) ToGetSentryAllProjectsProjectOutput() GetSentryAllProjectsProjectOutput {
+	return o
+}
+
+func (o GetSentryAllProjectsProjectOutput) ToGetSentryAllProjectsProjectOutputWithContext(ctx context.Context) GetSentryAllProjectsProjectOutput {
+	return o
+}
+
+// The color of this project.
+func (o GetSentryAllProjectsProjectOutput) Color() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllProjectsProject) string { return v.Color }).(pulumi.StringOutput)
+}
+
+// The date this project was created.
+func (o GetSentryAllProjectsProjectOutput) DateCreated() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllProjectsProject) string { return v.DateCreated }).(pulumi.StringOutput)
+}
+
+// The features of this project.
+func (o GetSentryAllProjectsProjectOutput) Features() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v GetSentryAllProjectsProject) []string { return v.Features }).(pulumi.StringArrayOutput)
+}
+
+// The internal ID of this project.
+func (o GetSentryAllProjectsProjectOutput) InternalId() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllProjectsProject) string { return v.InternalId }).(pulumi.StringOutput)
+}
+
+// The name of this project.
+func (o GetSentryAllProjectsProjectOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllProjectsProject) string { return v.Name }).(pulumi.StringOutput)
+}
+
+// The platform of this project.
+func (o GetSentryAllProjectsProjectOutput) Platform() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllProjectsProject) string { return v.Platform }).(pulumi.StringOutput)
+}
+
+// The slug of this project.
+func (o GetSentryAllProjectsProjectOutput) Slug() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryAllProjectsProject) string { return v.Slug }).(pulumi.StringOutput)
+}
+
+type GetSentryAllProjectsProjectArrayOutput struct{ *pulumi.OutputState }
+
+func (GetSentryAllProjectsProjectArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetSentryAllProjectsProject)(nil)).Elem()
+}
+
+func (o GetSentryAllProjectsProjectArrayOutput) ToGetSentryAllProjectsProjectArrayOutput() GetSentryAllProjectsProjectArrayOutput {
+	return o
+}
+
+func (o GetSentryAllProjectsProjectArrayOutput) ToGetSentryAllProjectsProjectArrayOutputWithContext(ctx context.Context) GetSentryAllProjectsProjectArrayOutput {
+	return o
+}
+
+func (o GetSentryAllProjectsProjectArrayOutput) Index(i pulumi.IntInput) GetSentryAllProjectsProjectOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetSentryAllProjectsProject {
+		return vs[0].([]GetSentryAllProjectsProject)[vs[1].(int)]
+	}).(GetSentryAllProjectsProjectOutput)
+}
+
+type GetSentryDashboardWidget struct {
+	DisplayType string                           `pulumi:"displayType"`
+	Id          string                           `pulumi:"id"`
+	Interval    string                           `pulumi:"interval"`
+	Layouts     []GetSentryDashboardWidgetLayout `pulumi:"layouts"`
+	Limit       int                              `pulumi:"limit"`
+	Queries     []GetSentryDashboardWidgetQuery  `pulumi:"queries"`
+	Title       string                           `pulumi:"title"`
+	WidgetType  string                           `pulumi:"widgetType"`
 }
 
 // GetSentryDashboardWidgetInput is an input type that accepts GetSentryDashboardWidgetArgs and GetSentryDashboardWidgetOutput values.
@@ -755,16 +1147,14 @@ type GetSentryDashboardWidgetInput interface {
 }
 
 type GetSentryDashboardWidgetArgs struct {
-	DisplayType pulumi.StringInput `pulumi:"displayType"`
-	// The ID of this resource.
-	Id       pulumi.StringInput                       `pulumi:"id"`
-	Interval pulumi.StringInput                       `pulumi:"interval"`
-	Layouts  GetSentryDashboardWidgetLayoutArrayInput `pulumi:"layouts"`
-	Limit    pulumi.IntInput                          `pulumi:"limit"`
-	Queries  GetSentryDashboardWidgetQueryArrayInput  `pulumi:"queries"`
-	// Dashboard title.
-	Title      pulumi.StringInput `pulumi:"title"`
-	WidgetType pulumi.StringInput `pulumi:"widgetType"`
+	DisplayType pulumi.StringInput                       `pulumi:"displayType"`
+	Id          pulumi.StringInput                       `pulumi:"id"`
+	Interval    pulumi.StringInput                       `pulumi:"interval"`
+	Layouts     GetSentryDashboardWidgetLayoutArrayInput `pulumi:"layouts"`
+	Limit       pulumi.IntInput                          `pulumi:"limit"`
+	Queries     GetSentryDashboardWidgetQueryArrayInput  `pulumi:"queries"`
+	Title       pulumi.StringInput                       `pulumi:"title"`
+	WidgetType  pulumi.StringInput                       `pulumi:"widgetType"`
 }
 
 func (GetSentryDashboardWidgetArgs) ElementType() reflect.Type {
@@ -777,12 +1167,6 @@ func (i GetSentryDashboardWidgetArgs) ToGetSentryDashboardWidgetOutput() GetSent
 
 func (i GetSentryDashboardWidgetArgs) ToGetSentryDashboardWidgetOutputWithContext(ctx context.Context) GetSentryDashboardWidgetOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryDashboardWidgetOutput)
-}
-
-func (i GetSentryDashboardWidgetArgs) ToOutput(ctx context.Context) pulumix.Output[GetSentryDashboardWidget] {
-	return pulumix.Output[GetSentryDashboardWidget]{
-		OutputState: i.ToGetSentryDashboardWidgetOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetSentryDashboardWidgetArrayInput is an input type that accepts GetSentryDashboardWidgetArray and GetSentryDashboardWidgetArrayOutput values.
@@ -810,12 +1194,6 @@ func (i GetSentryDashboardWidgetArray) ToGetSentryDashboardWidgetArrayOutputWith
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryDashboardWidgetArrayOutput)
 }
 
-func (i GetSentryDashboardWidgetArray) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryDashboardWidget] {
-	return pulumix.Output[[]GetSentryDashboardWidget]{
-		OutputState: i.ToGetSentryDashboardWidgetArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetSentryDashboardWidgetOutput struct{ *pulumi.OutputState }
 
 func (GetSentryDashboardWidgetOutput) ElementType() reflect.Type {
@@ -830,17 +1208,10 @@ func (o GetSentryDashboardWidgetOutput) ToGetSentryDashboardWidgetOutputWithCont
 	return o
 }
 
-func (o GetSentryDashboardWidgetOutput) ToOutput(ctx context.Context) pulumix.Output[GetSentryDashboardWidget] {
-	return pulumix.Output[GetSentryDashboardWidget]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetSentryDashboardWidgetOutput) DisplayType() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryDashboardWidget) string { return v.DisplayType }).(pulumi.StringOutput)
 }
 
-// The ID of this resource.
 func (o GetSentryDashboardWidgetOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryDashboardWidget) string { return v.Id }).(pulumi.StringOutput)
 }
@@ -861,7 +1232,6 @@ func (o GetSentryDashboardWidgetOutput) Queries() GetSentryDashboardWidgetQueryA
 	return o.ApplyT(func(v GetSentryDashboardWidget) []GetSentryDashboardWidgetQuery { return v.Queries }).(GetSentryDashboardWidgetQueryArrayOutput)
 }
 
-// Dashboard title.
 func (o GetSentryDashboardWidgetOutput) Title() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryDashboardWidget) string { return v.Title }).(pulumi.StringOutput)
 }
@@ -882,12 +1252,6 @@ func (o GetSentryDashboardWidgetArrayOutput) ToGetSentryDashboardWidgetArrayOutp
 
 func (o GetSentryDashboardWidgetArrayOutput) ToGetSentryDashboardWidgetArrayOutputWithContext(ctx context.Context) GetSentryDashboardWidgetArrayOutput {
 	return o
-}
-
-func (o GetSentryDashboardWidgetArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryDashboardWidget] {
-	return pulumix.Output[[]GetSentryDashboardWidget]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GetSentryDashboardWidgetArrayOutput) Index(i pulumi.IntInput) GetSentryDashboardWidgetOutput {
@@ -935,12 +1299,6 @@ func (i GetSentryDashboardWidgetLayoutArgs) ToGetSentryDashboardWidgetLayoutOutp
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryDashboardWidgetLayoutOutput)
 }
 
-func (i GetSentryDashboardWidgetLayoutArgs) ToOutput(ctx context.Context) pulumix.Output[GetSentryDashboardWidgetLayout] {
-	return pulumix.Output[GetSentryDashboardWidgetLayout]{
-		OutputState: i.ToGetSentryDashboardWidgetLayoutOutputWithContext(ctx).OutputState,
-	}
-}
-
 // GetSentryDashboardWidgetLayoutArrayInput is an input type that accepts GetSentryDashboardWidgetLayoutArray and GetSentryDashboardWidgetLayoutArrayOutput values.
 // You can construct a concrete instance of `GetSentryDashboardWidgetLayoutArrayInput` via:
 //
@@ -966,12 +1324,6 @@ func (i GetSentryDashboardWidgetLayoutArray) ToGetSentryDashboardWidgetLayoutArr
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryDashboardWidgetLayoutArrayOutput)
 }
 
-func (i GetSentryDashboardWidgetLayoutArray) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryDashboardWidgetLayout] {
-	return pulumix.Output[[]GetSentryDashboardWidgetLayout]{
-		OutputState: i.ToGetSentryDashboardWidgetLayoutArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetSentryDashboardWidgetLayoutOutput struct{ *pulumi.OutputState }
 
 func (GetSentryDashboardWidgetLayoutOutput) ElementType() reflect.Type {
@@ -984,12 +1336,6 @@ func (o GetSentryDashboardWidgetLayoutOutput) ToGetSentryDashboardWidgetLayoutOu
 
 func (o GetSentryDashboardWidgetLayoutOutput) ToGetSentryDashboardWidgetLayoutOutputWithContext(ctx context.Context) GetSentryDashboardWidgetLayoutOutput {
 	return o
-}
-
-func (o GetSentryDashboardWidgetLayoutOutput) ToOutput(ctx context.Context) pulumix.Output[GetSentryDashboardWidgetLayout] {
-	return pulumix.Output[GetSentryDashboardWidgetLayout]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GetSentryDashboardWidgetLayoutOutput) H() pulumi.IntOutput {
@@ -1026,12 +1372,6 @@ func (o GetSentryDashboardWidgetLayoutArrayOutput) ToGetSentryDashboardWidgetLay
 	return o
 }
 
-func (o GetSentryDashboardWidgetLayoutArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryDashboardWidgetLayout] {
-	return pulumix.Output[[]GetSentryDashboardWidgetLayout]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetSentryDashboardWidgetLayoutArrayOutput) Index(i pulumi.IntInput) GetSentryDashboardWidgetLayoutOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetSentryDashboardWidgetLayout {
 		return vs[0].([]GetSentryDashboardWidgetLayout)[vs[1].(int)]
@@ -1044,10 +1384,9 @@ type GetSentryDashboardWidgetQuery struct {
 	Conditions   string   `pulumi:"conditions"`
 	FieldAliases []string `pulumi:"fieldAliases"`
 	Fields       []string `pulumi:"fields"`
-	// The ID of this resource.
-	Id      string `pulumi:"id"`
-	Name    string `pulumi:"name"`
-	OrderBy string `pulumi:"orderBy"`
+	Id           string   `pulumi:"id"`
+	Name         string   `pulumi:"name"`
+	OrderBy      string   `pulumi:"orderBy"`
 }
 
 // GetSentryDashboardWidgetQueryInput is an input type that accepts GetSentryDashboardWidgetQueryArgs and GetSentryDashboardWidgetQueryOutput values.
@@ -1067,10 +1406,9 @@ type GetSentryDashboardWidgetQueryArgs struct {
 	Conditions   pulumi.StringInput      `pulumi:"conditions"`
 	FieldAliases pulumi.StringArrayInput `pulumi:"fieldAliases"`
 	Fields       pulumi.StringArrayInput `pulumi:"fields"`
-	// The ID of this resource.
-	Id      pulumi.StringInput `pulumi:"id"`
-	Name    pulumi.StringInput `pulumi:"name"`
-	OrderBy pulumi.StringInput `pulumi:"orderBy"`
+	Id           pulumi.StringInput      `pulumi:"id"`
+	Name         pulumi.StringInput      `pulumi:"name"`
+	OrderBy      pulumi.StringInput      `pulumi:"orderBy"`
 }
 
 func (GetSentryDashboardWidgetQueryArgs) ElementType() reflect.Type {
@@ -1083,12 +1421,6 @@ func (i GetSentryDashboardWidgetQueryArgs) ToGetSentryDashboardWidgetQueryOutput
 
 func (i GetSentryDashboardWidgetQueryArgs) ToGetSentryDashboardWidgetQueryOutputWithContext(ctx context.Context) GetSentryDashboardWidgetQueryOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryDashboardWidgetQueryOutput)
-}
-
-func (i GetSentryDashboardWidgetQueryArgs) ToOutput(ctx context.Context) pulumix.Output[GetSentryDashboardWidgetQuery] {
-	return pulumix.Output[GetSentryDashboardWidgetQuery]{
-		OutputState: i.ToGetSentryDashboardWidgetQueryOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetSentryDashboardWidgetQueryArrayInput is an input type that accepts GetSentryDashboardWidgetQueryArray and GetSentryDashboardWidgetQueryArrayOutput values.
@@ -1116,12 +1448,6 @@ func (i GetSentryDashboardWidgetQueryArray) ToGetSentryDashboardWidgetQueryArray
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryDashboardWidgetQueryArrayOutput)
 }
 
-func (i GetSentryDashboardWidgetQueryArray) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryDashboardWidgetQuery] {
-	return pulumix.Output[[]GetSentryDashboardWidgetQuery]{
-		OutputState: i.ToGetSentryDashboardWidgetQueryArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetSentryDashboardWidgetQueryOutput struct{ *pulumi.OutputState }
 
 func (GetSentryDashboardWidgetQueryOutput) ElementType() reflect.Type {
@@ -1134,12 +1460,6 @@ func (o GetSentryDashboardWidgetQueryOutput) ToGetSentryDashboardWidgetQueryOutp
 
 func (o GetSentryDashboardWidgetQueryOutput) ToGetSentryDashboardWidgetQueryOutputWithContext(ctx context.Context) GetSentryDashboardWidgetQueryOutput {
 	return o
-}
-
-func (o GetSentryDashboardWidgetQueryOutput) ToOutput(ctx context.Context) pulumix.Output[GetSentryDashboardWidgetQuery] {
-	return pulumix.Output[GetSentryDashboardWidgetQuery]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GetSentryDashboardWidgetQueryOutput) Aggregates() pulumi.StringArrayOutput {
@@ -1162,7 +1482,6 @@ func (o GetSentryDashboardWidgetQueryOutput) Fields() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v GetSentryDashboardWidgetQuery) []string { return v.Fields }).(pulumi.StringArrayOutput)
 }
 
-// The ID of this resource.
 func (o GetSentryDashboardWidgetQueryOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryDashboardWidgetQuery) string { return v.Id }).(pulumi.StringOutput)
 }
@@ -1189,12 +1508,6 @@ func (o GetSentryDashboardWidgetQueryArrayOutput) ToGetSentryDashboardWidgetQuer
 	return o
 }
 
-func (o GetSentryDashboardWidgetQueryArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryDashboardWidgetQuery] {
-	return pulumix.Output[[]GetSentryDashboardWidgetQuery]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetSentryDashboardWidgetQueryArrayOutput) Index(i pulumi.IntInput) GetSentryDashboardWidgetQueryOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetSentryDashboardWidgetQuery {
 		return vs[0].([]GetSentryDashboardWidgetQuery)[vs[1].(int)]
@@ -1202,13 +1515,12 @@ func (o GetSentryDashboardWidgetQueryArrayOutput) Index(i pulumi.IntInput) GetSe
 }
 
 type GetSentryMetricAlertTrigger struct {
-	Actions        []GetSentryMetricAlertTriggerAction `pulumi:"actions"`
-	AlertThreshold float64                             `pulumi:"alertThreshold"`
-	// The ID of this resource.
-	Id               string  `pulumi:"id"`
-	Label            string  `pulumi:"label"`
-	ResolveThreshold float64 `pulumi:"resolveThreshold"`
-	ThresholdType    int     `pulumi:"thresholdType"`
+	Actions          []GetSentryMetricAlertTriggerAction `pulumi:"actions"`
+	AlertThreshold   float64                             `pulumi:"alertThreshold"`
+	Id               string                              `pulumi:"id"`
+	Label            string                              `pulumi:"label"`
+	ResolveThreshold float64                             `pulumi:"resolveThreshold"`
+	ThresholdType    int                                 `pulumi:"thresholdType"`
 }
 
 // GetSentryMetricAlertTriggerInput is an input type that accepts GetSentryMetricAlertTriggerArgs and GetSentryMetricAlertTriggerOutput values.
@@ -1223,13 +1535,12 @@ type GetSentryMetricAlertTriggerInput interface {
 }
 
 type GetSentryMetricAlertTriggerArgs struct {
-	Actions        GetSentryMetricAlertTriggerActionArrayInput `pulumi:"actions"`
-	AlertThreshold pulumi.Float64Input                         `pulumi:"alertThreshold"`
-	// The ID of this resource.
-	Id               pulumi.StringInput  `pulumi:"id"`
-	Label            pulumi.StringInput  `pulumi:"label"`
-	ResolveThreshold pulumi.Float64Input `pulumi:"resolveThreshold"`
-	ThresholdType    pulumi.IntInput     `pulumi:"thresholdType"`
+	Actions          GetSentryMetricAlertTriggerActionArrayInput `pulumi:"actions"`
+	AlertThreshold   pulumi.Float64Input                         `pulumi:"alertThreshold"`
+	Id               pulumi.StringInput                          `pulumi:"id"`
+	Label            pulumi.StringInput                          `pulumi:"label"`
+	ResolveThreshold pulumi.Float64Input                         `pulumi:"resolveThreshold"`
+	ThresholdType    pulumi.IntInput                             `pulumi:"thresholdType"`
 }
 
 func (GetSentryMetricAlertTriggerArgs) ElementType() reflect.Type {
@@ -1242,12 +1553,6 @@ func (i GetSentryMetricAlertTriggerArgs) ToGetSentryMetricAlertTriggerOutput() G
 
 func (i GetSentryMetricAlertTriggerArgs) ToGetSentryMetricAlertTriggerOutputWithContext(ctx context.Context) GetSentryMetricAlertTriggerOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryMetricAlertTriggerOutput)
-}
-
-func (i GetSentryMetricAlertTriggerArgs) ToOutput(ctx context.Context) pulumix.Output[GetSentryMetricAlertTrigger] {
-	return pulumix.Output[GetSentryMetricAlertTrigger]{
-		OutputState: i.ToGetSentryMetricAlertTriggerOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetSentryMetricAlertTriggerArrayInput is an input type that accepts GetSentryMetricAlertTriggerArray and GetSentryMetricAlertTriggerArrayOutput values.
@@ -1275,12 +1580,6 @@ func (i GetSentryMetricAlertTriggerArray) ToGetSentryMetricAlertTriggerArrayOutp
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryMetricAlertTriggerArrayOutput)
 }
 
-func (i GetSentryMetricAlertTriggerArray) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryMetricAlertTrigger] {
-	return pulumix.Output[[]GetSentryMetricAlertTrigger]{
-		OutputState: i.ToGetSentryMetricAlertTriggerArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetSentryMetricAlertTriggerOutput struct{ *pulumi.OutputState }
 
 func (GetSentryMetricAlertTriggerOutput) ElementType() reflect.Type {
@@ -1295,12 +1594,6 @@ func (o GetSentryMetricAlertTriggerOutput) ToGetSentryMetricAlertTriggerOutputWi
 	return o
 }
 
-func (o GetSentryMetricAlertTriggerOutput) ToOutput(ctx context.Context) pulumix.Output[GetSentryMetricAlertTrigger] {
-	return pulumix.Output[GetSentryMetricAlertTrigger]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetSentryMetricAlertTriggerOutput) Actions() GetSentryMetricAlertTriggerActionArrayOutput {
 	return o.ApplyT(func(v GetSentryMetricAlertTrigger) []GetSentryMetricAlertTriggerAction { return v.Actions }).(GetSentryMetricAlertTriggerActionArrayOutput)
 }
@@ -1309,7 +1602,6 @@ func (o GetSentryMetricAlertTriggerOutput) AlertThreshold() pulumi.Float64Output
 	return o.ApplyT(func(v GetSentryMetricAlertTrigger) float64 { return v.AlertThreshold }).(pulumi.Float64Output)
 }
 
-// The ID of this resource.
 func (o GetSentryMetricAlertTriggerOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryMetricAlertTrigger) string { return v.Id }).(pulumi.StringOutput)
 }
@@ -1340,12 +1632,6 @@ func (o GetSentryMetricAlertTriggerArrayOutput) ToGetSentryMetricAlertTriggerArr
 	return o
 }
 
-func (o GetSentryMetricAlertTriggerArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryMetricAlertTrigger] {
-	return pulumix.Output[[]GetSentryMetricAlertTrigger]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetSentryMetricAlertTriggerArrayOutput) Index(i pulumi.IntInput) GetSentryMetricAlertTriggerOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetSentryMetricAlertTrigger {
 		return vs[0].([]GetSentryMetricAlertTrigger)[vs[1].(int)]
@@ -1353,8 +1639,8 @@ func (o GetSentryMetricAlertTriggerArrayOutput) Index(i pulumi.IntInput) GetSent
 }
 
 type GetSentryMetricAlertTriggerAction struct {
-	// The ID of this resource.
 	Id               string `pulumi:"id"`
+	InputChannelId   string `pulumi:"inputChannelId"`
 	IntegrationId    int    `pulumi:"integrationId"`
 	TargetIdentifier string `pulumi:"targetIdentifier"`
 	TargetType       string `pulumi:"targetType"`
@@ -1373,8 +1659,8 @@ type GetSentryMetricAlertTriggerActionInput interface {
 }
 
 type GetSentryMetricAlertTriggerActionArgs struct {
-	// The ID of this resource.
 	Id               pulumi.StringInput `pulumi:"id"`
+	InputChannelId   pulumi.StringInput `pulumi:"inputChannelId"`
 	IntegrationId    pulumi.IntInput    `pulumi:"integrationId"`
 	TargetIdentifier pulumi.StringInput `pulumi:"targetIdentifier"`
 	TargetType       pulumi.StringInput `pulumi:"targetType"`
@@ -1391,12 +1677,6 @@ func (i GetSentryMetricAlertTriggerActionArgs) ToGetSentryMetricAlertTriggerActi
 
 func (i GetSentryMetricAlertTriggerActionArgs) ToGetSentryMetricAlertTriggerActionOutputWithContext(ctx context.Context) GetSentryMetricAlertTriggerActionOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryMetricAlertTriggerActionOutput)
-}
-
-func (i GetSentryMetricAlertTriggerActionArgs) ToOutput(ctx context.Context) pulumix.Output[GetSentryMetricAlertTriggerAction] {
-	return pulumix.Output[GetSentryMetricAlertTriggerAction]{
-		OutputState: i.ToGetSentryMetricAlertTriggerActionOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GetSentryMetricAlertTriggerActionArrayInput is an input type that accepts GetSentryMetricAlertTriggerActionArray and GetSentryMetricAlertTriggerActionArrayOutput values.
@@ -1424,12 +1704,6 @@ func (i GetSentryMetricAlertTriggerActionArray) ToGetSentryMetricAlertTriggerAct
 	return pulumi.ToOutputWithContext(ctx, i).(GetSentryMetricAlertTriggerActionArrayOutput)
 }
 
-func (i GetSentryMetricAlertTriggerActionArray) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryMetricAlertTriggerAction] {
-	return pulumix.Output[[]GetSentryMetricAlertTriggerAction]{
-		OutputState: i.ToGetSentryMetricAlertTriggerActionArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetSentryMetricAlertTriggerActionOutput struct{ *pulumi.OutputState }
 
 func (GetSentryMetricAlertTriggerActionOutput) ElementType() reflect.Type {
@@ -1444,15 +1718,12 @@ func (o GetSentryMetricAlertTriggerActionOutput) ToGetSentryMetricAlertTriggerAc
 	return o
 }
 
-func (o GetSentryMetricAlertTriggerActionOutput) ToOutput(ctx context.Context) pulumix.Output[GetSentryMetricAlertTriggerAction] {
-	return pulumix.Output[GetSentryMetricAlertTriggerAction]{
-		OutputState: o.OutputState,
-	}
-}
-
-// The ID of this resource.
 func (o GetSentryMetricAlertTriggerActionOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryMetricAlertTriggerAction) string { return v.Id }).(pulumi.StringOutput)
+}
+
+func (o GetSentryMetricAlertTriggerActionOutput) InputChannelId() pulumi.StringOutput {
+	return o.ApplyT(func(v GetSentryMetricAlertTriggerAction) string { return v.InputChannelId }).(pulumi.StringOutput)
 }
 
 func (o GetSentryMetricAlertTriggerActionOutput) IntegrationId() pulumi.IntOutput {
@@ -1485,12 +1756,6 @@ func (o GetSentryMetricAlertTriggerActionArrayOutput) ToGetSentryMetricAlertTrig
 	return o
 }
 
-func (o GetSentryMetricAlertTriggerActionArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetSentryMetricAlertTriggerAction] {
-	return pulumix.Output[[]GetSentryMetricAlertTriggerAction]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GetSentryMetricAlertTriggerActionArrayOutput) Index(i pulumi.IntInput) GetSentryMetricAlertTriggerActionOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetSentryMetricAlertTriggerAction {
 		return vs[0].([]GetSentryMetricAlertTriggerAction)[vs[1].(int)]
@@ -1507,6 +1772,12 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*SentryMetricAlertTriggerArrayInput)(nil)).Elem(), SentryMetricAlertTriggerArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*SentryMetricAlertTriggerActionInput)(nil)).Elem(), SentryMetricAlertTriggerActionArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*SentryMetricAlertTriggerActionArrayInput)(nil)).Elem(), SentryMetricAlertTriggerActionArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SentryProjectSymbolSourceLayoutInput)(nil)).Elem(), SentryProjectSymbolSourceLayoutArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SentryProjectSymbolSourceLayoutPtrInput)(nil)).Elem(), SentryProjectSymbolSourceLayoutArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetSentryAllKeysKeyInput)(nil)).Elem(), GetSentryAllKeysKeyArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetSentryAllKeysKeyArrayInput)(nil)).Elem(), GetSentryAllKeysKeyArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetSentryAllProjectsProjectInput)(nil)).Elem(), GetSentryAllProjectsProjectArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetSentryAllProjectsProjectArrayInput)(nil)).Elem(), GetSentryAllProjectsProjectArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetSentryDashboardWidgetInput)(nil)).Elem(), GetSentryDashboardWidgetArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetSentryDashboardWidgetArrayInput)(nil)).Elem(), GetSentryDashboardWidgetArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetSentryDashboardWidgetLayoutInput)(nil)).Elem(), GetSentryDashboardWidgetLayoutArgs{})
@@ -1526,6 +1797,12 @@ func init() {
 	pulumi.RegisterOutputType(SentryMetricAlertTriggerArrayOutput{})
 	pulumi.RegisterOutputType(SentryMetricAlertTriggerActionOutput{})
 	pulumi.RegisterOutputType(SentryMetricAlertTriggerActionArrayOutput{})
+	pulumi.RegisterOutputType(SentryProjectSymbolSourceLayoutOutput{})
+	pulumi.RegisterOutputType(SentryProjectSymbolSourceLayoutPtrOutput{})
+	pulumi.RegisterOutputType(GetSentryAllKeysKeyOutput{})
+	pulumi.RegisterOutputType(GetSentryAllKeysKeyArrayOutput{})
+	pulumi.RegisterOutputType(GetSentryAllProjectsProjectOutput{})
+	pulumi.RegisterOutputType(GetSentryAllProjectsProjectArrayOutput{})
 	pulumi.RegisterOutputType(GetSentryDashboardWidgetOutput{})
 	pulumi.RegisterOutputType(GetSentryDashboardWidgetArrayOutput{})
 	pulumi.RegisterOutputType(GetSentryDashboardWidgetLayoutOutput{})

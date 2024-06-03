@@ -9,10 +9,11 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
+// Resource for managing Sentry organization members. To add a member to a team, use the `SentryTeamMember` resource.
+//
 // ## Example Usage
 //
 // ```go
@@ -27,13 +28,11 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Create an organization member
 //			_, err := sentry.NewSentryOrganizationMember(ctx, "johnDoe", &sentry.SentryOrganizationMemberArgs{
 //				Email:        pulumi.String("test@example.com"),
 //				Organization: pulumi.String("my-organization"),
 //				Role:         pulumi.String("member"),
-//				Teams: pulumi.StringArray{
-//					pulumi.String("my-team"),
-//				},
 //			})
 //			if err != nil {
 //				return err
@@ -46,12 +45,12 @@ import (
 //
 // ## Import
 //
-// import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+// import using the organization, membership id from the URL:
+//
+// https://sentry.io/settings/[org-slug]/members/[member-id]/
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
-//
+// $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
 // ```
 type SentryOrganizationMember struct {
 	pulumi.CustomResourceState
@@ -68,8 +67,6 @@ type SentryOrganizationMember struct {
 	Pending pulumi.BoolOutput `pulumi:"pending"`
 	// This is the role of the organization member.
 	Role pulumi.StringOutput `pulumi:"role"`
-	// The teams the organization member should be added to.
-	Teams pulumi.StringArrayOutput `pulumi:"teams"`
 }
 
 // NewSentryOrganizationMember registers a new resource with the given unique name, arguments, and options.
@@ -123,8 +120,6 @@ type sentryOrganizationMemberState struct {
 	Pending *bool `pulumi:"pending"`
 	// This is the role of the organization member.
 	Role *string `pulumi:"role"`
-	// The teams the organization member should be added to.
-	Teams []string `pulumi:"teams"`
 }
 
 type SentryOrganizationMemberState struct {
@@ -140,8 +135,6 @@ type SentryOrganizationMemberState struct {
 	Pending pulumi.BoolPtrInput
 	// This is the role of the organization member.
 	Role pulumi.StringPtrInput
-	// The teams the organization member should be added to.
-	Teams pulumi.StringArrayInput
 }
 
 func (SentryOrganizationMemberState) ElementType() reflect.Type {
@@ -155,8 +148,6 @@ type sentryOrganizationMemberArgs struct {
 	Organization string `pulumi:"organization"`
 	// This is the role of the organization member.
 	Role string `pulumi:"role"`
-	// The teams the organization member should be added to.
-	Teams []string `pulumi:"teams"`
 }
 
 // The set of arguments for constructing a SentryOrganizationMember resource.
@@ -167,8 +158,6 @@ type SentryOrganizationMemberArgs struct {
 	Organization pulumi.StringInput
 	// This is the role of the organization member.
 	Role pulumi.StringInput
-	// The teams the organization member should be added to.
-	Teams pulumi.StringArrayInput
 }
 
 func (SentryOrganizationMemberArgs) ElementType() reflect.Type {
@@ -192,12 +181,6 @@ func (i *SentryOrganizationMember) ToSentryOrganizationMemberOutput() SentryOrga
 
 func (i *SentryOrganizationMember) ToSentryOrganizationMemberOutputWithContext(ctx context.Context) SentryOrganizationMemberOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationMemberOutput)
-}
-
-func (i *SentryOrganizationMember) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganizationMember] {
-	return pulumix.Output[*SentryOrganizationMember]{
-		OutputState: i.ToSentryOrganizationMemberOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryOrganizationMemberArrayInput is an input type that accepts SentryOrganizationMemberArray and SentryOrganizationMemberArrayOutput values.
@@ -225,12 +208,6 @@ func (i SentryOrganizationMemberArray) ToSentryOrganizationMemberArrayOutputWith
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationMemberArrayOutput)
 }
 
-func (i SentryOrganizationMemberArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganizationMember] {
-	return pulumix.Output[[]*SentryOrganizationMember]{
-		OutputState: i.ToSentryOrganizationMemberArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryOrganizationMemberMapInput is an input type that accepts SentryOrganizationMemberMap and SentryOrganizationMemberMapOutput values.
 // You can construct a concrete instance of `SentryOrganizationMemberMapInput` via:
 //
@@ -256,12 +233,6 @@ func (i SentryOrganizationMemberMap) ToSentryOrganizationMemberMapOutputWithCont
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationMemberMapOutput)
 }
 
-func (i SentryOrganizationMemberMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganizationMember] {
-	return pulumix.Output[map[string]*SentryOrganizationMember]{
-		OutputState: i.ToSentryOrganizationMemberMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryOrganizationMemberOutput struct{ *pulumi.OutputState }
 
 func (SentryOrganizationMemberOutput) ElementType() reflect.Type {
@@ -274,12 +245,6 @@ func (o SentryOrganizationMemberOutput) ToSentryOrganizationMemberOutput() Sentr
 
 func (o SentryOrganizationMemberOutput) ToSentryOrganizationMemberOutputWithContext(ctx context.Context) SentryOrganizationMemberOutput {
 	return o
-}
-
-func (o SentryOrganizationMemberOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganizationMember] {
-	return pulumix.Output[*SentryOrganizationMember]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The email of the organization member.
@@ -312,11 +277,6 @@ func (o SentryOrganizationMemberOutput) Role() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryOrganizationMember) pulumi.StringOutput { return v.Role }).(pulumi.StringOutput)
 }
 
-// The teams the organization member should be added to.
-func (o SentryOrganizationMemberOutput) Teams() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *SentryOrganizationMember) pulumi.StringArrayOutput { return v.Teams }).(pulumi.StringArrayOutput)
-}
-
 type SentryOrganizationMemberArrayOutput struct{ *pulumi.OutputState }
 
 func (SentryOrganizationMemberArrayOutput) ElementType() reflect.Type {
@@ -329,12 +289,6 @@ func (o SentryOrganizationMemberArrayOutput) ToSentryOrganizationMemberArrayOutp
 
 func (o SentryOrganizationMemberArrayOutput) ToSentryOrganizationMemberArrayOutputWithContext(ctx context.Context) SentryOrganizationMemberArrayOutput {
 	return o
-}
-
-func (o SentryOrganizationMemberArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganizationMember] {
-	return pulumix.Output[[]*SentryOrganizationMember]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryOrganizationMemberArrayOutput) Index(i pulumi.IntInput) SentryOrganizationMemberOutput {
@@ -355,12 +309,6 @@ func (o SentryOrganizationMemberMapOutput) ToSentryOrganizationMemberMapOutput()
 
 func (o SentryOrganizationMemberMapOutput) ToSentryOrganizationMemberMapOutputWithContext(ctx context.Context) SentryOrganizationMemberMapOutput {
 	return o
-}
-
-func (o SentryOrganizationMemberMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganizationMember] {
-	return pulumix.Output[map[string]*SentryOrganizationMember]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryOrganizationMemberMapOutput) MapIndex(k pulumi.StringInput) SentryOrganizationMemberOutput {

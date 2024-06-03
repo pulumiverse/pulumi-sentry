@@ -19,9 +19,6 @@ namespace Pulumiverse.Sentry.Outputs
         public readonly string Conditions;
         public readonly ImmutableArray<string> FieldAliases;
         public readonly ImmutableArray<string> Fields;
-        /// <summary>
-        /// The ID of this resource.
-        /// </summary>
         public readonly string Id;
         public readonly string Name;
         public readonly string OrderBy;
