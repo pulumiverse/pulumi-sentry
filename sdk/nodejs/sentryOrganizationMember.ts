@@ -5,6 +5,8 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
+ * Resource for managing Sentry organization members. To add a member to a team, use the `sentry.SentryTeamMember` resource.
+ *
  * ## Example Usage
  *
  * ```typescript
@@ -16,16 +18,17 @@ import * as utilities from "./utilities";
  *     email: "test@example.com",
  *     organization: "my-organization",
  *     role: "member",
- *     teams: ["my-team"],
  * });
  * ```
  *
  * ## Import
  *
- * import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+ * import using the organization, membership id from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/members/[member-id]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
+ * $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
  * ```
  */
 export class SentryOrganizationMember extends pulumi.CustomResource {
@@ -80,10 +83,6 @@ export class SentryOrganizationMember extends pulumi.CustomResource {
      * This is the role of the organization member.
      */
     public readonly role!: pulumi.Output<string>;
-    /**
-     * The teams the organization member should be added to.
-     */
-    public readonly teams!: pulumi.Output<string[] | undefined>;
 
     /**
      * Create a SentryOrganizationMember resource with the given unique name, arguments, and options.
@@ -104,7 +103,6 @@ export class SentryOrganizationMember extends pulumi.CustomResource {
             resourceInputs["organization"] = state ? state.organization : undefined;
             resourceInputs["pending"] = state ? state.pending : undefined;
             resourceInputs["role"] = state ? state.role : undefined;
-            resourceInputs["teams"] = state ? state.teams : undefined;
         } else {
             const args = argsOrState as SentryOrganizationMemberArgs | undefined;
             if ((!args || args.email === undefined) && !opts.urn) {
@@ -119,7 +117,6 @@ export class SentryOrganizationMember extends pulumi.CustomResource {
             resourceInputs["email"] = args ? args.email : undefined;
             resourceInputs["organization"] = args ? args.organization : undefined;
             resourceInputs["role"] = args ? args.role : undefined;
-            resourceInputs["teams"] = args ? args.teams : undefined;
             resourceInputs["expired"] = undefined /*out*/;
             resourceInputs["internalId"] = undefined /*out*/;
             resourceInputs["pending"] = undefined /*out*/;
@@ -157,10 +154,6 @@ export interface SentryOrganizationMemberState {
      * This is the role of the organization member.
      */
     role?: pulumi.Input<string>;
-    /**
-     * The teams the organization member should be added to.
-     */
-    teams?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 /**
@@ -179,8 +172,4 @@ export interface SentryOrganizationMemberArgs {
      * This is the role of the organization member.
      */
     role: pulumi.Input<string>;
-    /**
-     * The teams the organization member should be added to.
-     */
-    teams?: pulumi.Input<pulumi.Input<string>[]>;
 }

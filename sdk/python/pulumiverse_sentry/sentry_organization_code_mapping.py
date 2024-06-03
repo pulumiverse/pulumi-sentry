@@ -310,10 +310,16 @@ class SentryOrganizationCodeMapping(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/ and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/ find the corresponding list element and reference [code-mapping-id] from the key "id"
+        import using the organization slug from the URL:
+
+        https://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/
+
+        and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/
+
+        find the corresponding list element and reference [code-mapping-id] from the key "id"
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
+        $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
         ```
 
         :param str resource_name: The name of the resource.
@@ -367,10 +373,16 @@ class SentryOrganizationCodeMapping(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/ and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/ find the corresponding list element and reference [code-mapping-id] from the key "id"
+        import using the organization slug from the URL:
+
+        https://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/
+
+        and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/
+
+        find the corresponding list element and reference [code-mapping-id] from the key "id"
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
+        $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
         ```
 
         :param str resource_name: The name of the resource.

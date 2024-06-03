@@ -22,10 +22,12 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
+ * import using the organization slug from the URL:
+ *
+ * https://sentry.io/organizations/[org-slug]/issues/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
+ * $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
  * ```
  */
 export class SentryOrganization extends pulumi.CustomResource {

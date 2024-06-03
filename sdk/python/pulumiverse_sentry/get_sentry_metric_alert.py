@@ -191,7 +191,8 @@ def get_sentry_metric_alert(internal_id: Optional[str] = None,
                             project: Optional[str] = None,
                             opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSentryMetricAlertResult:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this metric alert.
     :param str organization: The slug of the organization the metric alert belongs to.
@@ -228,7 +229,8 @@ def get_sentry_metric_alert_output(internal_id: Optional[pulumi.Input[str]] = No
                                    project: Optional[pulumi.Input[str]] = None,
                                    opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryMetricAlertResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this metric alert.
     :param str organization: The slug of the organization the metric alert belongs to.

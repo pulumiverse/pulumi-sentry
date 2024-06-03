@@ -12,9 +12,15 @@ namespace Pulumiverse.Sentry
 {
     public static class GetSentryDashboard
     {
+        /// <summary>
+        /// ## Example Usage
+        /// </summary>
         public static Task<GetSentryDashboardResult> InvokeAsync(GetSentryDashboardArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryDashboardResult>("sentry:index/getSentryDashboard:getSentryDashboard", args ?? new GetSentryDashboardArgs(), options.WithDefaults());
 
+        /// <summary>
+        /// ## Example Usage
+        /// </summary>
         public static Output<GetSentryDashboardResult> Invoke(GetSentryDashboardInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryDashboardResult>("sentry:index/getSentryDashboard:getSentryDashboard", args ?? new GetSentryDashboardInvokeArgs(), options.WithDefaults());
     }

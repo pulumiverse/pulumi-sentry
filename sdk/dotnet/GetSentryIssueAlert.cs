@@ -13,89 +13,13 @@ namespace Pulumiverse.Sentry
     public static class GetSentryIssueAlert
     {
         /// <summary>
-        /// Sentry Issue Alert data source. As the object structure of `conditions`, `filters`, and `actions` are undocumented, a tip is to set up an Issue Alert via the Web UI, and use this data source to copy its object structure to your resources.
-        /// 
-        /// {{% examples %}}
-        /// ## Example Usage
-        /// {{% example %}}
-        /// 
-        /// ```csharp
-        /// using System.Collections.Generic;
-        /// using System.Linq;
-        /// using Pulumi;
-        /// using Sentry = Pulumi.Sentry;
-        /// using Sentry = Pulumiverse.Sentry;
-        /// 
-        /// return await Deployment.RunAsync(() =&gt; 
-        /// {
-        ///     var original = Sentry.GetSentryIssueAlert.Invoke(new()
-        ///     {
-        ///         Organization = "my-organization",
-        ///         Project = "my-project",
-        ///         InternalId = "42",
-        ///     });
-        /// 
-        ///     // Create a copy of an Issue Alert
-        ///     var copy = new Sentry.SentryIssueAlert("copy", new()
-        ///     {
-        ///         Organization = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Organization),
-        ///         Project = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Project),
-        ///         ActionMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.ActionMatch),
-        ///         FilterMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.FilterMatch),
-        ///         Frequency = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Frequency),
-        ///         Conditions = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Conditions),
-        ///         Filters = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Filters),
-        ///         Actions = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Actions),
-        ///     });
-        /// 
-        /// });
-        /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
+        /// Sentry Issue Alert data source. See the [Sentry documentation](https://docs.sentry.io/api/alerts/retrieve-an-issue-alert-rule-for-a-project/) for more information.
         /// </summary>
         public static Task<GetSentryIssueAlertResult> InvokeAsync(GetSentryIssueAlertArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryIssueAlertResult>("sentry:index/getSentryIssueAlert:getSentryIssueAlert", args ?? new GetSentryIssueAlertArgs(), options.WithDefaults());
 
         /// <summary>
-        /// Sentry Issue Alert data source. As the object structure of `conditions`, `filters`, and `actions` are undocumented, a tip is to set up an Issue Alert via the Web UI, and use this data source to copy its object structure to your resources.
-        /// 
-        /// {{% examples %}}
-        /// ## Example Usage
-        /// {{% example %}}
-        /// 
-        /// ```csharp
-        /// using System.Collections.Generic;
-        /// using System.Linq;
-        /// using Pulumi;
-        /// using Sentry = Pulumi.Sentry;
-        /// using Sentry = Pulumiverse.Sentry;
-        /// 
-        /// return await Deployment.RunAsync(() =&gt; 
-        /// {
-        ///     var original = Sentry.GetSentryIssueAlert.Invoke(new()
-        ///     {
-        ///         Organization = "my-organization",
-        ///         Project = "my-project",
-        ///         InternalId = "42",
-        ///     });
-        /// 
-        ///     // Create a copy of an Issue Alert
-        ///     var copy = new Sentry.SentryIssueAlert("copy", new()
-        ///     {
-        ///         Organization = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Organization),
-        ///         Project = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Project),
-        ///         ActionMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.ActionMatch),
-        ///         FilterMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.FilterMatch),
-        ///         Frequency = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Frequency),
-        ///         Conditions = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Conditions),
-        ///         Filters = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Filters),
-        ///         Actions = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Actions),
-        ///     });
-        /// 
-        /// });
-        /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
+        /// Sentry Issue Alert data source. See the [Sentry documentation](https://docs.sentry.io/api/alerts/retrieve-an-issue-alert-rule-for-a-project/) for more information.
         /// </summary>
         public static Output<GetSentryIssueAlertResult> Invoke(GetSentryIssueAlertInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryIssueAlertResult>("sentry:index/getSentryIssueAlert:getSentryIssueAlert", args ?? new GetSentryIssueAlertInvokeArgs(), options.WithDefaults());
@@ -105,19 +29,19 @@ namespace Pulumiverse.Sentry
     public sealed class GetSentryIssueAlertArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
-        /// The internal ID for this issue alert.
+        /// The ID of this resource.
         /// </summary>
-        [Input("internalId", required: true)]
-        public string InternalId { get; set; } = null!;
+        [Input("id", required: true)]
+        public string Id { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the organization the issue alert belongs to.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         [Input("organization", required: true)]
         public string Organization { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the project the issue alert belongs to.
+        /// The slug of the project the resource belongs to.
         /// </summary>
         [Input("project", required: true)]
         public string Project { get; set; } = null!;
@@ -131,19 +55,19 @@ namespace Pulumiverse.Sentry
     public sealed class GetSentryIssueAlertInvokeArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
-        /// The internal ID for this issue alert.
+        /// The ID of this resource.
         /// </summary>
-        [Input("internalId", required: true)]
-        public Input<string> InternalId { get; set; } = null!;
+        [Input("id", required: true)]
+        public Input<string> Id { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the organization the issue alert belongs to.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         [Input("organization", required: true)]
         public Input<string> Organization { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the project the issue alert belongs to.
+        /// The slug of the project the resource belongs to.
         /// </summary>
         [Input("project", required: true)]
         public Input<string> Project { get; set; } = null!;
@@ -163,47 +87,47 @@ namespace Pulumiverse.Sentry
         /// </summary>
         public readonly string ActionMatch;
         /// <summary>
-        /// List of actions.
+        /// List of actions. In JSON string format.
         /// </summary>
-        public readonly ImmutableArray<ImmutableDictionary<string, object>> Actions;
+        public readonly string Actions;
         /// <summary>
-        /// List of conditions.
+        /// List of conditions. In JSON string format.
         /// </summary>
-        public readonly ImmutableArray<ImmutableDictionary<string, object>> Conditions;
+        public readonly string Conditions;
         /// <summary>
         /// Perform issue alert in a specific environment.
         /// </summary>
         public readonly string Environment;
         /// <summary>
-        /// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+        /// A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
         /// </summary>
         public readonly string FilterMatch;
         /// <summary>
-        /// List of filters.
+        /// A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
         /// </summary>
-        public readonly ImmutableArray<ImmutableDictionary<string, object>> Filters;
+        public readonly string Filters;
         /// <summary>
-        /// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+        /// Perform actions at most once every `X` minutes for this issue.
         /// </summary>
         public readonly int Frequency;
         /// <summary>
-        /// The provider-assigned unique ID for this managed resource.
+        /// The ID of this resource.
         /// </summary>
         public readonly string Id;
-        /// <summary>
-        /// The internal ID for this issue alert.
-        /// </summary>
-        public readonly string InternalId;
         /// <summary>
         /// The issue alert name.
         /// </summary>
         public readonly string Name;
         /// <summary>
-        /// The slug of the organization the issue alert belongs to.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         public readonly string Organization;
         /// <summary>
-        /// The slug of the project the issue alert belongs to.
+        /// The ID of the team or user that owns the rule.
+        /// </summary>
+        public readonly string Owner;
+        /// <summary>
+        /// The slug of the project the resource belongs to.
         /// </summary>
         public readonly string Project;
 
@@ -211,25 +135,25 @@ namespace Pulumiverse.Sentry
         private GetSentryIssueAlertResult(
             string actionMatch,
 
-            ImmutableArray<ImmutableDictionary<string, object>> actions,
+            string actions,
 
-            ImmutableArray<ImmutableDictionary<string, object>> conditions,
+            string conditions,
 
             string environment,
 
             string filterMatch,
 
-            ImmutableArray<ImmutableDictionary<string, object>> filters,
+            string filters,
 
             int frequency,
 
             string id,
 
-            string internalId,
-
             string name,
 
             string organization,
+
+            string owner,
 
             string project)
         {
@@ -241,9 +165,9 @@ namespace Pulumiverse.Sentry
             Filters = filters;
             Frequency = frequency;
             Id = id;
-            InternalId = internalId;
             Name = name;
             Organization = organization;
+            Owner = owner;
             Project = project;
         }
     }

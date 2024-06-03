@@ -8,52 +8,10 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// Sentry Issue Alert data source. As the object structure of `conditions`, `filters`, and `actions` are undocumented, a tip is to set up an Issue Alert via the Web UI, and use this data source to copy its object structure to your resources.
-//
-// ## Example Usage
-//
-// ```go
-// package main
-//
-// import (
-//
-//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-//	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
-//
-// )
-//
-//	func main() {
-//		pulumi.Run(func(ctx *pulumi.Context) error {
-//			original, err := sentry.LookupSentryIssueAlert(ctx, &sentry.LookupSentryIssueAlertArgs{
-//				Organization: "my-organization",
-//				Project:      "my-project",
-//				InternalId:   "42",
-//			}, nil)
-//			if err != nil {
-//				return err
-//			}
-//			_, err = sentry.NewSentryIssueAlert(ctx, "copy", &sentry.SentryIssueAlertArgs{
-//				Organization: *pulumi.String(original.Organization),
-//				Project:      *pulumi.String(original.Project),
-//				ActionMatch:  *pulumi.String(original.ActionMatch),
-//				FilterMatch:  *pulumi.String(original.FilterMatch),
-//				Frequency:    *pulumi.Int(original.Frequency),
-//				Conditions:   interface{}(original.Conditions),
-//				Filters:      interface{}(original.Filters),
-//				Actions:      interface{}(original.Actions),
-//			})
-//			if err != nil {
-//				return err
-//			}
-//			return nil
-//		})
-//	}
-//
-// ```
+// Sentry Issue Alert data source. See the [Sentry documentation](https://docs.sentry.io/api/alerts/retrieve-an-issue-alert-rule-for-a-project/) for more information.
 func LookupSentryIssueAlert(ctx *pulumi.Context, args *LookupSentryIssueAlertArgs, opts ...pulumi.InvokeOption) (*LookupSentryIssueAlertResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupSentryIssueAlertResult
@@ -66,11 +24,11 @@ func LookupSentryIssueAlert(ctx *pulumi.Context, args *LookupSentryIssueAlertArg
 
 // A collection of arguments for invoking getSentryIssueAlert.
 type LookupSentryIssueAlertArgs struct {
-	// The internal ID for this issue alert.
-	InternalId string `pulumi:"internalId"`
-	// The slug of the organization the issue alert belongs to.
+	// The ID of this resource.
+	Id string `pulumi:"id"`
+	// The slug of the organization the resource belongs to.
 	Organization string `pulumi:"organization"`
-	// The slug of the project the issue alert belongs to.
+	// The slug of the project the resource belongs to.
 	Project string `pulumi:"project"`
 }
 
@@ -78,27 +36,27 @@ type LookupSentryIssueAlertArgs struct {
 type LookupSentryIssueAlertResult struct {
 	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch string `pulumi:"actionMatch"`
-	// List of actions.
-	Actions []map[string]interface{} `pulumi:"actions"`
-	// List of conditions.
-	Conditions []map[string]interface{} `pulumi:"conditions"`
+	// List of actions. In JSON string format.
+	Actions string `pulumi:"actions"`
+	// List of conditions. In JSON string format.
+	Conditions string `pulumi:"conditions"`
 	// Perform issue alert in a specific environment.
 	Environment string `pulumi:"environment"`
-	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+	// A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
 	FilterMatch string `pulumi:"filterMatch"`
-	// List of filters.
-	Filters []map[string]interface{} `pulumi:"filters"`
-	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+	// A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
+	Filters string `pulumi:"filters"`
+	// Perform actions at most once every `X` minutes for this issue.
 	Frequency int `pulumi:"frequency"`
-	// The provider-assigned unique ID for this managed resource.
+	// The ID of this resource.
 	Id string `pulumi:"id"`
-	// The internal ID for this issue alert.
-	InternalId string `pulumi:"internalId"`
 	// The issue alert name.
 	Name string `pulumi:"name"`
-	// The slug of the organization the issue alert belongs to.
+	// The slug of the organization the resource belongs to.
 	Organization string `pulumi:"organization"`
-	// The slug of the project the issue alert belongs to.
+	// The ID of the team or user that owns the rule.
+	Owner string `pulumi:"owner"`
+	// The slug of the project the resource belongs to.
 	Project string `pulumi:"project"`
 }
 
@@ -117,11 +75,11 @@ func LookupSentryIssueAlertOutput(ctx *pulumi.Context, args LookupSentryIssueAle
 
 // A collection of arguments for invoking getSentryIssueAlert.
 type LookupSentryIssueAlertOutputArgs struct {
-	// The internal ID for this issue alert.
-	InternalId pulumi.StringInput `pulumi:"internalId"`
-	// The slug of the organization the issue alert belongs to.
+	// The ID of this resource.
+	Id pulumi.StringInput `pulumi:"id"`
+	// The slug of the organization the resource belongs to.
 	Organization pulumi.StringInput `pulumi:"organization"`
-	// The slug of the project the issue alert belongs to.
+	// The slug of the project the resource belongs to.
 	Project pulumi.StringInput `pulumi:"project"`
 }
 
@@ -144,25 +102,19 @@ func (o LookupSentryIssueAlertResultOutput) ToLookupSentryIssueAlertResultOutput
 	return o
 }
 
-func (o LookupSentryIssueAlertResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryIssueAlertResult] {
-	return pulumix.Output[LookupSentryIssueAlertResult]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 func (o LookupSentryIssueAlertResultOutput) ActionMatch() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.ActionMatch }).(pulumi.StringOutput)
 }
 
-// List of actions.
-func (o LookupSentryIssueAlertResultOutput) Actions() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]interface{} { return v.Actions }).(pulumi.MapArrayOutput)
+// List of actions. In JSON string format.
+func (o LookupSentryIssueAlertResultOutput) Actions() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Actions }).(pulumi.StringOutput)
 }
 
-// List of conditions.
-func (o LookupSentryIssueAlertResultOutput) Conditions() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]interface{} { return v.Conditions }).(pulumi.MapArrayOutput)
+// List of conditions. In JSON string format.
+func (o LookupSentryIssueAlertResultOutput) Conditions() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Conditions }).(pulumi.StringOutput)
 }
 
 // Perform issue alert in a specific environment.
@@ -170,29 +122,24 @@ func (o LookupSentryIssueAlertResultOutput) Environment() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Environment }).(pulumi.StringOutput)
 }
 
-// Trigger actions if `all`, `any`, or `none` of the specified filters match.
+// A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.
 func (o LookupSentryIssueAlertResultOutput) FilterMatch() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.FilterMatch }).(pulumi.StringOutput)
 }
 
-// List of filters.
-func (o LookupSentryIssueAlertResultOutput) Filters() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]interface{} { return v.Filters }).(pulumi.MapArrayOutput)
+// A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.
+func (o LookupSentryIssueAlertResultOutput) Filters() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Filters }).(pulumi.StringOutput)
 }
 
-// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
+// Perform actions at most once every `X` minutes for this issue.
 func (o LookupSentryIssueAlertResultOutput) Frequency() pulumi.IntOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) int { return v.Frequency }).(pulumi.IntOutput)
 }
 
-// The provider-assigned unique ID for this managed resource.
+// The ID of this resource.
 func (o LookupSentryIssueAlertResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Id }).(pulumi.StringOutput)
-}
-
-// The internal ID for this issue alert.
-func (o LookupSentryIssueAlertResultOutput) InternalId() pulumi.StringOutput {
-	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.InternalId }).(pulumi.StringOutput)
 }
 
 // The issue alert name.
@@ -200,12 +147,17 @@ func (o LookupSentryIssueAlertResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Name }).(pulumi.StringOutput)
 }
 
-// The slug of the organization the issue alert belongs to.
+// The slug of the organization the resource belongs to.
 func (o LookupSentryIssueAlertResultOutput) Organization() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Organization }).(pulumi.StringOutput)
 }
 
-// The slug of the project the issue alert belongs to.
+// The ID of the team or user that owns the rule.
+func (o LookupSentryIssueAlertResultOutput) Owner() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Owner }).(pulumi.StringOutput)
+}
+
+// The slug of the project the resource belongs to.
 func (o LookupSentryIssueAlertResultOutput) Project() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.Project }).(pulumi.StringOutput)
 }

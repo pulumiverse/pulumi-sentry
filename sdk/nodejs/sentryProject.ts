@@ -15,6 +15,7 @@ import * as utilities from "./utilities";
  *
  * // Create a project
  * const _default = new sentry.SentryProject("default", {
+ *     defaultRules: false,
  *     organization: "my-organization",
  *     platform: "javascript",
  *     resolveAge: 720,
@@ -28,10 +29,12 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+ * import using the organization and team slugs from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/projects/[project-slug]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+ * $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
  * ```
  */
 export class SentryProject extends pulumi.CustomResource {
@@ -64,6 +67,14 @@ export class SentryProject extends pulumi.CustomResource {
 
     public /*out*/ readonly color!: pulumi.Output<string>;
     /**
+     * Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry.SentryKey` resource.
+     */
+    public readonly defaultKey!: pulumi.Output<boolean | undefined>;
+    /**
+     * Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+     */
+    public readonly defaultRules!: pulumi.Output<boolean | undefined>;
+    /**
      * The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
      */
     public readonly digestsMaxDelay!: pulumi.Output<number>;
@@ -90,13 +101,13 @@ export class SentryProject extends pulumi.CustomResource {
      */
     public readonly organization!: pulumi.Output<string>;
     /**
-     * The optional platform for this project.
+     * The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
      */
     public readonly platform!: pulumi.Output<string>;
     /**
      * Use `internalId` instead.
      *
-     * @deprecated Use `internal_id` instead.
+     * @deprecated Use `internalId` instead.
      */
     public /*out*/ readonly projectId!: pulumi.Output<string>;
     /**
@@ -133,6 +144,8 @@ export class SentryProject extends pulumi.CustomResource {
         if (opts.id) {
             const state = argsOrState as SentryProjectState | undefined;
             resourceInputs["color"] = state ? state.color : undefined;
+            resourceInputs["defaultKey"] = state ? state.defaultKey : undefined;
+            resourceInputs["defaultRules"] = state ? state.defaultRules : undefined;
             resourceInputs["digestsMaxDelay"] = state ? state.digestsMaxDelay : undefined;
             resourceInputs["digestsMinDelay"] = state ? state.digestsMinDelay : undefined;
             resourceInputs["features"] = state ? state.features : undefined;
@@ -153,6 +166,8 @@ export class SentryProject extends pulumi.CustomResource {
             if ((!args || args.organization === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'organization'");
             }
+            resourceInputs["defaultKey"] = args ? args.defaultKey : undefined;
+            resourceInputs["defaultRules"] = args ? args.defaultRules : undefined;
             resourceInputs["digestsMaxDelay"] = args ? args.digestsMaxDelay : undefined;
             resourceInputs["digestsMinDelay"] = args ? args.digestsMinDelay : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
@@ -181,6 +196,14 @@ export class SentryProject extends pulumi.CustomResource {
 export interface SentryProjectState {
     color?: pulumi.Input<string>;
     /**
+     * Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry.SentryKey` resource.
+     */
+    defaultKey?: pulumi.Input<boolean>;
+    /**
+     * Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+     */
+    defaultRules?: pulumi.Input<boolean>;
+    /**
      * The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
      */
     digestsMaxDelay?: pulumi.Input<number>;
@@ -207,13 +230,13 @@ export interface SentryProjectState {
      */
     organization?: pulumi.Input<string>;
     /**
-     * The optional platform for this project.
+     * The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
      */
     platform?: pulumi.Input<string>;
     /**
      * Use `internalId` instead.
      *
-     * @deprecated Use `internal_id` instead.
+     * @deprecated Use `internalId` instead.
      */
     projectId?: pulumi.Input<string>;
     /**
@@ -242,6 +265,14 @@ export interface SentryProjectState {
  */
 export interface SentryProjectArgs {
     /**
+     * Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry.SentryKey` resource.
+     */
+    defaultKey?: pulumi.Input<boolean>;
+    /**
+     * Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.
+     */
+    defaultRules?: pulumi.Input<boolean>;
+    /**
      * The maximum amount of time (in seconds) to wait between scheduling digests for delivery.
      */
     digestsMaxDelay?: pulumi.Input<number>;
@@ -258,7 +289,7 @@ export interface SentryProjectArgs {
      */
     organization: pulumi.Input<string>;
     /**
-     * The optional platform for this project.
+     * The platform for this project. For a list of valid values, see this page. Use `other` for platforms not listed.
      */
     platform?: pulumi.Input<string>;
     /**

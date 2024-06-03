@@ -21,14 +21,22 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
+	case "sentry:index/sentryAllProjectsSpikeProtection:SentryAllProjectsSpikeProtection":
+		r = &SentryAllProjectsSpikeProtection{}
 	case "sentry:index/sentryDashboard:SentryDashboard":
 		r = &SentryDashboard{}
+	case "sentry:index/sentryIntegrationOpsgenie:SentryIntegrationOpsgenie":
+		r = &SentryIntegrationOpsgenie{}
+	case "sentry:index/sentryIntegrationPagerDuty:SentryIntegrationPagerDuty":
+		r = &SentryIntegrationPagerDuty{}
 	case "sentry:index/sentryIssueAlert:SentryIssueAlert":
 		r = &SentryIssueAlert{}
 	case "sentry:index/sentryKey:SentryKey":
 		r = &SentryKey{}
 	case "sentry:index/sentryMetricAlert:SentryMetricAlert":
 		r = &SentryMetricAlert{}
+	case "sentry:index/sentryNotificationAction:SentryNotificationAction":
+		r = &SentryNotificationAction{}
 	case "sentry:index/sentryOrganization:SentryOrganization":
 		r = &SentryOrganization{}
 	case "sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping":
@@ -41,10 +49,16 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &SentryPlugin{}
 	case "sentry:index/sentryProject:SentryProject":
 		r = &SentryProject{}
-	case "sentry:index/sentryRule:SentryRule":
-		r = &SentryRule{}
+	case "sentry:index/sentryProjectInboundDataFilter:SentryProjectInboundDataFilter":
+		r = &SentryProjectInboundDataFilter{}
+	case "sentry:index/sentryProjectSpikeProtection:SentryProjectSpikeProtection":
+		r = &SentryProjectSpikeProtection{}
+	case "sentry:index/sentryProjectSymbolSource:SentryProjectSymbolSource":
+		r = &SentryProjectSymbolSource{}
 	case "sentry:index/sentryTeam:SentryTeam":
 		r = &SentryTeam{}
+	case "sentry:index/sentryTeamMember:SentryTeamMember":
+		r = &SentryTeamMember{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}
@@ -78,7 +92,22 @@ func init() {
 	}
 	pulumi.RegisterResourceModule(
 		"sentry",
+		"index/sentryAllProjectsSpikeProtection",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
 		"index/sentryDashboard",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryIntegrationOpsgenie",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryIntegrationPagerDuty",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(
@@ -94,6 +123,11 @@ func init() {
 	pulumi.RegisterResourceModule(
 		"sentry",
 		"index/sentryMetricAlert",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryNotificationAction",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(
@@ -128,12 +162,27 @@ func init() {
 	)
 	pulumi.RegisterResourceModule(
 		"sentry",
-		"index/sentryRule",
+		"index/sentryProjectInboundDataFilter",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryProjectSpikeProtection",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryProjectSymbolSource",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(
 		"sentry",
 		"index/sentryTeam",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"sentry",
+		"index/sentryTeamMember",
 		&module{version},
 	)
 	pulumi.RegisterResourcePackage(

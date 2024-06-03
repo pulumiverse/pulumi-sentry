@@ -1,0 +1,38 @@
+{
+    "mux": {
+        "resources": {
+            "sentry:index/sentryAllProjectsSpikeProtection:SentryAllProjectsSpikeProtection": 1,
+            "sentry:index/sentryDashboard:SentryDashboard": 0,
+            "sentry:index/sentryIntegrationOpsgenie:SentryIntegrationOpsgenie": 1,
+            "sentry:index/sentryIntegrationPagerDuty:SentryIntegrationPagerDuty": 1,
+            "sentry:index/sentryIssueAlert:SentryIssueAlert": 1,
+            "sentry:index/sentryKey:SentryKey": 1,
+            "sentry:index/sentryMetricAlert:SentryMetricAlert": 0,
+            "sentry:index/sentryNotificationAction:SentryNotificationAction": 1,
+            "sentry:index/sentryOrganization:SentryOrganization": 0,
+            "sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping": 0,
+            "sentry:index/sentryOrganizationMember:SentryOrganizationMember": 0,
+            "sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub": 0,
+            "sentry:index/sentryPlugin:SentryPlugin": 0,
+            "sentry:index/sentryProject:SentryProject": 0,
+            "sentry:index/sentryProjectInboundDataFilter:SentryProjectInboundDataFilter": 1,
+            "sentry:index/sentryProjectSpikeProtection:SentryProjectSpikeProtection": 1,
+            "sentry:index/sentryProjectSymbolSource:SentryProjectSymbolSource": 1,
+            "sentry:index/sentryTeam:SentryTeam": 0,
+            "sentry:index/sentryTeamMember:SentryTeamMember": 1
+        },
+        "functions": {
+            "sentry:index/getSentryAllKeys:getSentryAllKeys": 1,
+            "sentry:index/getSentryAllProjects:getSentryAllProjects": 1,
+            "sentry:index/getSentryDashboard:getSentryDashboard": 0,
+            "sentry:index/getSentryIssueAlert:getSentryIssueAlert": 1,
+            "sentry:index/getSentryKey:getSentryKey": 1,
+            "sentry:index/getSentryMetricAlert:getSentryMetricAlert": 0,
+            "sentry:index/getSentryOrganization:getSentryOrganization": 0,
+            "sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration": 1,
+            "sentry:index/getSentryOrganizationMember:getSentryOrganizationMember": 1,
+            "sentry:index/getSentryProject:getSentryProject": 1,
+            "sentry:index/getSentryTeam:getSentryTeam": 0
+        }
+    }
+}

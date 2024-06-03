@@ -137,11 +137,15 @@ import * as utilities from "./utilities";
  *         },
  *         {
  *             title: "Errors by Country",
- *             displayType: "world_map",
+ *             displayType: "table",
  *             interval: "5m",
  *             widgetType: "discover",
  *             queries: [{
- *                 fields: ["count()"],
+ *                 fields: [
+ *                     "geo.country_code",
+ *                     "geo.region",
+ *                     "count()",
+ *                 ],
  *                 aggregates: ["count()"],
  *                 conditions: "!event.type:transaction has:geo.country_code",
  *                 orderBy: "count()",
@@ -331,6 +335,16 @@ import * as utilities from "./utilities";
  *         },
  *     ],
  * });
+ * ```
+ *
+ * ## Import
+ *
+ * import using the dashboard id from the URL:
+ *
+ * https://sentry.io/dashboard/[dashboard-id]
+ *
+ * ```sh
+ * $ pulumi import sentry:index/sentryDashboard:SentryDashboard default org-slug/dashboard-id
  * ```
  */
 export class SentryDashboard extends pulumi.CustomResource {

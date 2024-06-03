@@ -15,6 +15,7 @@ __all__ = [
     'SentryDashboardWidgetQueryArgs',
     'SentryMetricAlertTriggerArgs',
     'SentryMetricAlertTriggerActionArgs',
+    'SentryProjectSymbolSourceLayoutArgs',
 ]
 
 @pulumi.input_type
@@ -29,7 +30,6 @@ class SentryDashboardWidgetArgs:
                  limit: Optional[pulumi.Input[int]] = None,
                  widget_type: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] title: Dashboard title.
         :param pulumi.Input[str] id: The ID of this resource.
         """
         pulumi.set(__self__, "display_type", display_type)
@@ -75,9 +75,6 @@ class SentryDashboardWidgetArgs:
     @property
     @pulumi.getter
     def title(self) -> pulumi.Input[str]:
-        """
-        Dashboard title.
-        """
         return pulumi.get(self, "title")
 
     @title.setter
@@ -301,9 +298,7 @@ class SentryMetricAlertTriggerArgs:
                  id: Optional[pulumi.Input[str]] = None,
                  resolve_threshold: Optional[pulumi.Input[float]] = None):
         """
-        :param pulumi.Input[int] threshold_type: The type of threshold
         :param pulumi.Input[str] id: The ID of this resource.
-        :param pulumi.Input[float] resolve_threshold: The value at which the Alert rule resolves
         """
         pulumi.set(__self__, "alert_threshold", alert_threshold)
         pulumi.set(__self__, "label", label)
@@ -336,9 +331,6 @@ class SentryMetricAlertTriggerArgs:
     @property
     @pulumi.getter(name="thresholdType")
     def threshold_type(self) -> pulumi.Input[int]:
-        """
-        The type of threshold
-        """
         return pulumi.get(self, "threshold_type")
 
     @threshold_type.setter
@@ -369,9 +361,6 @@ class SentryMetricAlertTriggerArgs:
     @property
     @pulumi.getter(name="resolveThreshold")
     def resolve_threshold(self) -> Optional[pulumi.Input[float]]:
-        """
-        The value at which the Alert rule resolves
-        """
         return pulumi.get(self, "resolve_threshold")
 
     @resolve_threshold.setter
@@ -385,15 +374,19 @@ class SentryMetricAlertTriggerActionArgs:
                  target_type: pulumi.Input[str],
                  type: pulumi.Input[str],
                  id: Optional[pulumi.Input[str]] = None,
+                 input_channel_id: Optional[pulumi.Input[str]] = None,
                  integration_id: Optional[pulumi.Input[int]] = None,
                  target_identifier: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] id: The ID of this resource.
+        :param pulumi.Input[str] input_channel_id: Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
         """
         pulumi.set(__self__, "target_type", target_type)
         pulumi.set(__self__, "type", type)
         if id is not None:
             pulumi.set(__self__, "id", id)
+        if input_channel_id is not None:
+            pulumi.set(__self__, "input_channel_id", input_channel_id)
         if integration_id is not None:
             pulumi.set(__self__, "integration_id", integration_id)
         if target_identifier is not None:
@@ -430,6 +423,18 @@ class SentryMetricAlertTriggerActionArgs:
         pulumi.set(self, "id", value)
 
     @property
+    @pulumi.getter(name="inputChannelId")
+    def input_channel_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+        """
+        return pulumi.get(self, "input_channel_id")
+
+    @input_channel_id.setter
+    def input_channel_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "input_channel_id", value)
+
+    @property
     @pulumi.getter(name="integrationId")
     def integration_id(self) -> Optional[pulumi.Input[int]]:
         return pulumi.get(self, "integration_id")
@@ -446,5 +451,42 @@ class SentryMetricAlertTriggerActionArgs:
     @target_identifier.setter
     def target_identifier(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "target_identifier", value)
+
+
+@pulumi.input_type
+class SentryProjectSymbolSourceLayoutArgs:
+    def __init__(__self__, *,
+                 casing: pulumi.Input[str],
+                 type: pulumi.Input[str]):
+        """
+        :param pulumi.Input[str] casing: The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+        :param pulumi.Input[str] type: The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstore_index2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+        """
+        pulumi.set(__self__, "casing", casing)
+        pulumi.set(__self__, "type", type)
+
+    @property
+    @pulumi.getter
+    def casing(self) -> pulumi.Input[str]:
+        """
+        The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+        """
+        return pulumi.get(self, "casing")
+
+    @casing.setter
+    def casing(self, value: pulumi.Input[str]):
+        pulumi.set(self, "casing", value)
+
+    @property
+    @pulumi.getter
+    def type(self) -> pulumi.Input[str]:
+        """
+        The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstore_index2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+        """
+        return pulumi.get(self, "type")
+
+    @type.setter
+    def type(self, value: pulumi.Input[str]):
+        pulumi.set(self, "type", value)
 
 
