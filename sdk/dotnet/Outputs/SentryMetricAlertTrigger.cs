@@ -21,13 +21,7 @@ namespace Pulumiverse.Sentry.Outputs
         /// </summary>
         public readonly string? Id;
         public readonly string Label;
-        /// <summary>
-        /// The value at which the Alert rule resolves
-        /// </summary>
         public readonly double? ResolveThreshold;
-        /// <summary>
-        /// The type of threshold
-        /// </summary>
         public readonly int ThresholdType;
 
         [OutputConstructor]

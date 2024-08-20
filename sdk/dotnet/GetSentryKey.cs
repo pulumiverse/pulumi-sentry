@@ -13,11 +13,9 @@ namespace Pulumiverse.Sentry
     public static class GetSentryKey
     {
         /// <summary>
-        /// Sentry Key data source.
+        /// Retrieve a Project's Client Key.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -43,18 +41,14 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryKeyResult> InvokeAsync(GetSentryKeyArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyArgs(), options.WithDefaults());
 
         /// <summary>
-        /// Sentry Key data source.
+        /// Retrieve a Project's Client Key.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -80,8 +74,6 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryKeyResult> Invoke(GetSentryKeyInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyInvokeArgs(), options.WithDefaults());
@@ -97,19 +89,25 @@ namespace Pulumiverse.Sentry
         public bool? First { get; set; }
 
         /// <summary>
-        /// The name of the key to retrieve.
+        /// The ID of this resource.
+        /// </summary>
+        [Input("id")]
+        public string? Id { get; set; }
+
+        /// <summary>
+        /// The name of the client key.
         /// </summary>
         [Input("name")]
         public string? Name { get; set; }
 
         /// <summary>
-        /// The slug of the organization the key should be created for.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         [Input("organization", required: true)]
         public string Organization { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the project the key should be created for.
+        /// The slug of the project the resource belongs to.
         /// </summary>
         [Input("project", required: true)]
         public string Project { get; set; } = null!;
@@ -129,19 +127,25 @@ namespace Pulumiverse.Sentry
         public Input<bool>? First { get; set; }
 
         /// <summary>
-        /// The name of the key to retrieve.
+        /// The ID of this resource.
+        /// </summary>
+        [Input("id")]
+        public Input<string>? Id { get; set; }
+
+        /// <summary>
+        /// The name of the client key.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The slug of the organization the key should be created for.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         [Input("organization", required: true)]
         public Input<string> Organization { get; set; } = null!;
 
         /// <summary>
-        /// The slug of the project the key should be created for.
+        /// The slug of the project the resource belongs to.
         /// </summary>
         [Input("project", required: true)]
         public Input<string> Project { get; set; } = null!;
@@ -157,44 +161,43 @@ namespace Pulumiverse.Sentry
     public sealed class GetSentryKeyResult
     {
         /// <summary>
-        /// DSN for the Content Security Policy (CSP) for the key.
+        /// Security header endpoint for features like CSP and Expect-CT reports.
         /// </summary>
         public readonly string DsnCsp;
         /// <summary>
-        /// DSN for the key.
+        /// The DSN tells the SDK where to send the events to.
         /// </summary>
         public readonly string DsnPublic;
+        /// <summary>
+        /// Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
+        /// </summary>
         public readonly string DsnSecret;
         /// <summary>
         /// Boolean flag indicating that we want the first key of the returned keys.
         /// </summary>
         public readonly bool? First;
         /// <summary>
-        /// The provider-assigned unique ID for this managed resource.
+        /// The ID of this resource.
         /// </summary>
-        public readonly string Id;
+        public readonly string? Id;
         /// <summary>
-        /// Flag indicating the key is active.
-        /// </summary>
-        public readonly bool IsActive;
-        /// <summary>
-        /// The name of the key to retrieve.
+        /// The name of the client key.
         /// </summary>
         public readonly string? Name;
         /// <summary>
-        /// The slug of the organization the key should be created for.
+        /// The slug of the organization the resource belongs to.
         /// </summary>
         public readonly string Organization;
         /// <summary>
-        /// The slug of the project the key should be created for.
+        /// The slug of the project the resource belongs to.
         /// </summary>
         public readonly string Project;
         /// <summary>
         /// The ID of the project that the key belongs to.
         /// </summary>
-        public readonly int ProjectId;
+        public readonly string ProjectId;
         /// <summary>
-        /// Public key portion of the client key.
+        /// The public key.
         /// </summary>
         public readonly string Public;
         /// <summary>
@@ -206,7 +209,7 @@ namespace Pulumiverse.Sentry
         /// </summary>
         public readonly int RateLimitWindow;
         /// <summary>
-        /// Secret key portion of the client key.
+        /// The secret key.
         /// </summary>
         public readonly string Secret;
 
@@ -220,9 +223,7 @@ namespace Pulumiverse.Sentry
 
             bool? first,
 
-            string id,
-
-            bool isActive,
+            string? id,
 
             string? name,
 
@@ -230,7 +231,7 @@ namespace Pulumiverse.Sentry
 
             string project,
 
-            int projectId,
+            string projectId,
 
             string @public,
 
@@ -245,7 +246,6 @@ namespace Pulumiverse.Sentry
             DsnSecret = dsnSecret;
             First = first;
             Id = id;
-            IsActive = isActive;
             Name = name;
             Organization = organization;
             Project = project;

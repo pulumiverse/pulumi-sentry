@@ -8,11 +8,10 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// Sentry Organization Integration data source.
+// Sentry Organization Integration data source. See the [Sentry documentation](https://docs.sentry.io/api/integrations/list-an-organizations-available-integrations/) for more information.
 //
 // ## Example Usage
 //
@@ -61,25 +60,27 @@ func GetSentryOrganizationIntegration(ctx *pulumi.Context, args *GetSentryOrgani
 
 // A collection of arguments for invoking getSentryOrganizationIntegration.
 type GetSentryOrganizationIntegrationArgs struct {
-	// The name of the organization integration.
+	// The name of the integration.
 	Name string `pulumi:"name"`
-	// The slug of the organization the integration belongs to.
+	// The slug of the organization.
 	Organization string `pulumi:"organization"`
-	// The key of the organization integration provider.
+	// Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).
 	ProviderKey string `pulumi:"providerKey"`
 }
 
 // A collection of values returned by getSentryOrganizationIntegration.
 type GetSentryOrganizationIntegrationResult struct {
-	// The provider-assigned unique ID for this managed resource.
+	// The ID of this resource.
 	Id string `pulumi:"id"`
-	// The internal ID for this organization integration.
+	// The internal ID for this organization integration. **Deprecated** Use `id` instead.
+	//
+	// Deprecated: This field is deprecated and will be removed in a future version. Use `id` instead.
 	InternalId string `pulumi:"internalId"`
-	// The name of the organization integration.
+	// The name of the integration.
 	Name string `pulumi:"name"`
-	// The slug of the organization the integration belongs to.
+	// The slug of the organization.
 	Organization string `pulumi:"organization"`
-	// The key of the organization integration provider.
+	// Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).
 	ProviderKey string `pulumi:"providerKey"`
 }
 
@@ -98,11 +99,11 @@ func GetSentryOrganizationIntegrationOutput(ctx *pulumi.Context, args GetSentryO
 
 // A collection of arguments for invoking getSentryOrganizationIntegration.
 type GetSentryOrganizationIntegrationOutputArgs struct {
-	// The name of the organization integration.
+	// The name of the integration.
 	Name pulumi.StringInput `pulumi:"name"`
-	// The slug of the organization the integration belongs to.
+	// The slug of the organization.
 	Organization pulumi.StringInput `pulumi:"organization"`
-	// The key of the organization integration provider.
+	// Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).
 	ProviderKey pulumi.StringInput `pulumi:"providerKey"`
 }
 
@@ -125,33 +126,29 @@ func (o GetSentryOrganizationIntegrationResultOutput) ToGetSentryOrganizationInt
 	return o
 }
 
-func (o GetSentryOrganizationIntegrationResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetSentryOrganizationIntegrationResult] {
-	return pulumix.Output[GetSentryOrganizationIntegrationResult]{
-		OutputState: o.OutputState,
-	}
-}
-
-// The provider-assigned unique ID for this managed resource.
+// The ID of this resource.
 func (o GetSentryOrganizationIntegrationResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryOrganizationIntegrationResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
-// The internal ID for this organization integration.
+// The internal ID for this organization integration. **Deprecated** Use `id` instead.
+//
+// Deprecated: This field is deprecated and will be removed in a future version. Use `id` instead.
 func (o GetSentryOrganizationIntegrationResultOutput) InternalId() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryOrganizationIntegrationResult) string { return v.InternalId }).(pulumi.StringOutput)
 }
 
-// The name of the organization integration.
+// The name of the integration.
 func (o GetSentryOrganizationIntegrationResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryOrganizationIntegrationResult) string { return v.Name }).(pulumi.StringOutput)
 }
 
-// The slug of the organization the integration belongs to.
+// The slug of the organization.
 func (o GetSentryOrganizationIntegrationResultOutput) Organization() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryOrganizationIntegrationResult) string { return v.Organization }).(pulumi.StringOutput)
 }
 
-// The key of the organization integration provider.
+// Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).
 func (o GetSentryOrganizationIntegrationResultOutput) ProviderKey() pulumi.StringOutput {
 	return o.ApplyT(func(v GetSentryOrganizationIntegrationResult) string { return v.ProviderKey }).(pulumi.StringOutput)
 }

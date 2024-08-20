@@ -67,6 +67,7 @@ namespace Pulumiverse.Sentry
     ///                         Type = "slack",
     ///                         TargetType = "specific",
     ///                         TargetIdentifier = "#slack-channel",
+    ///                         InputChannelId = "C0XXXXXXXXX",
     ///                         IntegrationId = slack.Apply(getSentryOrganizationIntegrationResult =&gt; getSentryOrganizationIntegrationResult.Id),
     ///                     },
     ///                 },
@@ -88,10 +89,18 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+    /// import using the organization, project slugs and rule id from the URL:
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+    /// 
+    /// or
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+    /// $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryMetricAlert:SentryMetricAlert")]
@@ -102,6 +111,12 @@ namespace Pulumiverse.Sentry
         /// </summary>
         [Output("aggregate")]
         public Output<string> Aggregate { get; private set; } = null!;
+
+        /// <summary>
+        /// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+        /// </summary>
+        [Output("comparisonDelta")]
+        public Output<double?> ComparisonDelta { get; private set; } = null!;
 
         /// <summary>
         /// The Sentry Alert category
@@ -232,6 +247,12 @@ namespace Pulumiverse.Sentry
         public Input<string> Aggregate { get; set; } = null!;
 
         /// <summary>
+        /// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+        /// </summary>
+        [Input("comparisonDelta")]
+        public Input<double>? ComparisonDelta { get; set; }
+
+        /// <summary>
         /// The Sentry Alert category
         /// </summary>
         [Input("dataset")]
@@ -324,6 +345,12 @@ namespace Pulumiverse.Sentry
         /// </summary>
         [Input("aggregate")]
         public Input<string>? Aggregate { get; set; }
+
+        /// <summary>
+        /// An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+        /// </summary>
+        [Input("comparisonDelta")]
+        public Input<double>? ComparisonDelta { get; set; }
 
         /// <summary>
         /// The Sentry Alert category

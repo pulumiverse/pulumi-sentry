@@ -16,6 +16,9 @@ __all__ = [
     'SentryDashboardWidgetQuery',
     'SentryMetricAlertTrigger',
     'SentryMetricAlertTriggerAction',
+    'SentryProjectSymbolSourceLayout',
+    'GetSentryAllKeysKeyResult',
+    'GetSentryAllProjectsProjectResult',
     'GetSentryDashboardWidgetResult',
     'GetSentryDashboardWidgetLayoutResult',
     'GetSentryDashboardWidgetQueryResult',
@@ -54,7 +57,6 @@ class SentryDashboardWidget(dict):
                  limit: Optional[int] = None,
                  widget_type: Optional[str] = None):
         """
-        :param str title: Dashboard title.
         :param str id: The ID of this resource.
         """
         pulumi.set(__self__, "display_type", display_type)
@@ -88,9 +90,6 @@ class SentryDashboardWidget(dict):
     @property
     @pulumi.getter
     def title(self) -> str:
-        """
-        Dashboard title.
-        """
         return pulumi.get(self, "title")
 
     @property
@@ -299,9 +298,7 @@ class SentryMetricAlertTrigger(dict):
                  id: Optional[str] = None,
                  resolve_threshold: Optional[float] = None):
         """
-        :param int threshold_type: The type of threshold
         :param str id: The ID of this resource.
-        :param float resolve_threshold: The value at which the Alert rule resolves
         """
         pulumi.set(__self__, "alert_threshold", alert_threshold)
         pulumi.set(__self__, "label", label)
@@ -326,9 +323,6 @@ class SentryMetricAlertTrigger(dict):
     @property
     @pulumi.getter(name="thresholdType")
     def threshold_type(self) -> int:
-        """
-        The type of threshold
-        """
         return pulumi.get(self, "threshold_type")
 
     @property
@@ -347,9 +341,6 @@ class SentryMetricAlertTrigger(dict):
     @property
     @pulumi.getter(name="resolveThreshold")
     def resolve_threshold(self) -> Optional[float]:
-        """
-        The value at which the Alert rule resolves
-        """
         return pulumi.get(self, "resolve_threshold")
 
 
@@ -360,6 +351,8 @@ class SentryMetricAlertTriggerAction(dict):
         suggest = None
         if key == "targetType":
             suggest = "target_type"
+        elif key == "inputChannelId":
+            suggest = "input_channel_id"
         elif key == "integrationId":
             suggest = "integration_id"
         elif key == "targetIdentifier":
@@ -380,15 +373,19 @@ class SentryMetricAlertTriggerAction(dict):
                  target_type: str,
                  type: str,
                  id: Optional[str] = None,
+                 input_channel_id: Optional[str] = None,
                  integration_id: Optional[int] = None,
                  target_identifier: Optional[str] = None):
         """
         :param str id: The ID of this resource.
+        :param str input_channel_id: Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
         """
         pulumi.set(__self__, "target_type", target_type)
         pulumi.set(__self__, "type", type)
         if id is not None:
             pulumi.set(__self__, "id", id)
+        if input_channel_id is not None:
+            pulumi.set(__self__, "input_channel_id", input_channel_id)
         if integration_id is not None:
             pulumi.set(__self__, "integration_id", integration_id)
         if target_identifier is not None:
@@ -413,6 +410,14 @@ class SentryMetricAlertTriggerAction(dict):
         return pulumi.get(self, "id")
 
     @property
+    @pulumi.getter(name="inputChannelId")
+    def input_channel_id(self) -> Optional[str]:
+        """
+        Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)
+        """
+        return pulumi.get(self, "input_channel_id")
+
+    @property
     @pulumi.getter(name="integrationId")
     def integration_id(self) -> Optional[int]:
         return pulumi.get(self, "integration_id")
@@ -421,6 +426,258 @@ class SentryMetricAlertTriggerAction(dict):
     @pulumi.getter(name="targetIdentifier")
     def target_identifier(self) -> Optional[str]:
         return pulumi.get(self, "target_identifier")
+
+
+@pulumi.output_type
+class SentryProjectSymbolSourceLayout(dict):
+    def __init__(__self__, *,
+                 casing: str,
+                 type: str):
+        """
+        :param str casing: The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+        :param str type: The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstore_index2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+        """
+        pulumi.set(__self__, "casing", casing)
+        pulumi.set(__self__, "type", type)
+
+    @property
+    @pulumi.getter
+    def casing(self) -> str:
+        """
+        The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.
+        """
+        return pulumi.get(self, "casing")
+
+    @property
+    @pulumi.getter
+    def type(self) -> str:
+        """
+        The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstore_index2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.
+        """
+        return pulumi.get(self, "type")
+
+
+@pulumi.output_type
+class GetSentryAllKeysKeyResult(dict):
+    def __init__(__self__, *,
+                 dsn_csp: str,
+                 dsn_public: str,
+                 dsn_secret: str,
+                 id: str,
+                 name: str,
+                 organization: str,
+                 project: str,
+                 project_id: str,
+                 public: str,
+                 rate_limit_count: int,
+                 rate_limit_window: int,
+                 secret: str):
+        """
+        :param str dsn_csp: Security header endpoint for features like CSP and Expect-CT reports.
+        :param str dsn_public: The DSN tells the SDK where to send the events to.
+        :param str dsn_secret: Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
+        :param str id: The ID of this resource.
+        :param str name: The name of the client key.
+        :param str organization: The slug of the organization the resource belongs to.
+        :param str project: The slug of the project the resource belongs to.
+        :param str project_id: The ID of the project that the key belongs to.
+        :param str public: The public key.
+        :param int rate_limit_count: Number of events that can be reported within the rate limit window.
+        :param int rate_limit_window: Length of time that will be considered when checking the rate limit.
+        :param str secret: The secret key.
+        """
+        pulumi.set(__self__, "dsn_csp", dsn_csp)
+        pulumi.set(__self__, "dsn_public", dsn_public)
+        pulumi.set(__self__, "dsn_secret", dsn_secret)
+        pulumi.set(__self__, "id", id)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "organization", organization)
+        pulumi.set(__self__, "project", project)
+        pulumi.set(__self__, "project_id", project_id)
+        pulumi.set(__self__, "public", public)
+        pulumi.set(__self__, "rate_limit_count", rate_limit_count)
+        pulumi.set(__self__, "rate_limit_window", rate_limit_window)
+        pulumi.set(__self__, "secret", secret)
+
+    @property
+    @pulumi.getter(name="dsnCsp")
+    def dsn_csp(self) -> str:
+        """
+        Security header endpoint for features like CSP and Expect-CT reports.
+        """
+        return pulumi.get(self, "dsn_csp")
+
+    @property
+    @pulumi.getter(name="dsnPublic")
+    def dsn_public(self) -> str:
+        """
+        The DSN tells the SDK where to send the events to.
+        """
+        return pulumi.get(self, "dsn_public")
+
+    @property
+    @pulumi.getter(name="dsnSecret")
+    def dsn_secret(self) -> str:
+        """
+        Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
+        """
+        return pulumi.get(self, "dsn_secret")
+
+    @property
+    @pulumi.getter
+    def id(self) -> str:
+        """
+        The ID of this resource.
+        """
+        return pulumi.get(self, "id")
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        The name of the client key.
+        """
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter
+    def organization(self) -> str:
+        """
+        The slug of the organization the resource belongs to.
+        """
+        return pulumi.get(self, "organization")
+
+    @property
+    @pulumi.getter
+    def project(self) -> str:
+        """
+        The slug of the project the resource belongs to.
+        """
+        return pulumi.get(self, "project")
+
+    @property
+    @pulumi.getter(name="projectId")
+    def project_id(self) -> str:
+        """
+        The ID of the project that the key belongs to.
+        """
+        return pulumi.get(self, "project_id")
+
+    @property
+    @pulumi.getter
+    def public(self) -> str:
+        """
+        The public key.
+        """
+        return pulumi.get(self, "public")
+
+    @property
+    @pulumi.getter(name="rateLimitCount")
+    def rate_limit_count(self) -> int:
+        """
+        Number of events that can be reported within the rate limit window.
+        """
+        return pulumi.get(self, "rate_limit_count")
+
+    @property
+    @pulumi.getter(name="rateLimitWindow")
+    def rate_limit_window(self) -> int:
+        """
+        Length of time that will be considered when checking the rate limit.
+        """
+        return pulumi.get(self, "rate_limit_window")
+
+    @property
+    @pulumi.getter
+    def secret(self) -> str:
+        """
+        The secret key.
+        """
+        return pulumi.get(self, "secret")
+
+
+@pulumi.output_type
+class GetSentryAllProjectsProjectResult(dict):
+    def __init__(__self__, *,
+                 color: str,
+                 date_created: str,
+                 features: Sequence[str],
+                 internal_id: str,
+                 name: str,
+                 platform: str,
+                 slug: str):
+        """
+        :param str color: The color of this project.
+        :param str date_created: The date this project was created.
+        :param Sequence[str] features: The features of this project.
+        :param str internal_id: The internal ID of this project.
+        :param str name: The name of this project.
+        :param str platform: The platform of this project.
+        :param str slug: The slug of this project.
+        """
+        pulumi.set(__self__, "color", color)
+        pulumi.set(__self__, "date_created", date_created)
+        pulumi.set(__self__, "features", features)
+        pulumi.set(__self__, "internal_id", internal_id)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "platform", platform)
+        pulumi.set(__self__, "slug", slug)
+
+    @property
+    @pulumi.getter
+    def color(self) -> str:
+        """
+        The color of this project.
+        """
+        return pulumi.get(self, "color")
+
+    @property
+    @pulumi.getter(name="dateCreated")
+    def date_created(self) -> str:
+        """
+        The date this project was created.
+        """
+        return pulumi.get(self, "date_created")
+
+    @property
+    @pulumi.getter
+    def features(self) -> Sequence[str]:
+        """
+        The features of this project.
+        """
+        return pulumi.get(self, "features")
+
+    @property
+    @pulumi.getter(name="internalId")
+    def internal_id(self) -> str:
+        """
+        The internal ID of this project.
+        """
+        return pulumi.get(self, "internal_id")
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        The name of this project.
+        """
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter
+    def platform(self) -> str:
+        """
+        The platform of this project.
+        """
+        return pulumi.get(self, "platform")
+
+    @property
+    @pulumi.getter
+    def slug(self) -> str:
+        """
+        The slug of this project.
+        """
+        return pulumi.get(self, "slug")
 
 
 @pulumi.output_type
@@ -434,10 +691,6 @@ class GetSentryDashboardWidgetResult(dict):
                  queries: Sequence['outputs.GetSentryDashboardWidgetQueryResult'],
                  title: str,
                  widget_type: str):
-        """
-        :param str id: The ID of this resource.
-        :param str title: Dashboard title.
-        """
         pulumi.set(__self__, "display_type", display_type)
         pulumi.set(__self__, "id", id)
         pulumi.set(__self__, "interval", interval)
@@ -455,9 +708,6 @@ class GetSentryDashboardWidgetResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
 
     @property
@@ -483,9 +733,6 @@ class GetSentryDashboardWidgetResult(dict):
     @property
     @pulumi.getter
     def title(self) -> str:
-        """
-        Dashboard title.
-        """
         return pulumi.get(self, "title")
 
     @property
@@ -545,9 +792,6 @@ class GetSentryDashboardWidgetQueryResult(dict):
                  id: str,
                  name: str,
                  order_by: str):
-        """
-        :param str id: The ID of this resource.
-        """
         pulumi.set(__self__, "aggregates", aggregates)
         pulumi.set(__self__, "columns", columns)
         pulumi.set(__self__, "conditions", conditions)
@@ -585,9 +829,6 @@ class GetSentryDashboardWidgetQueryResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
 
     @property
@@ -610,9 +851,6 @@ class GetSentryMetricAlertTriggerResult(dict):
                  label: str,
                  resolve_threshold: float,
                  threshold_type: int):
-        """
-        :param str id: The ID of this resource.
-        """
         pulumi.set(__self__, "actions", actions)
         pulumi.set(__self__, "alert_threshold", alert_threshold)
         pulumi.set(__self__, "id", id)
@@ -633,9 +871,6 @@ class GetSentryMetricAlertTriggerResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
 
     @property
@@ -658,14 +893,13 @@ class GetSentryMetricAlertTriggerResult(dict):
 class GetSentryMetricAlertTriggerActionResult(dict):
     def __init__(__self__, *,
                  id: str,
+                 input_channel_id: str,
                  integration_id: int,
                  target_identifier: str,
                  target_type: str,
                  type: str):
-        """
-        :param str id: The ID of this resource.
-        """
         pulumi.set(__self__, "id", id)
+        pulumi.set(__self__, "input_channel_id", input_channel_id)
         pulumi.set(__self__, "integration_id", integration_id)
         pulumi.set(__self__, "target_identifier", target_identifier)
         pulumi.set(__self__, "target_type", target_type)
@@ -674,10 +908,12 @@ class GetSentryMetricAlertTriggerActionResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
+
+    @property
+    @pulumi.getter(name="inputChannelId")
+    def input_channel_id(self) -> str:
+        return pulumi.get(self, "input_channel_id")
 
     @property
     @pulumi.getter(name="integrationId")

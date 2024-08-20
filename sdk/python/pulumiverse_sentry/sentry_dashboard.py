@@ -279,11 +279,15 @@ class SentryDashboard(pulumi.CustomResource):
                 ),
                 sentry.SentryDashboardWidgetArgs(
                     title="Errors by Country",
-                    display_type="world_map",
+                    display_type="table",
                     interval="5m",
                     widget_type="discover",
                     queries=[sentry.SentryDashboardWidgetQueryArgs(
-                        fields=["count()"],
+                        fields=[
+                            "geo.country_code",
+                            "geo.region",
+                            "count()",
+                        ],
                         aggregates=["count()"],
                         conditions="!event.type:transaction has:geo.country_code",
                         order_by="count()",
@@ -474,6 +478,16 @@ class SentryDashboard(pulumi.CustomResource):
             ])
         ```
 
+        ## Import
+
+        import using the dashboard id from the URL:
+
+        https://sentry.io/dashboard/[dashboard-id]
+
+        ```sh
+        $ pulumi import sentry:index/sentryDashboard:SentryDashboard default org-slug/dashboard-id
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] organization: The slug of the organization the dashboard belongs to.
@@ -617,11 +631,15 @@ class SentryDashboard(pulumi.CustomResource):
                 ),
                 sentry.SentryDashboardWidgetArgs(
                     title="Errors by Country",
-                    display_type="world_map",
+                    display_type="table",
                     interval="5m",
                     widget_type="discover",
                     queries=[sentry.SentryDashboardWidgetQueryArgs(
-                        fields=["count()"],
+                        fields=[
+                            "geo.country_code",
+                            "geo.region",
+                            "count()",
+                        ],
                         aggregates=["count()"],
                         conditions="!event.type:transaction has:geo.country_code",
                         order_by="count()",
@@ -810,6 +828,16 @@ class SentryDashboard(pulumi.CustomResource):
                     ),
                 ),
             ])
+        ```
+
+        ## Import
+
+        import using the dashboard id from the URL:
+
+        https://sentry.io/dashboard/[dashboard-id]
+
+        ```sh
+        $ pulumi import sentry:index/sentryDashboard:SentryDashboard default org-slug/dashboard-id
         ```
 
         :param str resource_name: The name of the resource.

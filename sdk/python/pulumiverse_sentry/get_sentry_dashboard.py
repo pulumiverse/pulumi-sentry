@@ -97,7 +97,8 @@ def get_sentry_dashboard(internal_id: Optional[str] = None,
                          organization: Optional[str] = None,
                          opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSentryDashboardResult:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this dashboard.
     :param str organization: The slug of the organization the dashboard belongs to.
@@ -121,7 +122,8 @@ def get_sentry_dashboard_output(internal_id: Optional[pulumi.Input[str]] = None,
                                 organization: Optional[pulumi.Input[str]] = None,
                                 opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryDashboardResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this dashboard.
     :param str organization: The slug of the organization the dashboard belongs to.

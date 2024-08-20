@@ -5,26 +5,37 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from .get_sentry_all_keys import *
+from .get_sentry_all_projects import *
 from .get_sentry_dashboard import *
 from .get_sentry_issue_alert import *
 from .get_sentry_key import *
 from .get_sentry_metric_alert import *
 from .get_sentry_organization import *
 from .get_sentry_organization_integration import *
+from .get_sentry_organization_member import *
+from .get_sentry_project import *
 from .get_sentry_team import *
 from .provider import *
+from .sentry_all_projects_spike_protection import *
 from .sentry_dashboard import *
+from .sentry_integration_opsgenie import *
+from .sentry_integration_pager_duty import *
 from .sentry_issue_alert import *
 from .sentry_key import *
 from .sentry_metric_alert import *
+from .sentry_notification_action import *
 from .sentry_organization import *
 from .sentry_organization_code_mapping import *
 from .sentry_organization_member import *
 from .sentry_organization_repository_github import *
 from .sentry_plugin import *
 from .sentry_project import *
-from .sentry_rule import *
+from .sentry_project_inbound_data_filter import *
+from .sentry_project_spike_protection import *
+from .sentry_project_symbol_source import *
 from .sentry_team import *
+from .sentry_team_member import *
 from ._inputs import *
 from . import outputs
 
@@ -40,10 +51,34 @@ _utilities.register(
 [
  {
   "pkg": "sentry",
+  "mod": "index/sentryAllProjectsSpikeProtection",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryAllProjectsSpikeProtection:SentryAllProjectsSpikeProtection": "SentryAllProjectsSpikeProtection"
+  }
+ },
+ {
+  "pkg": "sentry",
   "mod": "index/sentryDashboard",
   "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryDashboard:SentryDashboard": "SentryDashboard"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryIntegrationOpsgenie",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryIntegrationOpsgenie:SentryIntegrationOpsgenie": "SentryIntegrationOpsgenie"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryIntegrationPagerDuty",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryIntegrationPagerDuty:SentryIntegrationPagerDuty": "SentryIntegrationPagerDuty"
   }
  },
  {
@@ -68,6 +103,14 @@ _utilities.register(
   "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryMetricAlert:SentryMetricAlert": "SentryMetricAlert"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryNotificationAction",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryNotificationAction:SentryNotificationAction": "SentryNotificationAction"
   }
  },
  {
@@ -120,10 +163,26 @@ _utilities.register(
  },
  {
   "pkg": "sentry",
-  "mod": "index/sentryRule",
+  "mod": "index/sentryProjectInboundDataFilter",
   "fqn": "pulumiverse_sentry",
   "classes": {
-   "sentry:index/sentryRule:SentryRule": "SentryRule"
+   "sentry:index/sentryProjectInboundDataFilter:SentryProjectInboundDataFilter": "SentryProjectInboundDataFilter"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryProjectSpikeProtection",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryProjectSpikeProtection:SentryProjectSpikeProtection": "SentryProjectSpikeProtection"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryProjectSymbolSource",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryProjectSymbolSource:SentryProjectSymbolSource": "SentryProjectSymbolSource"
   }
  },
  {
@@ -132,6 +191,14 @@ _utilities.register(
   "fqn": "pulumiverse_sentry",
   "classes": {
    "sentry:index/sentryTeam:SentryTeam": "SentryTeam"
+  }
+ },
+ {
+  "pkg": "sentry",
+  "mod": "index/sentryTeamMember",
+  "fqn": "pulumiverse_sentry",
+  "classes": {
+   "sentry:index/sentryTeamMember:SentryTeamMember": "SentryTeamMember"
   }
  }
 ]

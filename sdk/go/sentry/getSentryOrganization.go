@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -103,12 +102,6 @@ func (o LookupSentryOrganizationResultOutput) ToLookupSentryOrganizationResultOu
 
 func (o LookupSentryOrganizationResultOutput) ToLookupSentryOrganizationResultOutputWithContext(ctx context.Context) LookupSentryOrganizationResultOutput {
 	return o
-}
-
-func (o LookupSentryOrganizationResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryOrganizationResult] {
-	return pulumix.Output[LookupSentryOrganizationResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The provider-assigned unique ID for this managed resource.

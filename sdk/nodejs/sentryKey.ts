@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * Sentry Key resource.
+ * Return a client key bound to a project.
  *
  * ## Example Usage
  *
@@ -22,10 +22,12 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+ * import using the organization, project slugs and key id from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
+ * $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
  * ```
  */
 export class SentryKey extends pulumi.CustomResource {
@@ -57,51 +59,47 @@ export class SentryKey extends pulumi.CustomResource {
     }
 
     /**
-     * DSN for the Content Security Policy (CSP) for the key.
+     * Security header endpoint for features like CSP and Expect-CT reports.
      */
     public /*out*/ readonly dsnCsp!: pulumi.Output<string>;
     /**
-     * DSN for the key.
+     * The DSN tells the SDK where to send the events to.
      */
     public /*out*/ readonly dsnPublic!: pulumi.Output<string>;
     /**
-     * @deprecated DSN (Deprecated) for the key.
+     * Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
      */
     public /*out*/ readonly dsnSecret!: pulumi.Output<string>;
     /**
-     * Flag indicating the key is active.
-     */
-    public /*out*/ readonly isActive!: pulumi.Output<boolean>;
-    /**
-     * The name of the key.
+     * The name of the client key.
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The slug of the organization the key should be created for.
+     * The slug of the organization the resource belongs to.
      */
     public readonly organization!: pulumi.Output<string>;
     /**
-     * The slug of the project the key should be created for.
+     * The slug of the project the resource belongs to.
      */
     public readonly project!: pulumi.Output<string>;
     /**
      * The ID of the project that the key belongs to.
      */
-    public /*out*/ readonly projectId!: pulumi.Output<number>;
+    public /*out*/ readonly projectId!: pulumi.Output<string>;
     /**
-     * Public key portion of the client key.
+     * The public key.
      */
     public /*out*/ readonly public!: pulumi.Output<string>;
     /**
      * Number of events that can be reported within the rate limit window.
      */
-    public readonly rateLimitCount!: pulumi.Output<number>;
+    public readonly rateLimitCount!: pulumi.Output<number | undefined>;
     /**
      * Length of time that will be considered when checking the rate limit.
      */
-    public readonly rateLimitWindow!: pulumi.Output<number>;
+    public readonly rateLimitWindow!: pulumi.Output<number | undefined>;
     /**
-     * Secret key portion of the client key.
+     * The secret key.
      */
     public /*out*/ readonly secret!: pulumi.Output<string>;
 
@@ -121,7 +119,6 @@ export class SentryKey extends pulumi.CustomResource {
             resourceInputs["dsnCsp"] = state ? state.dsnCsp : undefined;
             resourceInputs["dsnPublic"] = state ? state.dsnPublic : undefined;
             resourceInputs["dsnSecret"] = state ? state.dsnSecret : undefined;
-            resourceInputs["isActive"] = state ? state.isActive : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
             resourceInputs["organization"] = state ? state.organization : undefined;
             resourceInputs["project"] = state ? state.project : undefined;
@@ -146,7 +143,6 @@ export class SentryKey extends pulumi.CustomResource {
             resourceInputs["dsnCsp"] = undefined /*out*/;
             resourceInputs["dsnPublic"] = undefined /*out*/;
             resourceInputs["dsnSecret"] = undefined /*out*/;
-            resourceInputs["isActive"] = undefined /*out*/;
             resourceInputs["projectId"] = undefined /*out*/;
             resourceInputs["public"] = undefined /*out*/;
             resourceInputs["secret"] = undefined /*out*/;
@@ -163,39 +159,35 @@ export class SentryKey extends pulumi.CustomResource {
  */
 export interface SentryKeyState {
     /**
-     * DSN for the Content Security Policy (CSP) for the key.
+     * Security header endpoint for features like CSP and Expect-CT reports.
      */
     dsnCsp?: pulumi.Input<string>;
     /**
-     * DSN for the key.
+     * The DSN tells the SDK where to send the events to.
      */
     dsnPublic?: pulumi.Input<string>;
     /**
-     * @deprecated DSN (Deprecated) for the key.
+     * Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
      */
     dsnSecret?: pulumi.Input<string>;
     /**
-     * Flag indicating the key is active.
-     */
-    isActive?: pulumi.Input<boolean>;
-    /**
-     * The name of the key.
+     * The name of the client key.
      */
     name?: pulumi.Input<string>;
     /**
-     * The slug of the organization the key should be created for.
+     * The slug of the organization the resource belongs to.
      */
     organization?: pulumi.Input<string>;
     /**
-     * The slug of the project the key should be created for.
+     * The slug of the project the resource belongs to.
      */
     project?: pulumi.Input<string>;
     /**
      * The ID of the project that the key belongs to.
      */
-    projectId?: pulumi.Input<number>;
+    projectId?: pulumi.Input<string>;
     /**
-     * Public key portion of the client key.
+     * The public key.
      */
     public?: pulumi.Input<string>;
     /**
@@ -207,7 +199,7 @@ export interface SentryKeyState {
      */
     rateLimitWindow?: pulumi.Input<number>;
     /**
-     * Secret key portion of the client key.
+     * The secret key.
      */
     secret?: pulumi.Input<string>;
 }
@@ -217,15 +209,15 @@ export interface SentryKeyState {
  */
 export interface SentryKeyArgs {
     /**
-     * The name of the key.
+     * The name of the client key.
      */
     name?: pulumi.Input<string>;
     /**
-     * The slug of the organization the key should be created for.
+     * The slug of the organization the resource belongs to.
      */
     organization: pulumi.Input<string>;
     /**
-     * The slug of the project the key should be created for.
+     * The slug of the project the resource belongs to.
      */
     project: pulumi.Input<string>;
     /**

@@ -23,6 +23,7 @@ class SentryMetricAlertArgs:
                  threshold_type: pulumi.Input[int],
                  time_window: pulumi.Input[float],
                  triggers: pulumi.Input[Sequence[pulumi.Input['SentryMetricAlertTriggerArgs']]],
+                 comparison_delta: Optional[pulumi.Input[float]] = None,
                  dataset: Optional[pulumi.Input[str]] = None,
                  environment: Optional[pulumi.Input[str]] = None,
                  event_types: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -37,6 +38,7 @@ class SentryMetricAlertArgs:
         :param pulumi.Input[str] query: The query filter to apply
         :param pulumi.Input[int] threshold_type: The type of threshold
         :param pulumi.Input[float] time_window: The period to evaluate the Alert rule in minutes
+        :param pulumi.Input[float] comparison_delta: An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
         :param pulumi.Input[str] dataset: The Sentry Alert category
         :param pulumi.Input[str] environment: Perform Alert rule in a specific environment
         :param pulumi.Input[Sequence[pulumi.Input[str]]] event_types: The events type of dataset.
@@ -51,6 +53,8 @@ class SentryMetricAlertArgs:
         pulumi.set(__self__, "threshold_type", threshold_type)
         pulumi.set(__self__, "time_window", time_window)
         pulumi.set(__self__, "triggers", triggers)
+        if comparison_delta is not None:
+            pulumi.set(__self__, "comparison_delta", comparison_delta)
         if dataset is not None:
             pulumi.set(__self__, "dataset", dataset)
         if environment is not None:
@@ -146,6 +150,18 @@ class SentryMetricAlertArgs:
         pulumi.set(self, "triggers", value)
 
     @property
+    @pulumi.getter(name="comparisonDelta")
+    def comparison_delta(self) -> Optional[pulumi.Input[float]]:
+        """
+        An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+        """
+        return pulumi.get(self, "comparison_delta")
+
+    @comparison_delta.setter
+    def comparison_delta(self, value: Optional[pulumi.Input[float]]):
+        pulumi.set(self, "comparison_delta", value)
+
+    @property
     @pulumi.getter
     def dataset(self) -> Optional[pulumi.Input[str]]:
         """
@@ -222,6 +238,7 @@ class SentryMetricAlertArgs:
 class _SentryMetricAlertState:
     def __init__(__self__, *,
                  aggregate: Optional[pulumi.Input[str]] = None,
+                 comparison_delta: Optional[pulumi.Input[float]] = None,
                  dataset: Optional[pulumi.Input[str]] = None,
                  environment: Optional[pulumi.Input[str]] = None,
                  event_types: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -238,6 +255,7 @@ class _SentryMetricAlertState:
         """
         Input properties used for looking up and filtering SentryMetricAlert resources.
         :param pulumi.Input[str] aggregate: The aggregation criteria to apply
+        :param pulumi.Input[float] comparison_delta: An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
         :param pulumi.Input[str] dataset: The Sentry Alert category
         :param pulumi.Input[str] environment: Perform Alert rule in a specific environment
         :param pulumi.Input[Sequence[pulumi.Input[str]]] event_types: The events type of dataset.
@@ -253,6 +271,8 @@ class _SentryMetricAlertState:
         """
         if aggregate is not None:
             pulumi.set(__self__, "aggregate", aggregate)
+        if comparison_delta is not None:
+            pulumi.set(__self__, "comparison_delta", comparison_delta)
         if dataset is not None:
             pulumi.set(__self__, "dataset", dataset)
         if environment is not None:
@@ -291,6 +311,18 @@ class _SentryMetricAlertState:
     @aggregate.setter
     def aggregate(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "aggregate", value)
+
+    @property
+    @pulumi.getter(name="comparisonDelta")
+    def comparison_delta(self) -> Optional[pulumi.Input[float]]:
+        """
+        An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+        """
+        return pulumi.get(self, "comparison_delta")
+
+    @comparison_delta.setter
+    def comparison_delta(self, value: Optional[pulumi.Input[float]]):
+        pulumi.set(self, "comparison_delta", value)
 
     @property
     @pulumi.getter
@@ -452,6 +484,7 @@ class SentryMetricAlert(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  aggregate: Optional[pulumi.Input[str]] = None,
+                 comparison_delta: Optional[pulumi.Input[float]] = None,
                  dataset: Optional[pulumi.Input[str]] = None,
                  environment: Optional[pulumi.Input[str]] = None,
                  event_types: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -503,6 +536,7 @@ class SentryMetricAlert(pulumi.CustomResource):
                         type="slack",
                         target_type="specific",
                         target_identifier="#slack-channel",
+                        input_channel_id="C0XXXXXXXXX",
                         integration_id=slack.id,
                     )],
                     alert_threshold=300,
@@ -519,15 +553,24 @@ class SentryMetricAlert(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+        import using the organization, project slugs and rule id from the URL:
+
+        https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+
+        https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+
+        or
+
+        https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+        $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
         ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] aggregate: The aggregation criteria to apply
+        :param pulumi.Input[float] comparison_delta: An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
         :param pulumi.Input[str] dataset: The Sentry Alert category
         :param pulumi.Input[str] environment: Perform Alert rule in a specific environment
         :param pulumi.Input[Sequence[pulumi.Input[str]]] event_types: The events type of dataset.
@@ -584,6 +627,7 @@ class SentryMetricAlert(pulumi.CustomResource):
                         type="slack",
                         target_type="specific",
                         target_identifier="#slack-channel",
+                        input_channel_id="C0XXXXXXXXX",
                         integration_id=slack.id,
                     )],
                     alert_threshold=300,
@@ -600,10 +644,18 @@ class SentryMetricAlert(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+        import using the organization, project slugs and rule id from the URL:
+
+        https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+
+        https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+
+        or
+
+        https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+        $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -622,6 +674,7 @@ class SentryMetricAlert(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  aggregate: Optional[pulumi.Input[str]] = None,
+                 comparison_delta: Optional[pulumi.Input[float]] = None,
                  dataset: Optional[pulumi.Input[str]] = None,
                  environment: Optional[pulumi.Input[str]] = None,
                  event_types: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -646,6 +699,7 @@ class SentryMetricAlert(pulumi.CustomResource):
             if aggregate is None and not opts.urn:
                 raise TypeError("Missing required property 'aggregate'")
             __props__.__dict__["aggregate"] = aggregate
+            __props__.__dict__["comparison_delta"] = comparison_delta
             __props__.__dict__["dataset"] = dataset
             __props__.__dict__["environment"] = environment
             __props__.__dict__["event_types"] = event_types
@@ -682,6 +736,7 @@ class SentryMetricAlert(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             aggregate: Optional[pulumi.Input[str]] = None,
+            comparison_delta: Optional[pulumi.Input[float]] = None,
             dataset: Optional[pulumi.Input[str]] = None,
             environment: Optional[pulumi.Input[str]] = None,
             event_types: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -703,6 +758,7 @@ class SentryMetricAlert(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] aggregate: The aggregation criteria to apply
+        :param pulumi.Input[float] comparison_delta: An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
         :param pulumi.Input[str] dataset: The Sentry Alert category
         :param pulumi.Input[str] environment: Perform Alert rule in a specific environment
         :param pulumi.Input[Sequence[pulumi.Input[str]]] event_types: The events type of dataset.
@@ -721,6 +777,7 @@ class SentryMetricAlert(pulumi.CustomResource):
         __props__ = _SentryMetricAlertState.__new__(_SentryMetricAlertState)
 
         __props__.__dict__["aggregate"] = aggregate
+        __props__.__dict__["comparison_delta"] = comparison_delta
         __props__.__dict__["dataset"] = dataset
         __props__.__dict__["environment"] = environment
         __props__.__dict__["event_types"] = event_types
@@ -743,6 +800,14 @@ class SentryMetricAlert(pulumi.CustomResource):
         The aggregation criteria to apply
         """
         return pulumi.get(self, "aggregate")
+
+    @property
+    @pulumi.getter(name="comparisonDelta")
+    def comparison_delta(self) -> pulumi.Output[Optional[float]]:
+        """
+        An optional int representing the time delta to use as the comparison period, in minutes. Required when using a percentage change threshold
+        """
+        return pulumi.get(self, "comparison_delta")
 
     @property
     @pulumi.getter

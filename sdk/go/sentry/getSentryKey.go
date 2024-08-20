@@ -8,11 +8,10 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
-// Sentry Key data source.
+// Retrieve a Project's Client Key.
 //
 // ## Example Usage
 //
@@ -63,43 +62,43 @@ func LookupSentryKey(ctx *pulumi.Context, args *LookupSentryKeyArgs, opts ...pul
 type LookupSentryKeyArgs struct {
 	// Boolean flag indicating that we want the first key of the returned keys.
 	First *bool `pulumi:"first"`
-	// The name of the key to retrieve.
+	// The ID of this resource.
+	Id *string `pulumi:"id"`
+	// The name of the client key.
 	Name *string `pulumi:"name"`
-	// The slug of the organization the key should be created for.
+	// The slug of the organization the resource belongs to.
 	Organization string `pulumi:"organization"`
-	// The slug of the project the key should be created for.
+	// The slug of the project the resource belongs to.
 	Project string `pulumi:"project"`
 }
 
 // A collection of values returned by getSentryKey.
 type LookupSentryKeyResult struct {
-	// DSN for the Content Security Policy (CSP) for the key.
+	// Security header endpoint for features like CSP and Expect-CT reports.
 	DsnCsp string `pulumi:"dsnCsp"`
-	// DSN for the key.
+	// The DSN tells the SDK where to send the events to.
 	DsnPublic string `pulumi:"dsnPublic"`
-	// Deprecated: DSN (Deprecated) for the key.
+	// Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
 	DsnSecret string `pulumi:"dsnSecret"`
 	// Boolean flag indicating that we want the first key of the returned keys.
 	First *bool `pulumi:"first"`
-	// The provider-assigned unique ID for this managed resource.
-	Id string `pulumi:"id"`
-	// Flag indicating the key is active.
-	IsActive bool `pulumi:"isActive"`
-	// The name of the key to retrieve.
+	// The ID of this resource.
+	Id *string `pulumi:"id"`
+	// The name of the client key.
 	Name *string `pulumi:"name"`
-	// The slug of the organization the key should be created for.
+	// The slug of the organization the resource belongs to.
 	Organization string `pulumi:"organization"`
-	// The slug of the project the key should be created for.
+	// The slug of the project the resource belongs to.
 	Project string `pulumi:"project"`
 	// The ID of the project that the key belongs to.
-	ProjectId int `pulumi:"projectId"`
-	// Public key portion of the client key.
+	ProjectId string `pulumi:"projectId"`
+	// The public key.
 	Public string `pulumi:"public"`
 	// Number of events that can be reported within the rate limit window.
 	RateLimitCount int `pulumi:"rateLimitCount"`
 	// Length of time that will be considered when checking the rate limit.
 	RateLimitWindow int `pulumi:"rateLimitWindow"`
-	// Secret key portion of the client key.
+	// The secret key.
 	Secret string `pulumi:"secret"`
 }
 
@@ -120,11 +119,13 @@ func LookupSentryKeyOutput(ctx *pulumi.Context, args LookupSentryKeyOutputArgs, 
 type LookupSentryKeyOutputArgs struct {
 	// Boolean flag indicating that we want the first key of the returned keys.
 	First pulumi.BoolPtrInput `pulumi:"first"`
-	// The name of the key to retrieve.
+	// The ID of this resource.
+	Id pulumi.StringPtrInput `pulumi:"id"`
+	// The name of the client key.
 	Name pulumi.StringPtrInput `pulumi:"name"`
-	// The slug of the organization the key should be created for.
+	// The slug of the organization the resource belongs to.
 	Organization pulumi.StringInput `pulumi:"organization"`
-	// The slug of the project the key should be created for.
+	// The slug of the project the resource belongs to.
 	Project pulumi.StringInput `pulumi:"project"`
 }
 
@@ -147,23 +148,17 @@ func (o LookupSentryKeyResultOutput) ToLookupSentryKeyResultOutputWithContext(ct
 	return o
 }
 
-func (o LookupSentryKeyResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryKeyResult] {
-	return pulumix.Output[LookupSentryKeyResult]{
-		OutputState: o.OutputState,
-	}
-}
-
-// DSN for the Content Security Policy (CSP) for the key.
+// Security header endpoint for features like CSP and Expect-CT reports.
 func (o LookupSentryKeyResultOutput) DsnCsp() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.DsnCsp }).(pulumi.StringOutput)
 }
 
-// DSN for the key.
+// The DSN tells the SDK where to send the events to.
 func (o LookupSentryKeyResultOutput) DsnPublic() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.DsnPublic }).(pulumi.StringOutput)
 }
 
-// Deprecated: DSN (Deprecated) for the key.
+// Deprecated DSN includes a secret which is no longer required by newer SDK versions. If you are unsure which to use, follow installation instructions for your language.
 func (o LookupSentryKeyResultOutput) DsnSecret() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.DsnSecret }).(pulumi.StringOutput)
 }
@@ -173,37 +168,32 @@ func (o LookupSentryKeyResultOutput) First() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) *bool { return v.First }).(pulumi.BoolPtrOutput)
 }
 
-// The provider-assigned unique ID for this managed resource.
-func (o LookupSentryKeyResultOutput) Id() pulumi.StringOutput {
-	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.Id }).(pulumi.StringOutput)
+// The ID of this resource.
+func (o LookupSentryKeyResultOutput) Id() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v LookupSentryKeyResult) *string { return v.Id }).(pulumi.StringPtrOutput)
 }
 
-// Flag indicating the key is active.
-func (o LookupSentryKeyResultOutput) IsActive() pulumi.BoolOutput {
-	return o.ApplyT(func(v LookupSentryKeyResult) bool { return v.IsActive }).(pulumi.BoolOutput)
-}
-
-// The name of the key to retrieve.
+// The name of the client key.
 func (o LookupSentryKeyResultOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
-// The slug of the organization the key should be created for.
+// The slug of the organization the resource belongs to.
 func (o LookupSentryKeyResultOutput) Organization() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.Organization }).(pulumi.StringOutput)
 }
 
-// The slug of the project the key should be created for.
+// The slug of the project the resource belongs to.
 func (o LookupSentryKeyResultOutput) Project() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.Project }).(pulumi.StringOutput)
 }
 
 // The ID of the project that the key belongs to.
-func (o LookupSentryKeyResultOutput) ProjectId() pulumi.IntOutput {
-	return o.ApplyT(func(v LookupSentryKeyResult) int { return v.ProjectId }).(pulumi.IntOutput)
+func (o LookupSentryKeyResultOutput) ProjectId() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.ProjectId }).(pulumi.StringOutput)
 }
 
-// Public key portion of the client key.
+// The public key.
 func (o LookupSentryKeyResultOutput) Public() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.Public }).(pulumi.StringOutput)
 }
@@ -218,7 +208,7 @@ func (o LookupSentryKeyResultOutput) RateLimitWindow() pulumi.IntOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) int { return v.RateLimitWindow }).(pulumi.IntOutput)
 }
 
-// Secret key portion of the client key.
+// The secret key.
 func (o LookupSentryKeyResultOutput) Secret() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryKeyResult) string { return v.Secret }).(pulumi.StringOutput)
 }
