@@ -18,6 +18,7 @@ package main
 
 import (
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
+
 	sentry "github.com/pulumiverse/pulumi-sentry/provider"
 	"github.com/pulumiverse/pulumi-sentry/provider/pkg/version"
 )
