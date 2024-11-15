@@ -6,6 +6,7 @@
 **/obj/
 Pulumi.*.yaml
 **/node_modules/
+**/package-lock.json
 .DS_Store
 
 **/command-output/

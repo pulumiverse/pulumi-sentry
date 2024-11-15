@@ -129,7 +129,7 @@ lint_provider.fix:
 	cd provider && golangci-lint run --path-prefix provider -c ../.golangci.yml --fix
 
 # `make provider_no_deps` builds the provider binary directly, without ensuring that
-# `cmd/pulumi-resource-cockroach/schema.json` is valid and up to date.
+# `cmd/pulumi-resource-sentry/schema.json` is valid and up to date.
 # To create a release ready binary, you should use `make provider`.
 provider_no_deps:
 	(cd provider && go build $(PULUMI_PROVIDER_BUILD_PARALLELISM) -o $(WORKING_DIR)/bin/$(PROVIDER) -ldflags "$(LDFLAGS)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(PROVIDER))
