@@ -18,6 +18,9 @@ import (
 	"fmt"
 	"path/filepath"
 
+	// Enable embedding of package metadata
+	_ "embed"
+
 	"github.com/jianyuan/terraform-provider-sentry/sentry"
 
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
@@ -49,6 +52,9 @@ func preConfigureCallback(_ resource.PropertyMap, _ shim.ResourceConfig) error {
 func boolRef(b bool) *bool {
 	return &b
 }
+
+//go:embed cmd/pulumi-resource-sentry/bridge-metadata.json
+var metadata []byte
 
 // Provider returns additional overlaid schema and metadata associated with the provider..
 func Provider() tfbridge.ProviderInfo {
@@ -86,7 +92,8 @@ func Provider() tfbridge.ProviderInfo {
 		Homepage:   "https://github.com/pulumiverse",
 		Repository: "https://github.com/pulumiverse/pulumi-sentry",
 		// The GitHub Org for the provider - defaults to `terraform-providers`
-		GitHubOrg: "jianyuan",
+		GitHubOrg:    "jianyuan",
+		MetadataInfo: tfbridge.NewProviderMetadata(metadata),
 		Config: map[string]*tfbridge.SchemaInfo{
 			// Add any required configuration here, or remove the example below if
 			// no additional points are required.
@@ -212,6 +219,7 @@ func Provider() tfbridge.ProviderInfo {
 	}
 
 	prov.SetAutonaming(255, "-")
+	prov.MustApplyAutoAliases()
 
 	return prov
 }

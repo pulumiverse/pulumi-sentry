@@ -1,0 +1,210 @@
+{
+    "auto-aliasing": {
+        "resources": {
+            "sentry_dashboard": {
+                "current": "sentry:index/sentryDashboard:SentryDashboard",
+                "fields": {
+                    "widget": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "layout": {
+                                    "maxItemsOne": true
+                                },
+                                "query": {
+                                    "maxItemsOne": false,
+                                    "elem": {
+                                        "fields": {
+                                            "aggregates": {
+                                                "maxItemsOne": false
+                                            },
+                                            "columns": {
+                                                "maxItemsOne": false
+                                            },
+                                            "field_aliases": {
+                                                "maxItemsOne": false
+                                            },
+                                            "fields": {
+                                                "maxItemsOne": false
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "sentry_issue_alert": {
+                "current": "sentry:index/sentryIssueAlert:SentryIssueAlert",
+                "fields": {
+                    "actions": {
+                        "maxItemsOne": false
+                    },
+                    "conditions": {
+                        "maxItemsOne": false
+                    },
+                    "filters": {
+                        "maxItemsOne": false
+                    },
+                    "projects": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "sentry_key": {
+                "current": "sentry:index/sentryKey:SentryKey"
+            },
+            "sentry_metric_alert": {
+                "current": "sentry:index/sentryMetricAlert:SentryMetricAlert",
+                "fields": {
+                    "event_types": {
+                        "maxItemsOne": false
+                    },
+                    "trigger": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "action": {
+                                    "maxItemsOne": false
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "sentry_organization": {
+                "current": "sentry:index/sentryOrganization:SentryOrganization"
+            },
+            "sentry_organization_code_mapping": {
+                "current": "sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping"
+            },
+            "sentry_organization_member": {
+                "current": "sentry:index/sentryOrganizationMember:SentryOrganizationMember",
+                "fields": {
+                    "teams": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "sentry_organization_repository_github": {
+                "current": "sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub"
+            },
+            "sentry_plugin": {
+                "current": "sentry:index/sentryPlugin:SentryPlugin"
+            },
+            "sentry_project": {
+                "current": "sentry:index/sentryProject:SentryProject",
+                "fields": {
+                    "features": {
+                        "maxItemsOne": false
+                    },
+                    "teams": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "sentry_rule": {
+                "current": "sentry:index/sentryRule:SentryRule",
+                "fields": {
+                    "actions": {
+                        "maxItemsOne": false
+                    },
+                    "conditions": {
+                        "maxItemsOne": false
+                    },
+                    "filters": {
+                        "maxItemsOne": false
+                    },
+                    "projects": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "sentry_team": {
+                "current": "sentry:index/sentryTeam:SentryTeam"
+            }
+        },
+        "datasources": {
+            "sentry_dashboard": {
+                "current": "sentry:index/getSentryDashboard:getSentryDashboard",
+                "fields": {
+                    "widget": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "layout": {
+                                    "maxItemsOne": false
+                                },
+                                "query": {
+                                    "maxItemsOne": false,
+                                    "elem": {
+                                        "fields": {
+                                            "aggregates": {
+                                                "maxItemsOne": false
+                                            },
+                                            "columns": {
+                                                "maxItemsOne": false
+                                            },
+                                            "field_aliases": {
+                                                "maxItemsOne": false
+                                            },
+                                            "fields": {
+                                                "maxItemsOne": false
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "sentry_issue_alert": {
+                "current": "sentry:index/getSentryIssueAlert:getSentryIssueAlert",
+                "fields": {
+                    "actions": {
+                        "maxItemsOne": false
+                    },
+                    "conditions": {
+                        "maxItemsOne": false
+                    },
+                    "filters": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "sentry_key": {
+                "current": "sentry:index/getSentryKey:getSentryKey"
+            },
+            "sentry_metric_alert": {
+                "current": "sentry:index/getSentryMetricAlert:getSentryMetricAlert",
+                "fields": {
+                    "event_types": {
+                        "maxItemsOne": false
+                    },
+                    "trigger": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "action": {
+                                    "maxItemsOne": false
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "sentry_organization": {
+                "current": "sentry:index/getSentryOrganization:getSentryOrganization"
+            },
+            "sentry_organization_integration": {
+                "current": "sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration"
+            },
+            "sentry_team": {
+                "current": "sentry:index/getSentryTeam:getSentryTeam"
+            }
+        }
+    },
+    "auto-settings": {}
+}
