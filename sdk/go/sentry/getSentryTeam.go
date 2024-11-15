@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -28,6 +27,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Retrieve a team
 //			_, err := sentry.LookupSentryTeam(ctx, &sentry.LookupSentryTeamArgs{
 //				Organization: "my-organization",
 //				Slug:         "my-team",
@@ -77,14 +77,20 @@ type LookupSentryTeamResult struct {
 
 func LookupSentryTeamOutput(ctx *pulumi.Context, args LookupSentryTeamOutputArgs, opts ...pulumi.InvokeOption) LookupSentryTeamResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (LookupSentryTeamResult, error) {
+		ApplyT(func(v interface{}) (LookupSentryTeamResultOutput, error) {
 			args := v.(LookupSentryTeamArgs)
-			r, err := LookupSentryTeam(ctx, &args, opts...)
-			var s LookupSentryTeamResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv LookupSentryTeamResult
+			secret, err := ctx.InvokePackageRaw("sentry:index/getSentryTeam:getSentryTeam", args, &rv, "", opts...)
+			if err != nil {
+				return LookupSentryTeamResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(LookupSentryTeamResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(LookupSentryTeamResultOutput), nil
+			}
+			return output, nil
 		}).(LookupSentryTeamResultOutput)
 }
 
@@ -113,12 +119,6 @@ func (o LookupSentryTeamResultOutput) ToLookupSentryTeamResultOutput() LookupSen
 
 func (o LookupSentryTeamResultOutput) ToLookupSentryTeamResultOutputWithContext(ctx context.Context) LookupSentryTeamResultOutput {
 	return o
-}
-
-func (o LookupSentryTeamResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryTeamResult] {
-	return pulumix.Output[LookupSentryTeamResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o LookupSentryTeamResultOutput) HasAccess() pulumi.BoolOutput {

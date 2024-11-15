@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -131,6 +136,7 @@ def get_sentry_team(organization: Optional[str] = None,
     import pulumi
     import pulumi_sentry as sentry
 
+    # Retrieve a team
     default = sentry.get_sentry_team(organization="my-organization",
         slug="my-team")
     ```
@@ -154,9 +160,6 @@ def get_sentry_team(organization: Optional[str] = None,
         name=pulumi.get(__ret__, 'name'),
         organization=pulumi.get(__ret__, 'organization'),
         slug=pulumi.get(__ret__, 'slug'))
-
-
-@_utilities.lift_output_func(get_sentry_team)
 def get_sentry_team_output(organization: Optional[pulumi.Input[str]] = None,
                            slug: Optional[pulumi.Input[str]] = None,
                            opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryTeamResult]:
@@ -169,6 +172,7 @@ def get_sentry_team_output(organization: Optional[pulumi.Input[str]] = None,
     import pulumi
     import pulumi_sentry as sentry
 
+    # Retrieve a team
     default = sentry.get_sentry_team(organization="my-organization",
         slug="my-team")
     ```
@@ -177,4 +181,17 @@ def get_sentry_team_output(organization: Optional[pulumi.Input[str]] = None,
     :param str organization: The slug of the organization the team should be created for.
     :param str slug: The unique URL slug for this team.
     """
-    ...
+    __args__ = dict()
+    __args__['organization'] = organization
+    __args__['slug'] = slug
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('sentry:index/getSentryTeam:getSentryTeam', __args__, opts=opts, typ=GetSentryTeamResult)
+    return __ret__.apply(lambda __response__: GetSentryTeamResult(
+        has_access=pulumi.get(__response__, 'has_access'),
+        id=pulumi.get(__response__, 'id'),
+        internal_id=pulumi.get(__response__, 'internal_id'),
+        is_member=pulumi.get(__response__, 'is_member'),
+        is_pending=pulumi.get(__response__, 'is_pending'),
+        name=pulumi.get(__response__, 'name'),
+        organization=pulumi.get(__response__, 'organization'),
+        slug=pulumi.get(__response__, 'slug')))

@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -20,15 +19,15 @@ type SentryRule struct {
 	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch pulumi.StringOutput `pulumi:"actionMatch"`
 	// List of actions.
-	Actions pulumi.MapArrayOutput `pulumi:"actions"`
+	Actions pulumi.StringMapArrayOutput `pulumi:"actions"`
 	// List of conditions.
-	Conditions pulumi.MapArrayOutput `pulumi:"conditions"`
+	Conditions pulumi.StringMapArrayOutput `pulumi:"conditions"`
 	// Perform issue alert in a specific environment.
 	Environment pulumi.StringOutput `pulumi:"environment"`
 	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch pulumi.StringOutput `pulumi:"filterMatch"`
 	// List of filters.
-	Filters pulumi.MapArrayOutput `pulumi:"filters"`
+	Filters pulumi.StringMapArrayOutput `pulumi:"filters"`
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency pulumi.IntOutput `pulumi:"frequency"`
 	// The internal ID for this issue alert.
@@ -99,15 +98,15 @@ type sentryRuleState struct {
 	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch *string `pulumi:"actionMatch"`
 	// List of actions.
-	Actions []map[string]interface{} `pulumi:"actions"`
+	Actions []map[string]string `pulumi:"actions"`
 	// List of conditions.
-	Conditions []map[string]interface{} `pulumi:"conditions"`
+	Conditions []map[string]string `pulumi:"conditions"`
 	// Perform issue alert in a specific environment.
 	Environment *string `pulumi:"environment"`
 	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch *string `pulumi:"filterMatch"`
 	// List of filters.
-	Filters []map[string]interface{} `pulumi:"filters"`
+	Filters []map[string]string `pulumi:"filters"`
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency *int `pulumi:"frequency"`
 	// The internal ID for this issue alert.
@@ -128,15 +127,15 @@ type SentryRuleState struct {
 	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch pulumi.StringPtrInput
 	// List of actions.
-	Actions pulumi.MapArrayInput
+	Actions pulumi.StringMapArrayInput
 	// List of conditions.
-	Conditions pulumi.MapArrayInput
+	Conditions pulumi.StringMapArrayInput
 	// Perform issue alert in a specific environment.
 	Environment pulumi.StringPtrInput
 	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch pulumi.StringPtrInput
 	// List of filters.
-	Filters pulumi.MapArrayInput
+	Filters pulumi.StringMapArrayInput
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency pulumi.IntPtrInput
 	// The internal ID for this issue alert.
@@ -161,15 +160,15 @@ type sentryRuleArgs struct {
 	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch string `pulumi:"actionMatch"`
 	// List of actions.
-	Actions []map[string]interface{} `pulumi:"actions"`
+	Actions []map[string]string `pulumi:"actions"`
 	// List of conditions.
-	Conditions []map[string]interface{} `pulumi:"conditions"`
+	Conditions []map[string]string `pulumi:"conditions"`
 	// Perform issue alert in a specific environment.
 	Environment *string `pulumi:"environment"`
 	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch string `pulumi:"filterMatch"`
 	// List of filters.
-	Filters []map[string]interface{} `pulumi:"filters"`
+	Filters []map[string]string `pulumi:"filters"`
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency int `pulumi:"frequency"`
 	// The issue alert name.
@@ -185,15 +184,15 @@ type SentryRuleArgs struct {
 	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch pulumi.StringInput
 	// List of actions.
-	Actions pulumi.MapArrayInput
+	Actions pulumi.StringMapArrayInput
 	// List of conditions.
-	Conditions pulumi.MapArrayInput
+	Conditions pulumi.StringMapArrayInput
 	// Perform issue alert in a specific environment.
 	Environment pulumi.StringPtrInput
 	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch pulumi.StringInput
 	// List of filters.
-	Filters pulumi.MapArrayInput
+	Filters pulumi.StringMapArrayInput
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency pulumi.IntInput
 	// The issue alert name.
@@ -227,12 +226,6 @@ func (i *SentryRule) ToSentryRuleOutputWithContext(ctx context.Context) SentryRu
 	return pulumi.ToOutputWithContext(ctx, i).(SentryRuleOutput)
 }
 
-func (i *SentryRule) ToOutput(ctx context.Context) pulumix.Output[*SentryRule] {
-	return pulumix.Output[*SentryRule]{
-		OutputState: i.ToSentryRuleOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryRuleArrayInput is an input type that accepts SentryRuleArray and SentryRuleArrayOutput values.
 // You can construct a concrete instance of `SentryRuleArrayInput` via:
 //
@@ -256,12 +249,6 @@ func (i SentryRuleArray) ToSentryRuleArrayOutput() SentryRuleArrayOutput {
 
 func (i SentryRuleArray) ToSentryRuleArrayOutputWithContext(ctx context.Context) SentryRuleArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryRuleArrayOutput)
-}
-
-func (i SentryRuleArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryRule] {
-	return pulumix.Output[[]*SentryRule]{
-		OutputState: i.ToSentryRuleArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryRuleMapInput is an input type that accepts SentryRuleMap and SentryRuleMapOutput values.
@@ -289,12 +276,6 @@ func (i SentryRuleMap) ToSentryRuleMapOutputWithContext(ctx context.Context) Sen
 	return pulumi.ToOutputWithContext(ctx, i).(SentryRuleMapOutput)
 }
 
-func (i SentryRuleMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryRule] {
-	return pulumix.Output[map[string]*SentryRule]{
-		OutputState: i.ToSentryRuleMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryRuleOutput struct{ *pulumi.OutputState }
 
 func (SentryRuleOutput) ElementType() reflect.Type {
@@ -309,25 +290,19 @@ func (o SentryRuleOutput) ToSentryRuleOutputWithContext(ctx context.Context) Sen
 	return o
 }
 
-func (o SentryRuleOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryRule] {
-	return pulumix.Output[*SentryRule]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 func (o SentryRuleOutput) ActionMatch() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryRule) pulumi.StringOutput { return v.ActionMatch }).(pulumi.StringOutput)
 }
 
 // List of actions.
-func (o SentryRuleOutput) Actions() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v *SentryRule) pulumi.MapArrayOutput { return v.Actions }).(pulumi.MapArrayOutput)
+func (o SentryRuleOutput) Actions() pulumi.StringMapArrayOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringMapArrayOutput { return v.Actions }).(pulumi.StringMapArrayOutput)
 }
 
 // List of conditions.
-func (o SentryRuleOutput) Conditions() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v *SentryRule) pulumi.MapArrayOutput { return v.Conditions }).(pulumi.MapArrayOutput)
+func (o SentryRuleOutput) Conditions() pulumi.StringMapArrayOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringMapArrayOutput { return v.Conditions }).(pulumi.StringMapArrayOutput)
 }
 
 // Perform issue alert in a specific environment.
@@ -341,8 +316,8 @@ func (o SentryRuleOutput) FilterMatch() pulumi.StringOutput {
 }
 
 // List of filters.
-func (o SentryRuleOutput) Filters() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v *SentryRule) pulumi.MapArrayOutput { return v.Filters }).(pulumi.MapArrayOutput)
+func (o SentryRuleOutput) Filters() pulumi.StringMapArrayOutput {
+	return o.ApplyT(func(v *SentryRule) pulumi.StringMapArrayOutput { return v.Filters }).(pulumi.StringMapArrayOutput)
 }
 
 // Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
@@ -391,12 +366,6 @@ func (o SentryRuleArrayOutput) ToSentryRuleArrayOutputWithContext(ctx context.Co
 	return o
 }
 
-func (o SentryRuleArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryRule] {
-	return pulumix.Output[[]*SentryRule]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryRuleArrayOutput) Index(i pulumi.IntInput) SentryRuleOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryRule {
 		return vs[0].([]*SentryRule)[vs[1].(int)]
@@ -415,12 +384,6 @@ func (o SentryRuleMapOutput) ToSentryRuleMapOutput() SentryRuleMapOutput {
 
 func (o SentryRuleMapOutput) ToSentryRuleMapOutputWithContext(ctx context.Context) SentryRuleMapOutput {
 	return o
-}
-
-func (o SentryRuleMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryRule] {
-	return pulumix.Output[map[string]*SentryRule]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryRuleMapOutput) MapIndex(k pulumi.StringInput) SentryRuleOutput {

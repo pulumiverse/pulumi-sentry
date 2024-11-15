@@ -15,9 +15,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Issue Alert data source. As the object structure of `conditions`, `filters`, and `actions` are undocumented, a tip is to set up an Issue Alert via the Web UI, and use this data source to copy its object structure to your resources.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -28,6 +26,8 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve an Issue Alert
+        ///     // URL format: https://sentry.io/organizations/[organization]/alerts/rules/[project]/[internal_id]/details/
         ///     var original = Sentry.GetSentryIssueAlert.Invoke(new()
         ///     {
         ///         Organization = "my-organization",
@@ -40,6 +40,7 @@ namespace Pulumiverse.Sentry
         ///     {
         ///         Organization = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Organization),
         ///         Project = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Project),
+        ///         Name = $"{original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Name)}-copy",
         ///         ActionMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.ActionMatch),
         ///         FilterMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.FilterMatch),
         ///         Frequency = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Frequency),
@@ -50,8 +51,6 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryIssueAlertResult> InvokeAsync(GetSentryIssueAlertArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryIssueAlertResult>("sentry:index/getSentryIssueAlert:getSentryIssueAlert", args ?? new GetSentryIssueAlertArgs(), options.WithDefaults());
@@ -59,9 +58,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Issue Alert data source. As the object structure of `conditions`, `filters`, and `actions` are undocumented, a tip is to set up an Issue Alert via the Web UI, and use this data source to copy its object structure to your resources.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -72,6 +69,8 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve an Issue Alert
+        ///     // URL format: https://sentry.io/organizations/[organization]/alerts/rules/[project]/[internal_id]/details/
         ///     var original = Sentry.GetSentryIssueAlert.Invoke(new()
         ///     {
         ///         Organization = "my-organization",
@@ -84,6 +83,7 @@ namespace Pulumiverse.Sentry
         ///     {
         ///         Organization = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Organization),
         ///         Project = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Project),
+        ///         Name = $"{original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Name)}-copy",
         ///         ActionMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.ActionMatch),
         ///         FilterMatch = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.FilterMatch),
         ///         Frequency = original.Apply(getSentryIssueAlertResult =&gt; getSentryIssueAlertResult.Frequency),
@@ -94,8 +94,6 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryIssueAlertResult> Invoke(GetSentryIssueAlertInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryIssueAlertResult>("sentry:index/getSentryIssueAlert:getSentryIssueAlert", args ?? new GetSentryIssueAlertInvokeArgs(), options.WithDefaults());
@@ -165,11 +163,11 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// List of actions.
         /// </summary>
-        public readonly ImmutableArray<ImmutableDictionary<string, object>> Actions;
+        public readonly ImmutableArray<ImmutableDictionary<string, string>> Actions;
         /// <summary>
         /// List of conditions.
         /// </summary>
-        public readonly ImmutableArray<ImmutableDictionary<string, object>> Conditions;
+        public readonly ImmutableArray<ImmutableDictionary<string, string>> Conditions;
         /// <summary>
         /// Perform issue alert in a specific environment.
         /// </summary>
@@ -181,7 +179,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// List of filters.
         /// </summary>
-        public readonly ImmutableArray<ImmutableDictionary<string, object>> Filters;
+        public readonly ImmutableArray<ImmutableDictionary<string, string>> Filters;
         /// <summary>
         /// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
         /// </summary>
@@ -211,15 +209,15 @@ namespace Pulumiverse.Sentry
         private GetSentryIssueAlertResult(
             string actionMatch,
 
-            ImmutableArray<ImmutableDictionary<string, object>> actions,
+            ImmutableArray<ImmutableDictionary<string, string>> actions,
 
-            ImmutableArray<ImmutableDictionary<string, object>> conditions,
+            ImmutableArray<ImmutableDictionary<string, string>> conditions,
 
             string environment,
 
             string filterMatch,
 
-            ImmutableArray<ImmutableDictionary<string, object>> filters,
+            ImmutableArray<ImmutableDictionary<string, string>> filters,
 
             int frequency,
 

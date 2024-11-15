@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -83,10 +88,8 @@ class GetSentryKeyResult:
 
     @property
     @pulumi.getter(name="dsnSecret")
+    @_utilities.deprecated("""DSN (Deprecated) for the key.""")
     def dsn_secret(self) -> str:
-        warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
-        pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
-
         return pulumi.get(self, "dsn_secret")
 
     @property
@@ -214,12 +217,14 @@ def get_sentry_key(first: Optional[bool] = None,
     import pulumi
     import pulumi_sentry as sentry
 
-    default = sentry.get_sentry_key(name="Default",
-        organization="my-organization",
-        project="web-app")
-    first = sentry.get_sentry_key(first=True,
-        organization="my-organization",
-        project="web-app")
+    # Retrieve a project key by name
+    default = sentry.get_sentry_key(organization="my-organization",
+        project="web-app",
+        name="Default")
+    # Retrieve the first key of a project
+    first = sentry.get_sentry_key(organization="my-organization",
+        project="web-app",
+        first=True)
     ```
 
 
@@ -251,9 +256,6 @@ def get_sentry_key(first: Optional[bool] = None,
         rate_limit_count=pulumi.get(__ret__, 'rate_limit_count'),
         rate_limit_window=pulumi.get(__ret__, 'rate_limit_window'),
         secret=pulumi.get(__ret__, 'secret'))
-
-
-@_utilities.lift_output_func(get_sentry_key)
 def get_sentry_key_output(first: Optional[pulumi.Input[Optional[bool]]] = None,
                           name: Optional[pulumi.Input[Optional[str]]] = None,
                           organization: Optional[pulumi.Input[str]] = None,
@@ -268,12 +270,14 @@ def get_sentry_key_output(first: Optional[pulumi.Input[Optional[bool]]] = None,
     import pulumi
     import pulumi_sentry as sentry
 
-    default = sentry.get_sentry_key(name="Default",
-        organization="my-organization",
-        project="web-app")
-    first = sentry.get_sentry_key(first=True,
-        organization="my-organization",
-        project="web-app")
+    # Retrieve a project key by name
+    default = sentry.get_sentry_key(organization="my-organization",
+        project="web-app",
+        name="Default")
+    # Retrieve the first key of a project
+    first = sentry.get_sentry_key(organization="my-organization",
+        project="web-app",
+        first=True)
     ```
 
 
@@ -282,4 +286,25 @@ def get_sentry_key_output(first: Optional[pulumi.Input[Optional[bool]]] = None,
     :param str organization: The slug of the organization the key should be created for.
     :param str project: The slug of the project the key should be created for.
     """
-    ...
+    __args__ = dict()
+    __args__['first'] = first
+    __args__['name'] = name
+    __args__['organization'] = organization
+    __args__['project'] = project
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('sentry:index/getSentryKey:getSentryKey', __args__, opts=opts, typ=GetSentryKeyResult)
+    return __ret__.apply(lambda __response__: GetSentryKeyResult(
+        dsn_csp=pulumi.get(__response__, 'dsn_csp'),
+        dsn_public=pulumi.get(__response__, 'dsn_public'),
+        dsn_secret=pulumi.get(__response__, 'dsn_secret'),
+        first=pulumi.get(__response__, 'first'),
+        id=pulumi.get(__response__, 'id'),
+        is_active=pulumi.get(__response__, 'is_active'),
+        name=pulumi.get(__response__, 'name'),
+        organization=pulumi.get(__response__, 'organization'),
+        project=pulumi.get(__response__, 'project'),
+        project_id=pulumi.get(__response__, 'project_id'),
+        public=pulumi.get(__response__, 'public'),
+        rate_limit_count=pulumi.get(__response__, 'rate_limit_count'),
+        rate_limit_window=pulumi.get(__response__, 'rate_limit_window'),
+        secret=pulumi.get(__response__, 'secret')))

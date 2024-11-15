@@ -15,12 +15,12 @@ import * as utilities from "./utilities";
  *
  * // Create a plugin
  * const _default = new sentry.SentryPlugin("default", {
+ *     organization: "my-organization",
+ *     project: "web-app",
+ *     plugin: "slack",
  *     config: {
  *         webhook: "slack://webhook",
  *     },
- *     organization: "my-organization",
- *     plugin: "slack",
- *     project: "web-app",
  * });
  * ```
  */
@@ -55,7 +55,7 @@ export class SentryPlugin extends pulumi.CustomResource {
     /**
      * Plugin config.
      */
-    public readonly config!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly config!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * The slug of the organization the project belongs to.
      */
@@ -114,7 +114,7 @@ export interface SentryPluginState {
     /**
      * Plugin config.
      */
-    config?: pulumi.Input<{[key: string]: any}>;
+    config?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * The slug of the organization the project belongs to.
      */
@@ -136,7 +136,7 @@ export interface SentryPluginArgs {
     /**
      * Plugin config.
      */
-    config?: pulumi.Input<{[key: string]: any}>;
+    config?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * The slug of the organization the project belongs to.
      */

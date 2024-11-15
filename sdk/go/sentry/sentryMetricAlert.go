@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -30,7 +29,7 @@ import (
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			slack, err := sentry.GetSentryOrganizationIntegration(ctx, &sentry.GetSentryOrganizationIntegrationArgs{
-//				Organization: sentry_project.Main.Organization,
+//				Organization: mainSentryProject.Organization,
 //				ProviderKey:  "slack",
 //				Name:         "Slack Workspace",
 //			}, nil)
@@ -38,8 +37,9 @@ import (
 //				return err
 //			}
 //			_, err = sentry.NewSentryMetricAlert(ctx, "main", &sentry.SentryMetricAlertArgs{
-//				Organization:     pulumi.Any(sentry_project.Main.Organization),
-//				Project:          pulumi.Any(sentry_project.Main.Id),
+//				Organization:     pulumi.Any(mainSentryProject.Organization),
+//				Project:          pulumi.Any(mainSentryProject.Id),
+//				Name:             pulumi.String("My metric alert"),
 //				Dataset:          pulumi.String("events"),
 //				Query:            pulumi.String(""),
 //				Aggregate:        pulumi.String("count()"),
@@ -52,7 +52,7 @@ import (
 //							&sentry.SentryMetricAlertTriggerActionArgs{
 //								Type:             pulumi.String("email"),
 //								TargetType:       pulumi.String("team"),
-//								TargetIdentifier: pulumi.Any(sentry_team.Main.Team_id),
+//								TargetIdentifier: pulumi.Any(mainSentryTeam.TeamId),
 //							},
 //						},
 //						AlertThreshold: pulumi.Float64(300),
@@ -65,7 +65,7 @@ import (
 //								Type:             pulumi.String("slack"),
 //								TargetType:       pulumi.String("specific"),
 //								TargetIdentifier: pulumi.String("#slack-channel"),
-//								IntegrationId:    *pulumi.String(slack.Id),
+//								IntegrationId:    pulumi.String(slack.Id),
 //							},
 //						},
 //						AlertThreshold: pulumi.Float64(300),
@@ -90,12 +90,18 @@ import (
 //
 // ## Import
 //
-// import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+// import using the organization, project slugs and rule id from the URL:
+//
+// https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+//
+// https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+//
+// or
+//
+// https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
-//
+// $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
 // ```
 type SentryMetricAlert struct {
 	pulumi.CustomResourceState
@@ -323,12 +329,6 @@ func (i *SentryMetricAlert) ToSentryMetricAlertOutputWithContext(ctx context.Con
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertOutput)
 }
 
-func (i *SentryMetricAlert) ToOutput(ctx context.Context) pulumix.Output[*SentryMetricAlert] {
-	return pulumix.Output[*SentryMetricAlert]{
-		OutputState: i.ToSentryMetricAlertOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryMetricAlertArrayInput is an input type that accepts SentryMetricAlertArray and SentryMetricAlertArrayOutput values.
 // You can construct a concrete instance of `SentryMetricAlertArrayInput` via:
 //
@@ -352,12 +352,6 @@ func (i SentryMetricAlertArray) ToSentryMetricAlertArrayOutput() SentryMetricAle
 
 func (i SentryMetricAlertArray) ToSentryMetricAlertArrayOutputWithContext(ctx context.Context) SentryMetricAlertArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertArrayOutput)
-}
-
-func (i SentryMetricAlertArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryMetricAlert] {
-	return pulumix.Output[[]*SentryMetricAlert]{
-		OutputState: i.ToSentryMetricAlertArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryMetricAlertMapInput is an input type that accepts SentryMetricAlertMap and SentryMetricAlertMapOutput values.
@@ -385,12 +379,6 @@ func (i SentryMetricAlertMap) ToSentryMetricAlertMapOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(SentryMetricAlertMapOutput)
 }
 
-func (i SentryMetricAlertMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryMetricAlert] {
-	return pulumix.Output[map[string]*SentryMetricAlert]{
-		OutputState: i.ToSentryMetricAlertMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryMetricAlertOutput struct{ *pulumi.OutputState }
 
 func (SentryMetricAlertOutput) ElementType() reflect.Type {
@@ -403,12 +391,6 @@ func (o SentryMetricAlertOutput) ToSentryMetricAlertOutput() SentryMetricAlertOu
 
 func (o SentryMetricAlertOutput) ToSentryMetricAlertOutputWithContext(ctx context.Context) SentryMetricAlertOutput {
 	return o
-}
-
-func (o SentryMetricAlertOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryMetricAlert] {
-	return pulumix.Output[*SentryMetricAlert]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The aggregation criteria to apply
@@ -494,12 +476,6 @@ func (o SentryMetricAlertArrayOutput) ToSentryMetricAlertArrayOutputWithContext(
 	return o
 }
 
-func (o SentryMetricAlertArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryMetricAlert] {
-	return pulumix.Output[[]*SentryMetricAlert]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryMetricAlertArrayOutput) Index(i pulumi.IntInput) SentryMetricAlertOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryMetricAlert {
 		return vs[0].([]*SentryMetricAlert)[vs[1].(int)]
@@ -518,12 +494,6 @@ func (o SentryMetricAlertMapOutput) ToSentryMetricAlertMapOutput() SentryMetricA
 
 func (o SentryMetricAlertMapOutput) ToSentryMetricAlertMapOutputWithContext(ctx context.Context) SentryMetricAlertMapOutput {
 	return o
-}
-
-func (o SentryMetricAlertMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryMetricAlert] {
-	return pulumix.Output[map[string]*SentryMetricAlert]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryMetricAlertMapOutput) MapIndex(k pulumi.StringInput) SentryMetricAlertOutput {

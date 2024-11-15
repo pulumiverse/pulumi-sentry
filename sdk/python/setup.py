@@ -8,7 +8,7 @@ from setuptools.command.install import install
 from subprocess import check_call
 
 
-VERSION = "0.0.0"
+VERSION = "0.0.0a0+dev"
 def readme():
     try:
         with open('README.md', encoding='utf-8') as f:
@@ -18,7 +18,7 @@ def readme():
 
 
 setup(name='pulumiverse_sentry',
-      python_requires='>=3.7',
+      python_requires='>=3.8',
       version=VERSION,
       description="A Pulumi package for creating and managing Sentry resources.",
       long_description=readme(),
@@ -39,6 +39,7 @@ setup(name='pulumiverse_sentry',
       install_requires=[
           'parver>=0.2.1',
           'pulumi>=3.0.0,<4.0.0',
-          'semver>=2.8.1'
+          'semver>=2.8.1',
+          'typing-extensions>=4.11,<5; python_version < "3.11"'
       ],
       zip_safe=False)

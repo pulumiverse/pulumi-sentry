@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['SentryOrganizationArgs', 'SentryOrganization']
@@ -158,16 +163,19 @@ class SentryOrganization(pulumi.CustomResource):
 
         # Create an organization
         default = sentry.SentryOrganization("default",
-            agree_terms=True,
-            slug="my-organization")
+            name="My Organization",
+            slug="my-organization",
+            agree_terms=True)
         ```
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
+        import using the organization slug from the URL:
+
+        https://sentry.io/organizations/[org-slug]/issues/
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
+        $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
         ```
 
         :param str resource_name: The name of the resource.
@@ -193,16 +201,19 @@ class SentryOrganization(pulumi.CustomResource):
 
         # Create an organization
         default = sentry.SentryOrganization("default",
-            agree_terms=True,
-            slug="my-organization")
+            name="My Organization",
+            slug="my-organization",
+            agree_terms=True)
         ```
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
+        import using the organization slug from the URL:
+
+        https://sentry.io/organizations/[org-slug]/issues/
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
+        $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
         ```
 
         :param str resource_name: The name of the resource.

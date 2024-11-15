@@ -14,9 +14,6 @@ namespace Pulumiverse.Sentry.Outputs
     [OutputType]
     public sealed class GetSentryMetricAlertTriggerActionResult
     {
-        /// <summary>
-        /// The ID of this resource.
-        /// </summary>
         public readonly string Id;
         public readonly int IntegrationId;
         public readonly string TargetIdentifier;

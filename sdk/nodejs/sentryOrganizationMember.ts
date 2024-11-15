@@ -12,9 +12,9 @@ import * as utilities from "./utilities";
  * import * as sentry from "@pulumiverse/sentry";
  *
  * // Create an organization member
- * const johnDoe = new sentry.SentryOrganizationMember("johnDoe", {
- *     email: "test@example.com",
+ * const johnDoe = new sentry.SentryOrganizationMember("john_doe", {
  *     organization: "my-organization",
+ *     email: "test@example.com",
  *     role: "member",
  *     teams: ["my-team"],
  * });
@@ -22,10 +22,12 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+ * import using the organization, membership id from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/members/[member-id]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
+ * $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
  * ```
  */
 export class SentryOrganizationMember extends pulumi.CustomResource {

@@ -15,9 +15,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Key data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -27,24 +25,24 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve a project key by name
         ///     var @default = Sentry.GetSentryKey.Invoke(new()
         ///     {
-        ///         Name = "Default",
         ///         Organization = "my-organization",
         ///         Project = "web-app",
+        ///         Name = "Default",
         ///     });
         /// 
+        ///     // Retrieve the first key of a project
         ///     var first = Sentry.GetSentryKey.Invoke(new()
         ///     {
-        ///         First = true,
         ///         Organization = "my-organization",
         ///         Project = "web-app",
+        ///         First = true,
         ///     });
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryKeyResult> InvokeAsync(GetSentryKeyArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyArgs(), options.WithDefaults());
@@ -52,9 +50,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Key data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -64,24 +60,24 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve a project key by name
         ///     var @default = Sentry.GetSentryKey.Invoke(new()
         ///     {
-        ///         Name = "Default",
         ///         Organization = "my-organization",
         ///         Project = "web-app",
+        ///         Name = "Default",
         ///     });
         /// 
+        ///     // Retrieve the first key of a project
         ///     var first = Sentry.GetSentryKey.Invoke(new()
         ///     {
-        ///         First = true,
         ///         Organization = "my-organization",
         ///         Project = "web-app",
+        ///         First = true,
         ///     });
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryKeyResult> Invoke(GetSentryKeyInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryKeyResult>("sentry:index/getSentryKey:getSentryKey", args ?? new GetSentryKeyInvokeArgs(), options.WithDefaults());

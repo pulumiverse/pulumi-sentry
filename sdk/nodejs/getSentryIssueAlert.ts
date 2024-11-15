@@ -14,6 +14,8 @@ import * as utilities from "./utilities";
  * import * as sentry from "@pulumi/sentry";
  * import * as sentry from "@pulumiverse/sentry";
  *
+ * // Retrieve an Issue Alert
+ * // URL format: https://sentry.io/organizations/[organization]/alerts/rules/[project]/[internal_id]/details/
  * const original = sentry.getSentryIssueAlert({
  *     organization: "my-organization",
  *     project: "my-project",
@@ -23,6 +25,7 @@ import * as utilities from "./utilities";
  * const copy = new sentry.SentryIssueAlert("copy", {
  *     organization: original.then(original => original.organization),
  *     project: original.then(original => original.project),
+ *     name: original.then(original => `${original.name}-copy`),
  *     actionMatch: original.then(original => original.actionMatch),
  *     filterMatch: original.then(original => original.filterMatch),
  *     frequency: original.then(original => original.frequency),
@@ -33,7 +36,6 @@ import * as utilities from "./utilities";
  * ```
  */
 export function getSentryIssueAlert(args: GetSentryIssueAlertArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryIssueAlertResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryIssueAlert:getSentryIssueAlert", {
         "internalId": args.internalId,
@@ -71,11 +73,11 @@ export interface GetSentryIssueAlertResult {
     /**
      * List of actions.
      */
-    readonly actions: {[key: string]: any}[];
+    readonly actions: {[key: string]: string}[];
     /**
      * List of conditions.
      */
-    readonly conditions: {[key: string]: any}[];
+    readonly conditions: {[key: string]: string}[];
     /**
      * Perform issue alert in a specific environment.
      */
@@ -87,7 +89,7 @@ export interface GetSentryIssueAlertResult {
     /**
      * List of filters.
      */
-    readonly filters: {[key: string]: any}[];
+    readonly filters: {[key: string]: string}[];
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */
@@ -123,6 +125,8 @@ export interface GetSentryIssueAlertResult {
  * import * as sentry from "@pulumi/sentry";
  * import * as sentry from "@pulumiverse/sentry";
  *
+ * // Retrieve an Issue Alert
+ * // URL format: https://sentry.io/organizations/[organization]/alerts/rules/[project]/[internal_id]/details/
  * const original = sentry.getSentryIssueAlert({
  *     organization: "my-organization",
  *     project: "my-project",
@@ -132,6 +136,7 @@ export interface GetSentryIssueAlertResult {
  * const copy = new sentry.SentryIssueAlert("copy", {
  *     organization: original.then(original => original.organization),
  *     project: original.then(original => original.project),
+ *     name: original.then(original => `${original.name}-copy`),
  *     actionMatch: original.then(original => original.actionMatch),
  *     filterMatch: original.then(original => original.filterMatch),
  *     frequency: original.then(original => original.frequency),
@@ -142,7 +147,12 @@ export interface GetSentryIssueAlertResult {
  * ```
  */
 export function getSentryIssueAlertOutput(args: GetSentryIssueAlertOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryIssueAlertResult> {
-    return pulumi.output(args).apply((a: any) => getSentryIssueAlert(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("sentry:index/getSentryIssueAlert:getSentryIssueAlert", {
+        "internalId": args.internalId,
+        "organization": args.organization,
+        "project": args.project,
+    }, opts);
 }
 
 /**

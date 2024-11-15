@@ -25,7 +25,7 @@ namespace Pulumiverse.Sentry
     /// {
     ///     var main = new Sentry.SentryDashboard("main", new()
     ///     {
-    ///         Organization = data.Sentry_organization.Main.Id,
+    ///         Organization = mainSentryOrganization.Id,
     ///         Title = "Test dashboard",
     ///         Widgets = new[]
     ///         {

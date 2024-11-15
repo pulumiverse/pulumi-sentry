@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 from . import outputs
 
@@ -191,7 +196,8 @@ def get_sentry_metric_alert(internal_id: Optional[str] = None,
                             project: Optional[str] = None,
                             opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSentryMetricAlertResult:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this metric alert.
     :param str organization: The slug of the organization the metric alert belongs to.
@@ -220,18 +226,37 @@ def get_sentry_metric_alert(internal_id: Optional[str] = None,
         threshold_type=pulumi.get(__ret__, 'threshold_type'),
         time_window=pulumi.get(__ret__, 'time_window'),
         triggers=pulumi.get(__ret__, 'triggers'))
-
-
-@_utilities.lift_output_func(get_sentry_metric_alert)
 def get_sentry_metric_alert_output(internal_id: Optional[pulumi.Input[str]] = None,
                                    organization: Optional[pulumi.Input[str]] = None,
                                    project: Optional[pulumi.Input[str]] = None,
                                    opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryMetricAlertResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this metric alert.
     :param str organization: The slug of the organization the metric alert belongs to.
     :param str project: The slug of the project the metric alert belongs to.
     """
-    ...
+    __args__ = dict()
+    __args__['internalId'] = internal_id
+    __args__['organization'] = organization
+    __args__['project'] = project
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('sentry:index/getSentryMetricAlert:getSentryMetricAlert', __args__, opts=opts, typ=GetSentryMetricAlertResult)
+    return __ret__.apply(lambda __response__: GetSentryMetricAlertResult(
+        aggregate=pulumi.get(__response__, 'aggregate'),
+        dataset=pulumi.get(__response__, 'dataset'),
+        environment=pulumi.get(__response__, 'environment'),
+        event_types=pulumi.get(__response__, 'event_types'),
+        id=pulumi.get(__response__, 'id'),
+        internal_id=pulumi.get(__response__, 'internal_id'),
+        name=pulumi.get(__response__, 'name'),
+        organization=pulumi.get(__response__, 'organization'),
+        owner=pulumi.get(__response__, 'owner'),
+        project=pulumi.get(__response__, 'project'),
+        query=pulumi.get(__response__, 'query'),
+        resolve_threshold=pulumi.get(__response__, 'resolve_threshold'),
+        threshold_type=pulumi.get(__response__, 'threshold_type'),
+        time_window=pulumi.get(__response__, 'time_window'),
+        triggers=pulumi.get(__response__, 'triggers')))

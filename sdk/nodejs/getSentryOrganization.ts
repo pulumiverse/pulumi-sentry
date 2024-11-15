@@ -13,13 +13,13 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve an organization
  * const org = sentry.getSentryOrganization({
  *     slug: "my-organization",
  * });
  * ```
  */
 export function getSentryOrganization(args: GetSentryOrganizationArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryOrganizationResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryOrganization:getSentryOrganization", {
         "slug": args.slug,
@@ -66,13 +66,17 @@ export interface GetSentryOrganizationResult {
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve an organization
  * const org = sentry.getSentryOrganization({
  *     slug: "my-organization",
  * });
  * ```
  */
 export function getSentryOrganizationOutput(args: GetSentryOrganizationOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryOrganizationResult> {
-    return pulumi.output(args).apply((a: any) => getSentryOrganization(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("sentry:index/getSentryOrganization:getSentryOrganization", {
+        "slug": args.slug,
+    }, opts);
 }
 
 /**

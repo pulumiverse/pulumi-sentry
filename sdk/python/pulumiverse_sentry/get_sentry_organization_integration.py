@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -105,12 +110,14 @@ def get_sentry_organization_integration(name: Optional[str] = None,
     import pulumi
     import pulumi_sentry as sentry
 
-    github = sentry.get_sentry_organization_integration(name="my-github-organization",
-        organization="my-organization",
-        provider_key="github")
-    slack = sentry.get_sentry_organization_integration(name="Slack Workspace",
-        organization="my-organization",
-        provider_key="slack")
+    # Retrieve a Github organization integration
+    github = sentry.get_sentry_organization_integration(organization="my-organization",
+        provider_key="github",
+        name="my-github-organization")
+    # Retrieve a Slack integration
+    slack = sentry.get_sentry_organization_integration(organization="my-organization",
+        provider_key="slack",
+        name="Slack Workspace")
     ```
 
 
@@ -131,9 +138,6 @@ def get_sentry_organization_integration(name: Optional[str] = None,
         name=pulumi.get(__ret__, 'name'),
         organization=pulumi.get(__ret__, 'organization'),
         provider_key=pulumi.get(__ret__, 'provider_key'))
-
-
-@_utilities.lift_output_func(get_sentry_organization_integration)
 def get_sentry_organization_integration_output(name: Optional[pulumi.Input[str]] = None,
                                                organization: Optional[pulumi.Input[str]] = None,
                                                provider_key: Optional[pulumi.Input[str]] = None,
@@ -147,12 +151,14 @@ def get_sentry_organization_integration_output(name: Optional[pulumi.Input[str]]
     import pulumi
     import pulumi_sentry as sentry
 
-    github = sentry.get_sentry_organization_integration(name="my-github-organization",
-        organization="my-organization",
-        provider_key="github")
-    slack = sentry.get_sentry_organization_integration(name="Slack Workspace",
-        organization="my-organization",
-        provider_key="slack")
+    # Retrieve a Github organization integration
+    github = sentry.get_sentry_organization_integration(organization="my-organization",
+        provider_key="github",
+        name="my-github-organization")
+    # Retrieve a Slack integration
+    slack = sentry.get_sentry_organization_integration(organization="my-organization",
+        provider_key="slack",
+        name="Slack Workspace")
     ```
 
 
@@ -160,4 +166,15 @@ def get_sentry_organization_integration_output(name: Optional[pulumi.Input[str]]
     :param str organization: The slug of the organization the integration belongs to.
     :param str provider_key: The key of the organization integration provider.
     """
-    ...
+    __args__ = dict()
+    __args__['name'] = name
+    __args__['organization'] = organization
+    __args__['providerKey'] = provider_key
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration', __args__, opts=opts, typ=GetSentryOrganizationIntegrationResult)
+    return __ret__.apply(lambda __response__: GetSentryOrganizationIntegrationResult(
+        id=pulumi.get(__response__, 'id'),
+        internal_id=pulumi.get(__response__, 'internal_id'),
+        name=pulumi.get(__response__, 'name'),
+        organization=pulumi.get(__response__, 'organization'),
+        provider_key=pulumi.get(__response__, 'provider_key')))

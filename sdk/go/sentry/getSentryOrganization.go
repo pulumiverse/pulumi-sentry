@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -28,6 +27,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Retrieve an organization
 //			_, err := sentry.LookupSentryOrganization(ctx, &sentry.LookupSentryOrganizationArgs{
 //				Slug: "my-organization",
 //			}, nil)
@@ -69,14 +69,20 @@ type LookupSentryOrganizationResult struct {
 
 func LookupSentryOrganizationOutput(ctx *pulumi.Context, args LookupSentryOrganizationOutputArgs, opts ...pulumi.InvokeOption) LookupSentryOrganizationResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (LookupSentryOrganizationResult, error) {
+		ApplyT(func(v interface{}) (LookupSentryOrganizationResultOutput, error) {
 			args := v.(LookupSentryOrganizationArgs)
-			r, err := LookupSentryOrganization(ctx, &args, opts...)
-			var s LookupSentryOrganizationResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv LookupSentryOrganizationResult
+			secret, err := ctx.InvokePackageRaw("sentry:index/getSentryOrganization:getSentryOrganization", args, &rv, "", opts...)
+			if err != nil {
+				return LookupSentryOrganizationResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(LookupSentryOrganizationResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(LookupSentryOrganizationResultOutput), nil
+			}
+			return output, nil
 		}).(LookupSentryOrganizationResultOutput)
 }
 
@@ -103,12 +109,6 @@ func (o LookupSentryOrganizationResultOutput) ToLookupSentryOrganizationResultOu
 
 func (o LookupSentryOrganizationResultOutput) ToLookupSentryOrganizationResultOutputWithContext(ctx context.Context) LookupSentryOrganizationResultOutput {
 	return o
-}
-
-func (o LookupSentryOrganizationResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryOrganizationResult] {
-	return pulumix.Output[LookupSentryOrganizationResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The provider-assigned unique ID for this managed resource.

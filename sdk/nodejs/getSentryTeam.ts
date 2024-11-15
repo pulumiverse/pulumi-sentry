@@ -13,6 +13,7 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve a team
  * const default = sentry.getSentryTeam({
  *     organization: "my-organization",
  *     slug: "my-team",
@@ -20,7 +21,6 @@ import * as utilities from "./utilities";
  * ```
  */
 export function getSentryTeam(args: GetSentryTeamArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryTeamResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryTeam:getSentryTeam", {
         "organization": args.organization,
@@ -79,6 +79,7 @@ export interface GetSentryTeamResult {
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve a team
  * const default = sentry.getSentryTeam({
  *     organization: "my-organization",
  *     slug: "my-team",
@@ -86,7 +87,11 @@ export interface GetSentryTeamResult {
  * ```
  */
 export function getSentryTeamOutput(args: GetSentryTeamOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryTeamResult> {
-    return pulumi.output(args).apply((a: any) => getSentryTeam(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("sentry:index/getSentryTeam:getSentryTeam", {
+        "organization": args.organization,
+        "slug": args.slug,
+    }, opts);
 }
 
 /**

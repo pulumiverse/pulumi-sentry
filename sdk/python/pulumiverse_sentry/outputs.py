@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 from . import outputs
 
@@ -54,7 +59,6 @@ class SentryDashboardWidget(dict):
                  limit: Optional[int] = None,
                  widget_type: Optional[str] = None):
         """
-        :param str title: Dashboard title.
         :param str id: The ID of this resource.
         """
         pulumi.set(__self__, "display_type", display_type)
@@ -88,9 +92,6 @@ class SentryDashboardWidget(dict):
     @property
     @pulumi.getter
     def title(self) -> str:
-        """
-        Dashboard title.
-        """
         return pulumi.get(self, "title")
 
     @property
@@ -299,9 +300,7 @@ class SentryMetricAlertTrigger(dict):
                  id: Optional[str] = None,
                  resolve_threshold: Optional[float] = None):
         """
-        :param int threshold_type: The type of threshold
         :param str id: The ID of this resource.
-        :param float resolve_threshold: The value at which the Alert rule resolves
         """
         pulumi.set(__self__, "alert_threshold", alert_threshold)
         pulumi.set(__self__, "label", label)
@@ -326,9 +325,6 @@ class SentryMetricAlertTrigger(dict):
     @property
     @pulumi.getter(name="thresholdType")
     def threshold_type(self) -> int:
-        """
-        The type of threshold
-        """
         return pulumi.get(self, "threshold_type")
 
     @property
@@ -347,9 +343,6 @@ class SentryMetricAlertTrigger(dict):
     @property
     @pulumi.getter(name="resolveThreshold")
     def resolve_threshold(self) -> Optional[float]:
-        """
-        The value at which the Alert rule resolves
-        """
         return pulumi.get(self, "resolve_threshold")
 
 
@@ -434,10 +427,6 @@ class GetSentryDashboardWidgetResult(dict):
                  queries: Sequence['outputs.GetSentryDashboardWidgetQueryResult'],
                  title: str,
                  widget_type: str):
-        """
-        :param str id: The ID of this resource.
-        :param str title: Dashboard title.
-        """
         pulumi.set(__self__, "display_type", display_type)
         pulumi.set(__self__, "id", id)
         pulumi.set(__self__, "interval", interval)
@@ -455,9 +444,6 @@ class GetSentryDashboardWidgetResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
 
     @property
@@ -483,9 +469,6 @@ class GetSentryDashboardWidgetResult(dict):
     @property
     @pulumi.getter
     def title(self) -> str:
-        """
-        Dashboard title.
-        """
         return pulumi.get(self, "title")
 
     @property
@@ -545,9 +528,6 @@ class GetSentryDashboardWidgetQueryResult(dict):
                  id: str,
                  name: str,
                  order_by: str):
-        """
-        :param str id: The ID of this resource.
-        """
         pulumi.set(__self__, "aggregates", aggregates)
         pulumi.set(__self__, "columns", columns)
         pulumi.set(__self__, "conditions", conditions)
@@ -585,9 +565,6 @@ class GetSentryDashboardWidgetQueryResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
 
     @property
@@ -610,9 +587,6 @@ class GetSentryMetricAlertTriggerResult(dict):
                  label: str,
                  resolve_threshold: float,
                  threshold_type: int):
-        """
-        :param str id: The ID of this resource.
-        """
         pulumi.set(__self__, "actions", actions)
         pulumi.set(__self__, "alert_threshold", alert_threshold)
         pulumi.set(__self__, "id", id)
@@ -633,9 +607,6 @@ class GetSentryMetricAlertTriggerResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
 
     @property
@@ -662,9 +633,6 @@ class GetSentryMetricAlertTriggerActionResult(dict):
                  target_identifier: str,
                  target_type: str,
                  type: str):
-        """
-        :param str id: The ID of this resource.
-        """
         pulumi.set(__self__, "id", id)
         pulumi.set(__self__, "integration_id", integration_id)
         pulumi.set(__self__, "target_identifier", target_identifier)
@@ -674,9 +642,6 @@ class GetSentryMetricAlertTriggerActionResult(dict):
     @property
     @pulumi.getter
     def id(self) -> str:
-        """
-        The ID of this resource.
-        """
         return pulumi.get(self, "id")
 
     @property

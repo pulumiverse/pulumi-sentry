@@ -16,16 +16,19 @@ import * as utilities from "./utilities";
  * // Create a team
  * const _default = new sentry.SentryTeam("default", {
  *     organization: "my-organization",
+ *     name: "my-team",
  *     slug: "my-team",
  * });
  * ```
  *
  * ## Import
  *
- * import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
+ * import using the organization and team slugs from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
+ * $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
  * ```
  */
 export class SentryTeam extends pulumi.CustomResource {
@@ -78,7 +81,7 @@ export class SentryTeam extends pulumi.CustomResource {
     /**
      * Use `internalId` instead.
      *
-     * @deprecated Use `internal_id` instead.
+     * @deprecated Use `internalId` instead.
      */
     public /*out*/ readonly teamId!: pulumi.Output<string>;
 
@@ -148,7 +151,7 @@ export interface SentryTeamState {
     /**
      * Use `internalId` instead.
      *
-     * @deprecated Use `internal_id` instead.
+     * @deprecated Use `internalId` instead.
      */
     teamId?: pulumi.Input<string>;
 }

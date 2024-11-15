@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -28,18 +27,20 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Retrieve a Github organization integration
 //			_, err := sentry.GetSentryOrganizationIntegration(ctx, &sentry.GetSentryOrganizationIntegrationArgs{
-//				Name:         "my-github-organization",
 //				Organization: "my-organization",
 //				ProviderKey:  "github",
+//				Name:         "my-github-organization",
 //			}, nil)
 //			if err != nil {
 //				return err
 //			}
+//			// Retrieve a Slack integration
 //			_, err = sentry.GetSentryOrganizationIntegration(ctx, &sentry.GetSentryOrganizationIntegrationArgs{
-//				Name:         "Slack Workspace",
 //				Organization: "my-organization",
 //				ProviderKey:  "slack",
+//				Name:         "Slack Workspace",
 //			}, nil)
 //			if err != nil {
 //				return err
@@ -85,14 +86,20 @@ type GetSentryOrganizationIntegrationResult struct {
 
 func GetSentryOrganizationIntegrationOutput(ctx *pulumi.Context, args GetSentryOrganizationIntegrationOutputArgs, opts ...pulumi.InvokeOption) GetSentryOrganizationIntegrationResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (GetSentryOrganizationIntegrationResult, error) {
+		ApplyT(func(v interface{}) (GetSentryOrganizationIntegrationResultOutput, error) {
 			args := v.(GetSentryOrganizationIntegrationArgs)
-			r, err := GetSentryOrganizationIntegration(ctx, &args, opts...)
-			var s GetSentryOrganizationIntegrationResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv GetSentryOrganizationIntegrationResult
+			secret, err := ctx.InvokePackageRaw("sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration", args, &rv, "", opts...)
+			if err != nil {
+				return GetSentryOrganizationIntegrationResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(GetSentryOrganizationIntegrationResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(GetSentryOrganizationIntegrationResultOutput), nil
+			}
+			return output, nil
 		}).(GetSentryOrganizationIntegrationResultOutput)
 }
 
@@ -123,12 +130,6 @@ func (o GetSentryOrganizationIntegrationResultOutput) ToGetSentryOrganizationInt
 
 func (o GetSentryOrganizationIntegrationResultOutput) ToGetSentryOrganizationIntegrationResultOutputWithContext(ctx context.Context) GetSentryOrganizationIntegrationResultOutput {
 	return o
-}
-
-func (o GetSentryOrganizationIntegrationResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetSentryOrganizationIntegrationResult] {
-	return pulumix.Output[GetSentryOrganizationIntegrationResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The provider-assigned unique ID for this managed resource.

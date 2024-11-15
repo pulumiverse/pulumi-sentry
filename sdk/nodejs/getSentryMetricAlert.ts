@@ -6,8 +6,10 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## Example Usage
+ */
 export function getSentryMetricAlert(args: GetSentryMetricAlertArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryMetricAlertResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryMetricAlert:getSentryMetricAlert", {
         "internalId": args.internalId,
@@ -72,8 +74,16 @@ export interface GetSentryMetricAlertResult {
     readonly timeWindow: number;
     readonly triggers: outputs.GetSentryMetricAlertTrigger[];
 }
+/**
+ * ## Example Usage
+ */
 export function getSentryMetricAlertOutput(args: GetSentryMetricAlertOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryMetricAlertResult> {
-    return pulumi.output(args).apply((a: any) => getSentryMetricAlert(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("sentry:index/getSentryMetricAlert:getSentryMetricAlert", {
+        "internalId": args.internalId,
+        "organization": args.organization,
+        "project": args.project,
+    }, opts);
 }
 
 /**

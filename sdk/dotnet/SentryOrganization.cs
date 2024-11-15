@@ -26,8 +26,9 @@ namespace Pulumiverse.Sentry
     ///     // Create an organization
     ///     var @default = new Sentry.SentryOrganization("default", new()
     ///     {
-    ///         AgreeTerms = true,
+    ///         Name = "My Organization",
     ///         Slug = "my-organization",
+    ///         AgreeTerms = true,
     ///     });
     /// 
     /// });
@@ -35,10 +36,12 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
+    /// import using the organization slug from the URL:
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/issues/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
+    /// $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryOrganization:SentryOrganization")]

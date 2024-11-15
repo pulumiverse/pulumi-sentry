@@ -14,14 +14,16 @@ import * as utilities from "./utilities";
  * import * as sentry from "@pulumi/sentry";
  * import * as sentry from "@pulumiverse/sentry";
  *
+ * // Retrieve a Slack integration
  * const slack = sentry.getSentryOrganizationIntegration({
- *     organization: sentry_project.test.organization,
+ *     organization: test.organization,
  *     providerKey: "slack",
  *     name: "Slack Workspace",
  * });
  * const main = new sentry.SentryIssueAlert("main", {
- *     organization: sentry_project.main.organization,
- *     project: sentry_project.main.id,
+ *     organization: mainSentryProject.organization,
+ *     project: mainSentryProject.id,
+ *     name: "My issue alert",
  *     actionMatch: "any",
  *     filterMatch: "any",
  *     frequency: 30,
@@ -34,13 +36,13 @@ import * as utilities from "./utilities";
  *         },
  *         {
  *             id: "sentry.rules.conditions.event_frequency.EventFrequencyCondition",
- *             value: 100,
+ *             value: "100",
  *             comparisonType: "count",
  *             interval: "1h",
  *         },
  *         {
  *             id: "sentry.rules.conditions.event_frequency.EventUniqueUserFrequencyCondition",
- *             value: 100,
+ *             value: "100",
  *             comparisonType: "count",
  *             interval: "1h",
  *         },
@@ -54,18 +56,18 @@ import * as utilities from "./utilities";
  *     filters: [
  *         {
  *             id: "sentry.rules.filters.age_comparison.AgeComparisonFilter",
- *             value: 10,
+ *             value: "10",
  *             time: "minute",
  *             comparison_type: "older",
  *         },
  *         {
  *             id: "sentry.rules.filters.issue_occurrences.IssueOccurrencesFilter",
- *             value: 10,
+ *             value: "10",
  *         },
  *         {
  *             id: "sentry.rules.filters.assigned_to.AssignedToFilter",
  *             targetType: "Team",
- *             targetIdentifier: sentry_team.main.team_id,
+ *             targetIdentifier: mainSentryTeam.teamId,
  *         },
  *         {
  *             id: "sentry.rules.filters.latest_release.LatestReleaseFilter",
@@ -97,7 +99,7 @@ import * as utilities from "./utilities";
  *         {
  *             id: "sentry.mail.actions.NotifyEmailAction",
  *             targetType: "Team",
- *             targetIdentifier: sentry_team.main.team_id,
+ *             targetIdentifier: mainSentryTeam.teamId,
  *         },
  *         {
  *             id: "sentry.rules.actions.notify_event.NotifyEventAction",
@@ -113,10 +115,12 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/alerts/rules/[project-slug]/[rule-id]/details/
+ * import using the organization, project slugs and rule id from the URL:
+ *
+ * https://sentry.io/organizations/[org-slug]/alerts/rules/[project-slug]/[rule-id]/details/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryIssueAlert:SentryIssueAlert default org-slug/project-slug/rule-id
+ * $ pulumi import sentry:index/sentryIssueAlert:SentryIssueAlert default org-slug/project-slug/rule-id
  * ```
  */
 export class SentryIssueAlert extends pulumi.CustomResource {
@@ -154,11 +158,11 @@ export class SentryIssueAlert extends pulumi.CustomResource {
     /**
      * List of actions.
      */
-    public readonly actions!: pulumi.Output<{[key: string]: any}[]>;
+    public readonly actions!: pulumi.Output<{[key: string]: string}[]>;
     /**
      * List of conditions.
      */
-    public readonly conditions!: pulumi.Output<{[key: string]: any}[]>;
+    public readonly conditions!: pulumi.Output<{[key: string]: string}[]>;
     /**
      * Perform issue alert in a specific environment.
      */
@@ -170,7 +174,7 @@ export class SentryIssueAlert extends pulumi.CustomResource {
     /**
      * List of filters.
      */
-    public readonly filters!: pulumi.Output<{[key: string]: any}[] | undefined>;
+    public readonly filters!: pulumi.Output<{[key: string]: string}[] | undefined>;
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */
@@ -275,11 +279,11 @@ export interface SentryIssueAlertState {
     /**
      * List of actions.
      */
-    actions?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    actions?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * List of conditions.
      */
-    conditions?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    conditions?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform issue alert in a specific environment.
      */
@@ -291,7 +295,7 @@ export interface SentryIssueAlertState {
     /**
      * List of filters.
      */
-    filters?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    filters?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */
@@ -331,11 +335,11 @@ export interface SentryIssueAlertArgs {
     /**
      * List of actions.
      */
-    actions: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    actions: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * List of conditions.
      */
-    conditions: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    conditions: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform issue alert in a specific environment.
      */
@@ -347,7 +351,7 @@ export interface SentryIssueAlertArgs {
     /**
      * List of filters.
      */
-    filters?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    filters?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */

@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -69,7 +74,7 @@ class GetSentryIssueAlertResult:
 
     @property
     @pulumi.getter
-    def actions(self) -> Sequence[Mapping[str, Any]]:
+    def actions(self) -> Sequence[Mapping[str, str]]:
         """
         List of actions.
         """
@@ -77,7 +82,7 @@ class GetSentryIssueAlertResult:
 
     @property
     @pulumi.getter
-    def conditions(self) -> Sequence[Mapping[str, Any]]:
+    def conditions(self) -> Sequence[Mapping[str, str]]:
         """
         List of conditions.
         """
@@ -101,7 +106,7 @@ class GetSentryIssueAlertResult:
 
     @property
     @pulumi.getter
-    def filters(self) -> Sequence[Mapping[str, Any]]:
+    def filters(self) -> Sequence[Mapping[str, str]]:
         """
         List of filters.
         """
@@ -190,6 +195,8 @@ def get_sentry_issue_alert(internal_id: Optional[str] = None,
     import pulumi_sentry as sentry
     import pulumiverse_sentry as sentry
 
+    # Retrieve an Issue Alert
+    # URL format: https://sentry.io/organizations/[organization]/alerts/rules/[project]/[internal_id]/details/
     original = sentry.get_sentry_issue_alert(organization="my-organization",
         project="my-project",
         internal_id="42")
@@ -197,6 +204,7 @@ def get_sentry_issue_alert(internal_id: Optional[str] = None,
     copy = sentry.SentryIssueAlert("copy",
         organization=original.organization,
         project=original.project,
+        name=f"{original.name}-copy",
         action_match=original.action_match,
         filter_match=original.filter_match,
         frequency=original.frequency,
@@ -230,9 +238,6 @@ def get_sentry_issue_alert(internal_id: Optional[str] = None,
         name=pulumi.get(__ret__, 'name'),
         organization=pulumi.get(__ret__, 'organization'),
         project=pulumi.get(__ret__, 'project'))
-
-
-@_utilities.lift_output_func(get_sentry_issue_alert)
 def get_sentry_issue_alert_output(internal_id: Optional[pulumi.Input[str]] = None,
                                   organization: Optional[pulumi.Input[str]] = None,
                                   project: Optional[pulumi.Input[str]] = None,
@@ -247,6 +252,8 @@ def get_sentry_issue_alert_output(internal_id: Optional[pulumi.Input[str]] = Non
     import pulumi_sentry as sentry
     import pulumiverse_sentry as sentry
 
+    # Retrieve an Issue Alert
+    # URL format: https://sentry.io/organizations/[organization]/alerts/rules/[project]/[internal_id]/details/
     original = sentry.get_sentry_issue_alert(organization="my-organization",
         project="my-project",
         internal_id="42")
@@ -254,6 +261,7 @@ def get_sentry_issue_alert_output(internal_id: Optional[pulumi.Input[str]] = Non
     copy = sentry.SentryIssueAlert("copy",
         organization=original.organization,
         project=original.project,
+        name=f"{original.name}-copy",
         action_match=original.action_match,
         filter_match=original.filter_match,
         frequency=original.frequency,
@@ -267,4 +275,22 @@ def get_sentry_issue_alert_output(internal_id: Optional[pulumi.Input[str]] = Non
     :param str organization: The slug of the organization the issue alert belongs to.
     :param str project: The slug of the project the issue alert belongs to.
     """
-    ...
+    __args__ = dict()
+    __args__['internalId'] = internal_id
+    __args__['organization'] = organization
+    __args__['project'] = project
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('sentry:index/getSentryIssueAlert:getSentryIssueAlert', __args__, opts=opts, typ=GetSentryIssueAlertResult)
+    return __ret__.apply(lambda __response__: GetSentryIssueAlertResult(
+        action_match=pulumi.get(__response__, 'action_match'),
+        actions=pulumi.get(__response__, 'actions'),
+        conditions=pulumi.get(__response__, 'conditions'),
+        environment=pulumi.get(__response__, 'environment'),
+        filter_match=pulumi.get(__response__, 'filter_match'),
+        filters=pulumi.get(__response__, 'filters'),
+        frequency=pulumi.get(__response__, 'frequency'),
+        id=pulumi.get(__response__, 'id'),
+        internal_id=pulumi.get(__response__, 'internal_id'),
+        name=pulumi.get(__response__, 'name'),
+        organization=pulumi.get(__response__, 'organization'),
+        project=pulumi.get(__response__, 'project')))

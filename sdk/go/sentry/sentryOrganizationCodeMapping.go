@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -29,6 +28,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Retrieve the Github organization integration
 //			github, err := sentry.GetSentryOrganizationIntegration(ctx, &sentry.GetSentryOrganizationIntegrationArgs{
 //				Organization: "my-organization",
 //				ProviderKey:  "github",
@@ -37,9 +37,10 @@ import (
 //			if err != nil {
 //				return err
 //			}
-//			thisSentryProject, err := sentry.NewSentryProject(ctx, "thisSentryProject", &sentry.SentryProjectArgs{
+//			this, err := sentry.NewSentryProject(ctx, "this", &sentry.SentryProjectArgs{
 //				Organization: pulumi.String("my-organization"),
 //				Team:         pulumi.String("my-team"),
+//				Name:         pulumi.String("Web App"),
 //				Slug:         pulumi.String("web-app"),
 //				Platform:     pulumi.String("javascript"),
 //				ResolveAge:   pulumi.Int(720),
@@ -47,19 +48,19 @@ import (
 //			if err != nil {
 //				return err
 //			}
-//			thisSentryOrganizationRepositoryGithub, err := sentry.NewSentryOrganizationRepositoryGithub(ctx, "thisSentryOrganizationRepositoryGithub", &sentry.SentryOrganizationRepositoryGithubArgs{
+//			thisSentryOrganizationRepositoryGithub, err := sentry.NewSentryOrganizationRepositoryGithub(ctx, "this", &sentry.SentryOrganizationRepositoryGithubArgs{
 //				Organization:  pulumi.String("my-organization"),
-//				IntegrationId: *pulumi.String(github.InternalId),
+//				IntegrationId: pulumi.String(github.InternalId),
 //				Identifier:    pulumi.String("my-github-organization/my-github-repo"),
 //			})
 //			if err != nil {
 //				return err
 //			}
-//			_, err = sentry.NewSentryOrganizationCodeMapping(ctx, "thisSentryOrganizationCodeMapping", &sentry.SentryOrganizationCodeMappingArgs{
+//			_, err = sentry.NewSentryOrganizationCodeMapping(ctx, "this", &sentry.SentryOrganizationCodeMappingArgs{
 //				Organization:  pulumi.String("my-organization"),
-//				IntegrationId: *pulumi.String(github.InternalId),
+//				IntegrationId: pulumi.String(github.InternalId),
 //				RepositoryId:  thisSentryOrganizationRepositoryGithub.InternalId,
-//				ProjectId:     thisSentryProject.InternalId,
+//				ProjectId:     this.InternalId,
 //				DefaultBranch: pulumi.String("main"),
 //				StackRoot:     pulumi.String("/"),
 //				SourceRoot:    pulumi.String("src/"),
@@ -75,12 +76,16 @@ import (
 //
 // ## Import
 //
-// import using the organization slug from the URLhttps://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/ and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/ find the corresponding list element and reference [code-mapping-id] from the key "id"
+// import using the organization slug from the URL:
+//
+// https://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/
+//
+// and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/
+//
+// find the corresponding list element and reference [code-mapping-id] from the key "id"
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
-//
+// $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
 // ```
 type SentryOrganizationCodeMapping struct {
 	pulumi.CustomResourceState
@@ -247,12 +252,6 @@ func (i *SentryOrganizationCodeMapping) ToSentryOrganizationCodeMappingOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationCodeMappingOutput)
 }
 
-func (i *SentryOrganizationCodeMapping) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganizationCodeMapping] {
-	return pulumix.Output[*SentryOrganizationCodeMapping]{
-		OutputState: i.ToSentryOrganizationCodeMappingOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryOrganizationCodeMappingArrayInput is an input type that accepts SentryOrganizationCodeMappingArray and SentryOrganizationCodeMappingArrayOutput values.
 // You can construct a concrete instance of `SentryOrganizationCodeMappingArrayInput` via:
 //
@@ -276,12 +275,6 @@ func (i SentryOrganizationCodeMappingArray) ToSentryOrganizationCodeMappingArray
 
 func (i SentryOrganizationCodeMappingArray) ToSentryOrganizationCodeMappingArrayOutputWithContext(ctx context.Context) SentryOrganizationCodeMappingArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationCodeMappingArrayOutput)
-}
-
-func (i SentryOrganizationCodeMappingArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganizationCodeMapping] {
-	return pulumix.Output[[]*SentryOrganizationCodeMapping]{
-		OutputState: i.ToSentryOrganizationCodeMappingArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryOrganizationCodeMappingMapInput is an input type that accepts SentryOrganizationCodeMappingMap and SentryOrganizationCodeMappingMapOutput values.
@@ -309,12 +302,6 @@ func (i SentryOrganizationCodeMappingMap) ToSentryOrganizationCodeMappingMapOutp
 	return pulumi.ToOutputWithContext(ctx, i).(SentryOrganizationCodeMappingMapOutput)
 }
 
-func (i SentryOrganizationCodeMappingMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganizationCodeMapping] {
-	return pulumix.Output[map[string]*SentryOrganizationCodeMapping]{
-		OutputState: i.ToSentryOrganizationCodeMappingMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryOrganizationCodeMappingOutput struct{ *pulumi.OutputState }
 
 func (SentryOrganizationCodeMappingOutput) ElementType() reflect.Type {
@@ -327,12 +314,6 @@ func (o SentryOrganizationCodeMappingOutput) ToSentryOrganizationCodeMappingOutp
 
 func (o SentryOrganizationCodeMappingOutput) ToSentryOrganizationCodeMappingOutputWithContext(ctx context.Context) SentryOrganizationCodeMappingOutput {
 	return o
-}
-
-func (o SentryOrganizationCodeMappingOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryOrganizationCodeMapping] {
-	return pulumix.Output[*SentryOrganizationCodeMapping]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Default branch of your code we fall back to if you do not have commit tracking set up.
@@ -389,12 +370,6 @@ func (o SentryOrganizationCodeMappingArrayOutput) ToSentryOrganizationCodeMappin
 	return o
 }
 
-func (o SentryOrganizationCodeMappingArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryOrganizationCodeMapping] {
-	return pulumix.Output[[]*SentryOrganizationCodeMapping]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryOrganizationCodeMappingArrayOutput) Index(i pulumi.IntInput) SentryOrganizationCodeMappingOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryOrganizationCodeMapping {
 		return vs[0].([]*SentryOrganizationCodeMapping)[vs[1].(int)]
@@ -413,12 +388,6 @@ func (o SentryOrganizationCodeMappingMapOutput) ToSentryOrganizationCodeMappingM
 
 func (o SentryOrganizationCodeMappingMapOutput) ToSentryOrganizationCodeMappingMapOutputWithContext(ctx context.Context) SentryOrganizationCodeMappingMapOutput {
 	return o
-}
-
-func (o SentryOrganizationCodeMappingMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryOrganizationCodeMapping] {
-	return pulumix.Output[map[string]*SentryOrganizationCodeMapping]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryOrganizationCodeMappingMapOutput) MapIndex(k pulumi.StringInput) SentryOrganizationCodeMappingOutput {
