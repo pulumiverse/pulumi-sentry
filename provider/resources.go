@@ -127,17 +127,17 @@ func Provider() tfbridge.ProviderInfo {
 					"secret":     {Secret: boolRef(true)},
 				},
 			},
-			"sentry_organization": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganization")},
-			"sentry_organization_code_mapping": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationCodeMapping")},
-			"sentry_organization_member": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationMember")},
+			"sentry_organization":                   {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganization")},
+			"sentry_organization_code_mapping":      {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationCodeMapping")},
+			"sentry_organization_member":            {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationMember")},
 			"sentry_organization_repository_github": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryOrganizationRepositoryGithub")},
-			"sentry_project":      {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryProject")},
-			"sentry_plugin":       {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryPlugin")},
-			"sentry_rule":         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryRule")},
-			"sentry_team":         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryTeam")},
-			"sentry_dashboard":    {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryDashboard")},
-			"sentry_issue_alert":  {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryIssueAlert")},
-			"sentry_metric_alert": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryMetricAlert")},
+			"sentry_project":                        {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryProject")},
+			"sentry_plugin":                         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryPlugin")},
+			"sentry_rule":                           {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryRule")},
+			"sentry_team":                           {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryTeam")},
+			"sentry_dashboard":                      {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryDashboard")},
+			"sentry_issue_alert":                    {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryIssueAlert")},
+			"sentry_metric_alert":                   {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SentryMetricAlert")},
 		},
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			// Map each resource in the Terraform provider to a Pulumi function. An example
@@ -150,12 +150,12 @@ func Provider() tfbridge.ProviderInfo {
 					"secret":     {Secret: boolRef(true)},
 				},
 			},
-			"sentry_organization": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryOrganization")},
+			"sentry_organization":             {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryOrganization")},
 			"sentry_organization_integration": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryOrganizationIntegration")},
-			"sentry_team":         {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryTeam")},
-			"sentry_dashboard":    {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryDashboard")},
-			"sentry_issue_alert":  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryIssueAlert")},
-			"sentry_metric_alert": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryMetricAlert")},
+			"sentry_team":                     {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryTeam")},
+			"sentry_dashboard":                {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryDashboard")},
+			"sentry_issue_alert":              {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryIssueAlert")},
+			"sentry_metric_alert":             {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSentryMetricAlert")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			PackageName: "@pulumiverse/sentry",
@@ -171,13 +171,15 @@ func Provider() tfbridge.ProviderInfo {
 			// section, or refer to the AWS provider. Delete this section if there are
 			// no overlay files.
 			//Overlay: &tfbridge.OverlayInfo{},
+			RespectSchemaVersion: true,
 		},
 		Python: &tfbridge.PythonInfo{
 			// List any Python dependencies and their version ranges
 			Requires: map[string]string{
 				"pulumi": ">=3.0.0,<4.0.0",
 			},
-			PackageName: "pulumiverse_sentry",
+			PackageName:          "pulumiverse_sentry",
+			RespectSchemaVersion: true,
 		},
 		Golang: &tfbridge.GolangInfo{
 			ImportBasePath: filepath.Join(
@@ -187,12 +189,14 @@ func Provider() tfbridge.ProviderInfo {
 				mainPkg,
 			),
 			GenerateResourceContainerTypes: true,
+			RespectSchemaVersion:           true,
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{
 				"Pulumi": "3.*",
 			},
-			RootNamespace: "Pulumiverse",
+			RootNamespace:        "Pulumiverse",
+			RespectSchemaVersion: true,
 		},
 	}
 
