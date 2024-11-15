@@ -8,6 +8,7 @@ Pulumi.*.yaml
 **/node_modules/
 **/package-lock.json
 .DS_Store
+go.work*
 
 **/command-output/
 
@@ -18,7 +19,12 @@ yarn.lock
 **/pulumiManifest.go
 
 ci-scripts
-provider/**/schema.go
+provider/**/schema-embed.json
 **/version.txt
 **/nuget
 **/dist
+
+__pycache__
+venv
+sdk/python/build
+sdk/python/*.egg-info
