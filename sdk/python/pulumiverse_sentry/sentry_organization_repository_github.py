@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['SentryOrganizationRepositoryGithubArgs', 'SentryOrganizationRepositoryGithub']
@@ -155,6 +160,7 @@ class SentryOrganizationRepositoryGithub(pulumi.CustomResource):
         import pulumi_sentry as sentry
         import pulumiverse_sentry as sentry
 
+        # Retrieve the Github organization integration
         github = sentry.get_sentry_organization_integration(organization="my-organization",
             provider_key="github",
             name="my-github-organization")
@@ -166,10 +172,14 @@ class SentryOrganizationRepositoryGithub(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/ [github-org] and [github-repo] are the slugs to your repo
+        import using the organization slug from the URL:
+
+        https://sentry.io/organizations/[org-slug]/
+
+        [github-org] and [github-repo] are the slugs to your repo
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
+        $ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
         ```
 
         :param str resource_name: The name of the resource.
@@ -194,6 +204,7 @@ class SentryOrganizationRepositoryGithub(pulumi.CustomResource):
         import pulumi_sentry as sentry
         import pulumiverse_sentry as sentry
 
+        # Retrieve the Github organization integration
         github = sentry.get_sentry_organization_integration(organization="my-organization",
             provider_key="github",
             name="my-github-organization")
@@ -205,10 +216,14 @@ class SentryOrganizationRepositoryGithub(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/ [github-org] and [github-repo] are the slugs to your repo
+        import using the organization slug from the URL:
+
+        https://sentry.io/organizations/[org-slug]/
+
+        [github-org] and [github-repo] are the slugs to your repo
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
+        $ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
         ```
 
         :param str resource_name: The name of the resource.

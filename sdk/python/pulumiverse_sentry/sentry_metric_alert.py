@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -463,7 +468,7 @@ class SentryMetricAlert(pulumi.CustomResource):
                  resolve_threshold: Optional[pulumi.Input[float]] = None,
                  threshold_type: Optional[pulumi.Input[int]] = None,
                  time_window: Optional[pulumi.Input[float]] = None,
-                 triggers: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SentryMetricAlertTriggerArgs']]]]] = None,
+                 triggers: Optional[pulumi.Input[Sequence[pulumi.Input[Union['SentryMetricAlertTriggerArgs', 'SentryMetricAlertTriggerArgsDict']]]]] = None,
                  __props__=None):
         """
         Sentry Metric Alert resource.
@@ -475,12 +480,13 @@ class SentryMetricAlert(pulumi.CustomResource):
         import pulumi_sentry as sentry
         import pulumiverse_sentry as sentry
 
-        slack = sentry.get_sentry_organization_integration(organization=sentry_project["main"]["organization"],
+        slack = sentry.get_sentry_organization_integration(organization=main_sentry_project["organization"],
             provider_key="slack",
             name="Slack Workspace")
         main = sentry.SentryMetricAlert("main",
-            organization=sentry_project["main"]["organization"],
-            project=sentry_project["main"]["id"],
+            organization=main_sentry_project["organization"],
+            project=main_sentry_project["id"],
+            name="My metric alert",
             dataset="events",
             query="",
             aggregate="count()",
@@ -488,41 +494,49 @@ class SentryMetricAlert(pulumi.CustomResource):
             threshold_type=0,
             resolve_threshold=0,
             triggers=[
-                sentry.SentryMetricAlertTriggerArgs(
-                    actions=[sentry.SentryMetricAlertTriggerActionArgs(
-                        type="email",
-                        target_type="team",
-                        target_identifier=sentry_team["main"]["team_id"],
-                    )],
-                    alert_threshold=300,
-                    label="critical",
-                    threshold_type=0,
-                ),
-                sentry.SentryMetricAlertTriggerArgs(
-                    actions=[sentry.SentryMetricAlertTriggerActionArgs(
-                        type="slack",
-                        target_type="specific",
-                        target_identifier="#slack-channel",
-                        integration_id=slack.id,
-                    )],
-                    alert_threshold=300,
-                    label="critical",
-                    threshold_type=0,
-                ),
-                sentry.SentryMetricAlertTriggerArgs(
-                    alert_threshold=100,
-                    label="warning",
-                    threshold_type=0,
-                ),
+                {
+                    "actions": [{
+                        "type": "email",
+                        "target_type": "team",
+                        "target_identifier": main_sentry_team["teamId"],
+                    }],
+                    "alert_threshold": 300,
+                    "label": "critical",
+                    "threshold_type": 0,
+                },
+                {
+                    "actions": [{
+                        "type": "slack",
+                        "target_type": "specific",
+                        "target_identifier": "#slack-channel",
+                        "integration_id": slack.id,
+                    }],
+                    "alert_threshold": 300,
+                    "label": "critical",
+                    "threshold_type": 0,
+                },
+                {
+                    "alert_threshold": 100,
+                    "label": "warning",
+                    "threshold_type": 0,
+                },
             ])
         ```
 
         ## Import
 
-        import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+        import using the organization, project slugs and rule id from the URL:
+
+        https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+
+        https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+
+        or
+
+        https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+        $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -556,12 +570,13 @@ class SentryMetricAlert(pulumi.CustomResource):
         import pulumi_sentry as sentry
         import pulumiverse_sentry as sentry
 
-        slack = sentry.get_sentry_organization_integration(organization=sentry_project["main"]["organization"],
+        slack = sentry.get_sentry_organization_integration(organization=main_sentry_project["organization"],
             provider_key="slack",
             name="Slack Workspace")
         main = sentry.SentryMetricAlert("main",
-            organization=sentry_project["main"]["organization"],
-            project=sentry_project["main"]["id"],
+            organization=main_sentry_project["organization"],
+            project=main_sentry_project["id"],
+            name="My metric alert",
             dataset="events",
             query="",
             aggregate="count()",
@@ -569,41 +584,49 @@ class SentryMetricAlert(pulumi.CustomResource):
             threshold_type=0,
             resolve_threshold=0,
             triggers=[
-                sentry.SentryMetricAlertTriggerArgs(
-                    actions=[sentry.SentryMetricAlertTriggerActionArgs(
-                        type="email",
-                        target_type="team",
-                        target_identifier=sentry_team["main"]["team_id"],
-                    )],
-                    alert_threshold=300,
-                    label="critical",
-                    threshold_type=0,
-                ),
-                sentry.SentryMetricAlertTriggerArgs(
-                    actions=[sentry.SentryMetricAlertTriggerActionArgs(
-                        type="slack",
-                        target_type="specific",
-                        target_identifier="#slack-channel",
-                        integration_id=slack.id,
-                    )],
-                    alert_threshold=300,
-                    label="critical",
-                    threshold_type=0,
-                ),
-                sentry.SentryMetricAlertTriggerArgs(
-                    alert_threshold=100,
-                    label="warning",
-                    threshold_type=0,
-                ),
+                {
+                    "actions": [{
+                        "type": "email",
+                        "target_type": "team",
+                        "target_identifier": main_sentry_team["teamId"],
+                    }],
+                    "alert_threshold": 300,
+                    "label": "critical",
+                    "threshold_type": 0,
+                },
+                {
+                    "actions": [{
+                        "type": "slack",
+                        "target_type": "specific",
+                        "target_identifier": "#slack-channel",
+                        "integration_id": slack.id,
+                    }],
+                    "alert_threshold": 300,
+                    "label": "critical",
+                    "threshold_type": 0,
+                },
+                {
+                    "alert_threshold": 100,
+                    "label": "warning",
+                    "threshold_type": 0,
+                },
             ])
         ```
 
         ## Import
 
-        import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+        import using the organization, project slugs and rule id from the URL:
+
+        https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+
+        https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+
+        or
+
+        https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+        $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -633,7 +656,7 @@ class SentryMetricAlert(pulumi.CustomResource):
                  resolve_threshold: Optional[pulumi.Input[float]] = None,
                  threshold_type: Optional[pulumi.Input[int]] = None,
                  time_window: Optional[pulumi.Input[float]] = None,
-                 triggers: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SentryMetricAlertTriggerArgs']]]]] = None,
+                 triggers: Optional[pulumi.Input[Sequence[pulumi.Input[Union['SentryMetricAlertTriggerArgs', 'SentryMetricAlertTriggerArgsDict']]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -694,7 +717,7 @@ class SentryMetricAlert(pulumi.CustomResource):
             resolve_threshold: Optional[pulumi.Input[float]] = None,
             threshold_type: Optional[pulumi.Input[int]] = None,
             time_window: Optional[pulumi.Input[float]] = None,
-            triggers: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SentryMetricAlertTriggerArgs']]]]] = None) -> 'SentryMetricAlert':
+            triggers: Optional[pulumi.Input[Sequence[pulumi.Input[Union['SentryMetricAlertTriggerArgs', 'SentryMetricAlertTriggerArgsDict']]]]] = None) -> 'SentryMetricAlert':
         """
         Get an existing SentryMetricAlert resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

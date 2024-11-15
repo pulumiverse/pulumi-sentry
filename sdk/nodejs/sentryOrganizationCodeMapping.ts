@@ -14,28 +14,30 @@ import * as utilities from "./utilities";
  * import * as sentry from "@pulumi/sentry";
  * import * as sentry from "@pulumiverse/sentry";
  *
+ * // Retrieve the Github organization integration
  * const github = sentry.getSentryOrganizationIntegration({
  *     organization: "my-organization",
  *     providerKey: "github",
  *     name: "my-github-organization",
  * });
- * const thisSentryProject = new sentry.SentryProject("thisSentryProject", {
+ * const _this = new sentry.SentryProject("this", {
  *     organization: "my-organization",
  *     team: "my-team",
+ *     name: "Web App",
  *     slug: "web-app",
  *     platform: "javascript",
  *     resolveAge: 720,
  * });
- * const thisSentryOrganizationRepositoryGithub = new sentry.SentryOrganizationRepositoryGithub("thisSentryOrganizationRepositoryGithub", {
+ * const thisSentryOrganizationRepositoryGithub = new sentry.SentryOrganizationRepositoryGithub("this", {
  *     organization: "my-organization",
  *     integrationId: github.then(github => github.internalId),
  *     identifier: "my-github-organization/my-github-repo",
  * });
- * const thisSentryOrganizationCodeMapping = new sentry.SentryOrganizationCodeMapping("thisSentryOrganizationCodeMapping", {
+ * const thisSentryOrganizationCodeMapping = new sentry.SentryOrganizationCodeMapping("this", {
  *     organization: "my-organization",
  *     integrationId: github.then(github => github.internalId),
  *     repositoryId: thisSentryOrganizationRepositoryGithub.internalId,
- *     projectId: thisSentryProject.internalId,
+ *     projectId: _this.internalId,
  *     defaultBranch: "main",
  *     stackRoot: "/",
  *     sourceRoot: "src/",
@@ -44,10 +46,16 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization slug from the URLhttps://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/ and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/ find the corresponding list element and reference [code-mapping-id] from the key "id"
+ * import using the organization slug from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/
+ *
+ * and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/
+ *
+ * find the corresponding list element and reference [code-mapping-id] from the key "id"
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
+ * $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
  * ```
  */
 export class SentryOrganizationCodeMapping extends pulumi.CustomResource {

@@ -15,9 +15,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Organization data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -27,6 +25,7 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve an organization
         ///     var org = Sentry.GetSentryOrganization.Invoke(new()
         ///     {
         ///         Slug = "my-organization",
@@ -34,8 +33,6 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryOrganizationResult> InvokeAsync(GetSentryOrganizationArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryOrganizationResult>("sentry:index/getSentryOrganization:getSentryOrganization", args ?? new GetSentryOrganizationArgs(), options.WithDefaults());
@@ -43,9 +40,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Organization data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -55,6 +50,7 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve an organization
         ///     var org = Sentry.GetSentryOrganization.Invoke(new()
         ///     {
         ///         Slug = "my-organization",
@@ -62,8 +58,6 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryOrganizationResult> Invoke(GetSentryOrganizationInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryOrganizationResult>("sentry:index/getSentryOrganization:getSentryOrganization", args ?? new GetSentryOrganizationInvokeArgs(), options.WithDefaults());

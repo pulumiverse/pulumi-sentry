@@ -33,15 +33,9 @@ namespace Pulumiverse.Sentry.Inputs
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
-        /// <summary>
-        /// The value at which the Alert rule resolves
-        /// </summary>
         [Input("resolveThreshold")]
         public Input<double>? ResolveThreshold { get; set; }
 
-        /// <summary>
-        /// The type of threshold
-        /// </summary>
         [Input("thresholdType", required: true)]
         public Input<int> ThresholdType { get; set; } = null!;
 

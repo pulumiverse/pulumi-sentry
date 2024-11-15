@@ -22,10 +22,10 @@ namespace Pulumiverse.Sentry
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
     ///     // Create an organization member
-    ///     var johnDoe = new Sentry.SentryOrganizationMember("johnDoe", new()
+    ///     var johnDoe = new Sentry.SentryOrganizationMember("john_doe", new()
     ///     {
-    ///         Email = "test@example.com",
     ///         Organization = "my-organization",
+    ///         Email = "test@example.com",
     ///         Role = "member",
     ///         Teams = new[]
     ///         {
@@ -38,10 +38,12 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+    /// import using the organization, membership id from the URL:
+    /// 
+    /// https://sentry.io/settings/[org-slug]/members/[member-id]/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
+    /// $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryOrganizationMember:SentryOrganizationMember")]

@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['SentryOrganizationMemberArgs', 'SentryOrganizationMember']
@@ -218,19 +223,21 @@ class SentryOrganizationMember(pulumi.CustomResource):
         import pulumiverse_sentry as sentry
 
         # Create an organization member
-        john_doe = sentry.SentryOrganizationMember("johnDoe",
-            email="test@example.com",
+        john_doe = sentry.SentryOrganizationMember("john_doe",
             organization="my-organization",
+            email="test@example.com",
             role="member",
             teams=["my-team"])
         ```
 
         ## Import
 
-        import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+        import using the organization, membership id from the URL:
+
+        https://sentry.io/settings/[org-slug]/members/[member-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
+        $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -254,19 +261,21 @@ class SentryOrganizationMember(pulumi.CustomResource):
         import pulumiverse_sentry as sentry
 
         # Create an organization member
-        john_doe = sentry.SentryOrganizationMember("johnDoe",
-            email="test@example.com",
+        john_doe = sentry.SentryOrganizationMember("john_doe",
             organization="my-organization",
+            email="test@example.com",
             role="member",
             teams=["my-team"])
         ```
 
         ## Import
 
-        import using the organization, membership id from the URLhttps://sentry.io/settings/[org-slug]/members/[member-id]/
+        import using the organization, membership id from the URL:
+
+        https://sentry.io/settings/[org-slug]/members/[member-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
+        $ pulumi import sentry:index/sentryOrganizationMember:SentryOrganizationMember john_doe org-slug/member-id
         ```
 
         :param str resource_name: The name of the resource.

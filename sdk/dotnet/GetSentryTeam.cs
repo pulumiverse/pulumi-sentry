@@ -15,9 +15,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Team data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -27,6 +25,7 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve a team
         ///     var @default = Sentry.GetSentryTeam.Invoke(new()
         ///     {
         ///         Organization = "my-organization",
@@ -35,8 +34,6 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryTeamResult> InvokeAsync(GetSentryTeamArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryTeamResult>("sentry:index/getSentryTeam:getSentryTeam", args ?? new GetSentryTeamArgs(), options.WithDefaults());
@@ -44,9 +41,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Team data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -56,6 +51,7 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve a team
         ///     var @default = Sentry.GetSentryTeam.Invoke(new()
         ///     {
         ///         Organization = "my-organization",
@@ -64,8 +60,6 @@ namespace Pulumiverse.Sentry
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryTeamResult> Invoke(GetSentryTeamInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryTeamResult>("sentry:index/getSentryTeam:getSentryTeam", args ?? new GetSentryTeamInvokeArgs(), options.WithDefaults());

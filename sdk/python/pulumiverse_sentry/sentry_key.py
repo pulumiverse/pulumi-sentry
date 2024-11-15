@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['SentryKeyArgs', 'SentryKey']
@@ -180,10 +185,8 @@ class _SentryKeyState:
 
     @property
     @pulumi.getter(name="dsnSecret")
+    @_utilities.deprecated("""DSN (Deprecated) for the key.""")
     def dsn_secret(self) -> Optional[pulumi.Input[str]]:
-        warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
-        pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
-
         return pulumi.get(self, "dsn_secret")
 
     @dsn_secret.setter
@@ -322,15 +325,18 @@ class SentryKey(pulumi.CustomResource):
         # Create a key
         default = sentry.SentryKey("default",
             organization="my-organization",
-            project="web-app")
+            project="web-app",
+            name="My Key")
         ```
 
         ## Import
 
-        import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+        import using the organization, project slugs and key id from the URL:
+
+        https://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
+        $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -359,15 +365,18 @@ class SentryKey(pulumi.CustomResource):
         # Create a key
         default = sentry.SentryKey("default",
             organization="my-organization",
-            project="web-app")
+            project="web-app",
+            name="My Key")
         ```
 
         ## Import
 
-        import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+        import using the organization, project slugs and key id from the URL:
+
+        https://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
 
         ```sh
-         $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
+        $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
         ```
 
         :param str resource_name: The name of the resource.
@@ -494,10 +503,8 @@ class SentryKey(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="dsnSecret")
+    @_utilities.deprecated("""DSN (Deprecated) for the key.""")
     def dsn_secret(self) -> pulumi.Output[str]:
-        warnings.warn("""DSN (Deprecated) for the key.""", DeprecationWarning)
-        pulumi.log.warn("""dsn_secret is deprecated: DSN (Deprecated) for the key.""")
-
         return pulumi.get(self, "dsn_secret")
 
     @property

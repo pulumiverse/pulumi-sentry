@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -91,6 +96,7 @@ def get_sentry_organization(slug: Optional[str] = None,
     import pulumi
     import pulumi_sentry as sentry
 
+    # Retrieve an organization
     org = sentry.get_sentry_organization(slug="my-organization")
     ```
 
@@ -107,9 +113,6 @@ def get_sentry_organization(slug: Optional[str] = None,
         internal_id=pulumi.get(__ret__, 'internal_id'),
         name=pulumi.get(__ret__, 'name'),
         slug=pulumi.get(__ret__, 'slug'))
-
-
-@_utilities.lift_output_func(get_sentry_organization)
 def get_sentry_organization_output(slug: Optional[pulumi.Input[str]] = None,
                                    opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryOrganizationResult]:
     """
@@ -121,10 +124,19 @@ def get_sentry_organization_output(slug: Optional[pulumi.Input[str]] = None,
     import pulumi
     import pulumi_sentry as sentry
 
+    # Retrieve an organization
     org = sentry.get_sentry_organization(slug="my-organization")
     ```
 
 
     :param str slug: The unique URL slug for this organization.
     """
-    ...
+    __args__ = dict()
+    __args__['slug'] = slug
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('sentry:index/getSentryOrganization:getSentryOrganization', __args__, opts=opts, typ=GetSentryOrganizationResult)
+    return __ret__.apply(lambda __response__: GetSentryOrganizationResult(
+        id=pulumi.get(__response__, 'id'),
+        internal_id=pulumi.get(__response__, 'internal_id'),
+        name=pulumi.get(__response__, 'name'),
+        slug=pulumi.get(__response__, 'slug')))

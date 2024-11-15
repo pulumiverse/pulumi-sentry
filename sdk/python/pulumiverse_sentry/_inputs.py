@@ -4,18 +4,46 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
     'SentryDashboardWidgetArgs',
+    'SentryDashboardWidgetArgsDict',
     'SentryDashboardWidgetLayoutArgs',
+    'SentryDashboardWidgetLayoutArgsDict',
     'SentryDashboardWidgetQueryArgs',
+    'SentryDashboardWidgetQueryArgsDict',
     'SentryMetricAlertTriggerArgs',
+    'SentryMetricAlertTriggerArgsDict',
     'SentryMetricAlertTriggerActionArgs',
+    'SentryMetricAlertTriggerActionArgsDict',
 ]
+
+MYPY = False
+
+if not MYPY:
+    class SentryDashboardWidgetArgsDict(TypedDict):
+        display_type: pulumi.Input[str]
+        layout: pulumi.Input['SentryDashboardWidgetLayoutArgsDict']
+        queries: pulumi.Input[Sequence[pulumi.Input['SentryDashboardWidgetQueryArgsDict']]]
+        title: pulumi.Input[str]
+        id: NotRequired[pulumi.Input[str]]
+        """
+        The ID of this resource.
+        """
+        interval: NotRequired[pulumi.Input[str]]
+        limit: NotRequired[pulumi.Input[int]]
+        widget_type: NotRequired[pulumi.Input[str]]
+elif False:
+    SentryDashboardWidgetArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class SentryDashboardWidgetArgs:
@@ -29,7 +57,6 @@ class SentryDashboardWidgetArgs:
                  limit: Optional[pulumi.Input[int]] = None,
                  widget_type: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] title: Dashboard title.
         :param pulumi.Input[str] id: The ID of this resource.
         """
         pulumi.set(__self__, "display_type", display_type)
@@ -75,9 +102,6 @@ class SentryDashboardWidgetArgs:
     @property
     @pulumi.getter
     def title(self) -> pulumi.Input[str]:
-        """
-        Dashboard title.
-        """
         return pulumi.get(self, "title")
 
     @title.setter
@@ -123,6 +147,16 @@ class SentryDashboardWidgetArgs:
     def widget_type(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "widget_type", value)
 
+
+if not MYPY:
+    class SentryDashboardWidgetLayoutArgsDict(TypedDict):
+        h: pulumi.Input[int]
+        min_h: pulumi.Input[int]
+        w: pulumi.Input[int]
+        x: pulumi.Input[int]
+        y: pulumi.Input[int]
+elif False:
+    SentryDashboardWidgetLayoutArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class SentryDashboardWidgetLayoutArgs:
@@ -183,6 +217,22 @@ class SentryDashboardWidgetLayoutArgs:
     def y(self, value: pulumi.Input[int]):
         pulumi.set(self, "y", value)
 
+
+if not MYPY:
+    class SentryDashboardWidgetQueryArgsDict(TypedDict):
+        aggregates: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        columns: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        conditions: NotRequired[pulumi.Input[str]]
+        field_aliases: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        fields: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        id: NotRequired[pulumi.Input[str]]
+        """
+        The ID of this resource.
+        """
+        name: NotRequired[pulumi.Input[str]]
+        order_by: NotRequired[pulumi.Input[str]]
+elif False:
+    SentryDashboardWidgetQueryArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class SentryDashboardWidgetQueryArgs:
@@ -291,6 +341,20 @@ class SentryDashboardWidgetQueryArgs:
         pulumi.set(self, "order_by", value)
 
 
+if not MYPY:
+    class SentryMetricAlertTriggerArgsDict(TypedDict):
+        alert_threshold: pulumi.Input[float]
+        label: pulumi.Input[str]
+        threshold_type: pulumi.Input[int]
+        actions: NotRequired[pulumi.Input[Sequence[pulumi.Input['SentryMetricAlertTriggerActionArgsDict']]]]
+        id: NotRequired[pulumi.Input[str]]
+        """
+        The ID of this resource.
+        """
+        resolve_threshold: NotRequired[pulumi.Input[float]]
+elif False:
+    SentryMetricAlertTriggerArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class SentryMetricAlertTriggerArgs:
     def __init__(__self__, *,
@@ -301,9 +365,7 @@ class SentryMetricAlertTriggerArgs:
                  id: Optional[pulumi.Input[str]] = None,
                  resolve_threshold: Optional[pulumi.Input[float]] = None):
         """
-        :param pulumi.Input[int] threshold_type: The type of threshold
         :param pulumi.Input[str] id: The ID of this resource.
-        :param pulumi.Input[float] resolve_threshold: The value at which the Alert rule resolves
         """
         pulumi.set(__self__, "alert_threshold", alert_threshold)
         pulumi.set(__self__, "label", label)
@@ -336,9 +398,6 @@ class SentryMetricAlertTriggerArgs:
     @property
     @pulumi.getter(name="thresholdType")
     def threshold_type(self) -> pulumi.Input[int]:
-        """
-        The type of threshold
-        """
         return pulumi.get(self, "threshold_type")
 
     @threshold_type.setter
@@ -369,15 +428,25 @@ class SentryMetricAlertTriggerArgs:
     @property
     @pulumi.getter(name="resolveThreshold")
     def resolve_threshold(self) -> Optional[pulumi.Input[float]]:
-        """
-        The value at which the Alert rule resolves
-        """
         return pulumi.get(self, "resolve_threshold")
 
     @resolve_threshold.setter
     def resolve_threshold(self, value: Optional[pulumi.Input[float]]):
         pulumi.set(self, "resolve_threshold", value)
 
+
+if not MYPY:
+    class SentryMetricAlertTriggerActionArgsDict(TypedDict):
+        target_type: pulumi.Input[str]
+        type: pulumi.Input[str]
+        id: NotRequired[pulumi.Input[str]]
+        """
+        The ID of this resource.
+        """
+        integration_id: NotRequired[pulumi.Input[int]]
+        target_identifier: NotRequired[pulumi.Input[str]]
+elif False:
+    SentryMetricAlertTriggerActionArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class SentryMetricAlertTriggerActionArgs:

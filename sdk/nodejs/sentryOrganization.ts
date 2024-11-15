@@ -15,17 +15,20 @@ import * as utilities from "./utilities";
  *
  * // Create an organization
  * const _default = new sentry.SentryOrganization("default", {
- *     agreeTerms: true,
+ *     name: "My Organization",
  *     slug: "my-organization",
+ *     agreeTerms: true,
  * });
  * ```
  *
  * ## Import
  *
- * import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/issues/
+ * import using the organization slug from the URL:
+ *
+ * https://sentry.io/organizations/[org-slug]/issues/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
+ * $ pulumi import sentry:index/sentryOrganization:SentryOrganization default org-slug
  * ```
  */
 export class SentryOrganization extends pulumi.CustomResource {

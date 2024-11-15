@@ -26,13 +26,13 @@ namespace Pulumiverse.Sentry
         /// List of actions.
         /// </summary>
         [Output("actions")]
-        public Output<ImmutableArray<ImmutableDictionary<string, object>>> Actions { get; private set; } = null!;
+        public Output<ImmutableArray<ImmutableDictionary<string, string>>> Actions { get; private set; } = null!;
 
         /// <summary>
         /// List of conditions.
         /// </summary>
         [Output("conditions")]
-        public Output<ImmutableArray<ImmutableDictionary<string, object>>> Conditions { get; private set; } = null!;
+        public Output<ImmutableArray<ImmutableDictionary<string, string>>> Conditions { get; private set; } = null!;
 
         /// <summary>
         /// Perform issue alert in a specific environment.
@@ -50,7 +50,7 @@ namespace Pulumiverse.Sentry
         /// List of filters.
         /// </summary>
         [Output("filters")]
-        public Output<ImmutableArray<ImmutableDictionary<string, object>>> Filters { get; private set; } = null!;
+        public Output<ImmutableArray<ImmutableDictionary<string, string>>> Filters { get; private set; } = null!;
 
         /// <summary>
         /// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
@@ -142,26 +142,26 @@ namespace Pulumiverse.Sentry
         public Input<string> ActionMatch { get; set; } = null!;
 
         [Input("actions", required: true)]
-        private InputList<ImmutableDictionary<string, object>>? _actions;
+        private InputList<ImmutableDictionary<string, string>>? _actions;
 
         /// <summary>
         /// List of actions.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Actions
+        public InputList<ImmutableDictionary<string, string>> Actions
         {
-            get => _actions ?? (_actions = new InputList<ImmutableDictionary<string, object>>());
+            get => _actions ?? (_actions = new InputList<ImmutableDictionary<string, string>>());
             set => _actions = value;
         }
 
         [Input("conditions", required: true)]
-        private InputList<ImmutableDictionary<string, object>>? _conditions;
+        private InputList<ImmutableDictionary<string, string>>? _conditions;
 
         /// <summary>
         /// List of conditions.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Conditions
+        public InputList<ImmutableDictionary<string, string>> Conditions
         {
-            get => _conditions ?? (_conditions = new InputList<ImmutableDictionary<string, object>>());
+            get => _conditions ?? (_conditions = new InputList<ImmutableDictionary<string, string>>());
             set => _conditions = value;
         }
 
@@ -178,14 +178,14 @@ namespace Pulumiverse.Sentry
         public Input<string> FilterMatch { get; set; } = null!;
 
         [Input("filters")]
-        private InputList<ImmutableDictionary<string, object>>? _filters;
+        private InputList<ImmutableDictionary<string, string>>? _filters;
 
         /// <summary>
         /// List of filters.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Filters
+        public InputList<ImmutableDictionary<string, string>> Filters
         {
-            get => _filters ?? (_filters = new InputList<ImmutableDictionary<string, object>>());
+            get => _filters ?? (_filters = new InputList<ImmutableDictionary<string, string>>());
             set => _filters = value;
         }
 
@@ -228,26 +228,26 @@ namespace Pulumiverse.Sentry
         public Input<string>? ActionMatch { get; set; }
 
         [Input("actions")]
-        private InputList<ImmutableDictionary<string, object>>? _actions;
+        private InputList<ImmutableDictionary<string, string>>? _actions;
 
         /// <summary>
         /// List of actions.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Actions
+        public InputList<ImmutableDictionary<string, string>> Actions
         {
-            get => _actions ?? (_actions = new InputList<ImmutableDictionary<string, object>>());
+            get => _actions ?? (_actions = new InputList<ImmutableDictionary<string, string>>());
             set => _actions = value;
         }
 
         [Input("conditions")]
-        private InputList<ImmutableDictionary<string, object>>? _conditions;
+        private InputList<ImmutableDictionary<string, string>>? _conditions;
 
         /// <summary>
         /// List of conditions.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Conditions
+        public InputList<ImmutableDictionary<string, string>> Conditions
         {
-            get => _conditions ?? (_conditions = new InputList<ImmutableDictionary<string, object>>());
+            get => _conditions ?? (_conditions = new InputList<ImmutableDictionary<string, string>>());
             set => _conditions = value;
         }
 
@@ -264,14 +264,14 @@ namespace Pulumiverse.Sentry
         public Input<string>? FilterMatch { get; set; }
 
         [Input("filters")]
-        private InputList<ImmutableDictionary<string, object>>? _filters;
+        private InputList<ImmutableDictionary<string, string>>? _filters;
 
         /// <summary>
         /// List of filters.
         /// </summary>
-        public InputList<ImmutableDictionary<string, object>> Filters
+        public InputList<ImmutableDictionary<string, string>> Filters
         {
-            get => _filters ?? (_filters = new InputList<ImmutableDictionary<string, object>>());
+            get => _filters ?? (_filters = new InputList<ImmutableDictionary<string, string>>());
             set => _filters = value;
         }
 

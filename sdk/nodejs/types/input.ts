@@ -15,9 +15,6 @@ export interface SentryDashboardWidget {
     layout: pulumi.Input<inputs.SentryDashboardWidgetLayout>;
     limit?: pulumi.Input<number>;
     queries: pulumi.Input<pulumi.Input<inputs.SentryDashboardWidgetQuery>[]>;
-    /**
-     * Dashboard title.
-     */
     title: pulumi.Input<string>;
     widgetType?: pulumi.Input<string>;
 }
@@ -52,13 +49,7 @@ export interface SentryMetricAlertTrigger {
      */
     id?: pulumi.Input<string>;
     label: pulumi.Input<string>;
-    /**
-     * The value at which the Alert rule resolves
-     */
     resolveThreshold?: pulumi.Input<number>;
-    /**
-     * The type of threshold
-     */
     thresholdType: pulumi.Input<number>;
 }
 

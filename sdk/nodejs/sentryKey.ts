@@ -17,15 +17,18 @@ import * as utilities from "./utilities";
  * const _default = new sentry.SentryKey("default", {
  *     organization: "my-organization",
  *     project: "web-app",
+ *     name: "My Key",
  * });
  * ```
  *
  * ## Import
  *
- * import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+ * import using the organization, project slugs and key id from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
+ * $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
  * ```
  */
 export class SentryKey extends pulumi.CustomResource {

@@ -16,7 +16,7 @@ import * as utilities from "./utilities";
  * import * as sentry from "@pulumiverse/sentry";
  *
  * const main = new sentry.SentryDashboard("main", {
- *     organization: data.sentry_organization.main.id,
+ *     organization: mainSentryOrganization.id,
  *     title: "Test dashboard",
  *     widgets: [
  *         {

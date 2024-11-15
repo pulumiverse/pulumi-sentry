@@ -16,22 +16,25 @@ import * as utilities from "./utilities";
  * // Create a project
  * const _default = new sentry.SentryProject("default", {
  *     organization: "my-organization",
- *     platform: "javascript",
- *     resolveAge: 720,
- *     slug: "web-app",
  *     teams: [
  *         "my-first-team",
  *         "my-second-team",
  *     ],
+ *     name: "Web App",
+ *     slug: "web-app",
+ *     platform: "javascript",
+ *     resolveAge: 720,
  * });
  * ```
  *
  * ## Import
  *
- * import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+ * import using the organization and team slugs from the URL:
+ *
+ * https://sentry.io/settings/[org-slug]/projects/[project-slug]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+ * $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
  * ```
  */
 export class SentryProject extends pulumi.CustomResource {
@@ -96,7 +99,7 @@ export class SentryProject extends pulumi.CustomResource {
     /**
      * Use `internalId` instead.
      *
-     * @deprecated Use `internal_id` instead.
+     * @deprecated Use `internalId` instead.
      */
     public /*out*/ readonly projectId!: pulumi.Output<string>;
     /**
@@ -213,7 +216,7 @@ export interface SentryProjectState {
     /**
      * Use `internalId` instead.
      *
-     * @deprecated Use `internal_id` instead.
+     * @deprecated Use `internalId` instead.
      */
     projectId?: pulumi.Input<string>;
     /**

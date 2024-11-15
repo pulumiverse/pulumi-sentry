@@ -28,6 +28,7 @@ namespace Pulumiverse.Sentry
     ///     {
     ///         Organization = "my-organization",
     ///         Project = "web-app",
+    ///         Name = "My Key",
     ///     });
     /// 
     /// });
@@ -35,10 +36,12 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization, project slugs and key id from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
+    /// import using the organization, project slugs and key id from the URL:
+    /// 
+    /// https://sentry.io/settings/[org-slug]/projects/[project-slug]/keys/[key-id]/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
+    /// $ pulumi import sentry:index/sentryKey:SentryKey default org-slug/project-slug/key-id
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryKey:SentryKey")]

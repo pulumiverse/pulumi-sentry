@@ -8,10 +8,10 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
+// ## Example Usage
 func LookupSentryMetricAlert(ctx *pulumi.Context, args *LookupSentryMetricAlertArgs, opts ...pulumi.InvokeOption) (*LookupSentryMetricAlertResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupSentryMetricAlertResult
@@ -59,14 +59,20 @@ type LookupSentryMetricAlertResult struct {
 
 func LookupSentryMetricAlertOutput(ctx *pulumi.Context, args LookupSentryMetricAlertOutputArgs, opts ...pulumi.InvokeOption) LookupSentryMetricAlertResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (LookupSentryMetricAlertResult, error) {
+		ApplyT(func(v interface{}) (LookupSentryMetricAlertResultOutput, error) {
 			args := v.(LookupSentryMetricAlertArgs)
-			r, err := LookupSentryMetricAlert(ctx, &args, opts...)
-			var s LookupSentryMetricAlertResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv LookupSentryMetricAlertResult
+			secret, err := ctx.InvokePackageRaw("sentry:index/getSentryMetricAlert:getSentryMetricAlert", args, &rv, "", opts...)
+			if err != nil {
+				return LookupSentryMetricAlertResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(LookupSentryMetricAlertResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(LookupSentryMetricAlertResultOutput), nil
+			}
+			return output, nil
 		}).(LookupSentryMetricAlertResultOutput)
 }
 
@@ -97,12 +103,6 @@ func (o LookupSentryMetricAlertResultOutput) ToLookupSentryMetricAlertResultOutp
 
 func (o LookupSentryMetricAlertResultOutput) ToLookupSentryMetricAlertResultOutputWithContext(ctx context.Context) LookupSentryMetricAlertResultOutput {
 	return o
-}
-
-func (o LookupSentryMetricAlertResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryMetricAlertResult] {
-	return pulumix.Output[LookupSentryMetricAlertResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o LookupSentryMetricAlertResultOutput) Aggregate() pulumi.StringOutput {

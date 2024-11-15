@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -28,18 +27,20 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Retrieve a project key by name
 //			_, err := sentry.LookupSentryKey(ctx, &sentry.LookupSentryKeyArgs{
-//				Name:         pulumi.StringRef("Default"),
 //				Organization: "my-organization",
 //				Project:      "web-app",
+//				Name:         pulumi.StringRef("Default"),
 //			}, nil)
 //			if err != nil {
 //				return err
 //			}
+//			// Retrieve the first key of a project
 //			_, err = sentry.LookupSentryKey(ctx, &sentry.LookupSentryKeyArgs{
-//				First:        pulumi.BoolRef(true),
 //				Organization: "my-organization",
 //				Project:      "web-app",
+//				First:        pulumi.BoolRef(true),
 //			}, nil)
 //			if err != nil {
 //				return err
@@ -105,14 +106,20 @@ type LookupSentryKeyResult struct {
 
 func LookupSentryKeyOutput(ctx *pulumi.Context, args LookupSentryKeyOutputArgs, opts ...pulumi.InvokeOption) LookupSentryKeyResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (LookupSentryKeyResult, error) {
+		ApplyT(func(v interface{}) (LookupSentryKeyResultOutput, error) {
 			args := v.(LookupSentryKeyArgs)
-			r, err := LookupSentryKey(ctx, &args, opts...)
-			var s LookupSentryKeyResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv LookupSentryKeyResult
+			secret, err := ctx.InvokePackageRaw("sentry:index/getSentryKey:getSentryKey", args, &rv, "", opts...)
+			if err != nil {
+				return LookupSentryKeyResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(LookupSentryKeyResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(LookupSentryKeyResultOutput), nil
+			}
+			return output, nil
 		}).(LookupSentryKeyResultOutput)
 }
 
@@ -145,12 +152,6 @@ func (o LookupSentryKeyResultOutput) ToLookupSentryKeyResultOutput() LookupSentr
 
 func (o LookupSentryKeyResultOutput) ToLookupSentryKeyResultOutputWithContext(ctx context.Context) LookupSentryKeyResultOutput {
 	return o
-}
-
-func (o LookupSentryKeyResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryKeyResult] {
-	return pulumix.Output[LookupSentryKeyResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // DSN for the Content Security Policy (CSP) for the key.

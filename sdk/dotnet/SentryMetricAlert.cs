@@ -26,15 +26,16 @@ namespace Pulumiverse.Sentry
     /// {
     ///     var slack = Sentry.GetSentryOrganizationIntegration.Invoke(new()
     ///     {
-    ///         Organization = sentry_project.Main.Organization,
+    ///         Organization = mainSentryProject.Organization,
     ///         ProviderKey = "slack",
     ///         Name = "Slack Workspace",
     ///     });
     /// 
     ///     var main = new Sentry.SentryMetricAlert("main", new()
     ///     {
-    ///         Organization = sentry_project.Main.Organization,
-    ///         Project = sentry_project.Main.Id,
+    ///         Organization = mainSentryProject.Organization,
+    ///         Project = mainSentryProject.Id,
+    ///         Name = "My metric alert",
     ///         Dataset = "events",
     ///         Query = "",
     ///         Aggregate = "count()",
@@ -51,7 +52,7 @@ namespace Pulumiverse.Sentry
     ///                     {
     ///                         Type = "email",
     ///                         TargetType = "team",
-    ///                         TargetIdentifier = sentry_team.Main.Team_id,
+    ///                         TargetIdentifier = mainSentryTeam.TeamId,
     ///                     },
     ///                 },
     ///                 AlertThreshold = 300,
@@ -88,10 +89,18 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+    /// import using the organization, project slugs and rule id from the URL:
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+    /// 
+    /// or
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+    /// $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryMetricAlert:SentryMetricAlert")]

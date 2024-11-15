@@ -15,9 +15,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Organization Integration data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -27,24 +25,24 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve a Github organization integration
         ///     var github = Sentry.GetSentryOrganizationIntegration.Invoke(new()
         ///     {
-        ///         Name = "my-github-organization",
         ///         Organization = "my-organization",
         ///         ProviderKey = "github",
+        ///         Name = "my-github-organization",
         ///     });
         /// 
+        ///     // Retrieve a Slack integration
         ///     var slack = Sentry.GetSentryOrganizationIntegration.Invoke(new()
         ///     {
-        ///         Name = "Slack Workspace",
         ///         Organization = "my-organization",
         ///         ProviderKey = "slack",
+        ///         Name = "Slack Workspace",
         ///     });
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Task<GetSentryOrganizationIntegrationResult> InvokeAsync(GetSentryOrganizationIntegrationArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetSentryOrganizationIntegrationResult>("sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration", args ?? new GetSentryOrganizationIntegrationArgs(), options.WithDefaults());
@@ -52,9 +50,7 @@ namespace Pulumiverse.Sentry
         /// <summary>
         /// Sentry Organization Integration data source.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
@@ -64,24 +60,24 @@ namespace Pulumiverse.Sentry
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // Retrieve a Github organization integration
         ///     var github = Sentry.GetSentryOrganizationIntegration.Invoke(new()
         ///     {
-        ///         Name = "my-github-organization",
         ///         Organization = "my-organization",
         ///         ProviderKey = "github",
+        ///         Name = "my-github-organization",
         ///     });
         /// 
+        ///     // Retrieve a Slack integration
         ///     var slack = Sentry.GetSentryOrganizationIntegration.Invoke(new()
         ///     {
-        ///         Name = "Slack Workspace",
         ///         Organization = "my-organization",
         ///         ProviderKey = "slack",
+        ///         Name = "Slack Workspace",
         ///     });
         /// 
         /// });
         /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Output<GetSentryOrganizationIntegrationResult> Invoke(GetSentryOrganizationIntegrationInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetSentryOrganizationIntegrationResult>("sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration", args ?? new GetSentryOrganizationIntegrationInvokeArgs(), options.WithDefaults());

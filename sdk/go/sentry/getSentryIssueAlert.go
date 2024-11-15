@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -21,6 +20,8 @@ import (
 //
 // import (
 //
+//	"fmt"
+//
 //	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry"
 //
@@ -28,6 +29,8 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Retrieve an Issue Alert
+//			// URL format: https://sentry.io/organizations/[organization]/alerts/rules/[project]/[internal_id]/details/
 //			original, err := sentry.LookupSentryIssueAlert(ctx, &sentry.LookupSentryIssueAlertArgs{
 //				Organization: "my-organization",
 //				Project:      "my-project",
@@ -36,12 +39,14 @@ import (
 //			if err != nil {
 //				return err
 //			}
+//			// Create a copy of an Issue Alert
 //			_, err = sentry.NewSentryIssueAlert(ctx, "copy", &sentry.SentryIssueAlertArgs{
-//				Organization: *pulumi.String(original.Organization),
-//				Project:      *pulumi.String(original.Project),
-//				ActionMatch:  *pulumi.String(original.ActionMatch),
-//				FilterMatch:  *pulumi.String(original.FilterMatch),
-//				Frequency:    *pulumi.Int(original.Frequency),
+//				Organization: pulumi.String(original.Organization),
+//				Project:      pulumi.String(original.Project),
+//				Name:         pulumi.Sprintf("%v-copy", original.Name),
+//				ActionMatch:  pulumi.String(original.ActionMatch),
+//				FilterMatch:  pulumi.String(original.FilterMatch),
+//				Frequency:    pulumi.Int(original.Frequency),
 //				Conditions:   interface{}(original.Conditions),
 //				Filters:      interface{}(original.Filters),
 //				Actions:      interface{}(original.Actions),
@@ -79,15 +84,15 @@ type LookupSentryIssueAlertResult struct {
 	// Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 	ActionMatch string `pulumi:"actionMatch"`
 	// List of actions.
-	Actions []map[string]interface{} `pulumi:"actions"`
+	Actions []map[string]string `pulumi:"actions"`
 	// List of conditions.
-	Conditions []map[string]interface{} `pulumi:"conditions"`
+	Conditions []map[string]string `pulumi:"conditions"`
 	// Perform issue alert in a specific environment.
 	Environment string `pulumi:"environment"`
 	// Trigger actions if `all`, `any`, or `none` of the specified filters match.
 	FilterMatch string `pulumi:"filterMatch"`
 	// List of filters.
-	Filters []map[string]interface{} `pulumi:"filters"`
+	Filters []map[string]string `pulumi:"filters"`
 	// Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
 	Frequency int `pulumi:"frequency"`
 	// The provider-assigned unique ID for this managed resource.
@@ -104,14 +109,20 @@ type LookupSentryIssueAlertResult struct {
 
 func LookupSentryIssueAlertOutput(ctx *pulumi.Context, args LookupSentryIssueAlertOutputArgs, opts ...pulumi.InvokeOption) LookupSentryIssueAlertResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (LookupSentryIssueAlertResult, error) {
+		ApplyT(func(v interface{}) (LookupSentryIssueAlertResultOutput, error) {
 			args := v.(LookupSentryIssueAlertArgs)
-			r, err := LookupSentryIssueAlert(ctx, &args, opts...)
-			var s LookupSentryIssueAlertResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv LookupSentryIssueAlertResult
+			secret, err := ctx.InvokePackageRaw("sentry:index/getSentryIssueAlert:getSentryIssueAlert", args, &rv, "", opts...)
+			if err != nil {
+				return LookupSentryIssueAlertResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(LookupSentryIssueAlertResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(LookupSentryIssueAlertResultOutput), nil
+			}
+			return output, nil
 		}).(LookupSentryIssueAlertResultOutput)
 }
 
@@ -144,25 +155,19 @@ func (o LookupSentryIssueAlertResultOutput) ToLookupSentryIssueAlertResultOutput
 	return o
 }
 
-func (o LookupSentryIssueAlertResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupSentryIssueAlertResult] {
-	return pulumix.Output[LookupSentryIssueAlertResult]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.
 func (o LookupSentryIssueAlertResultOutput) ActionMatch() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupSentryIssueAlertResult) string { return v.ActionMatch }).(pulumi.StringOutput)
 }
 
 // List of actions.
-func (o LookupSentryIssueAlertResultOutput) Actions() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]interface{} { return v.Actions }).(pulumi.MapArrayOutput)
+func (o LookupSentryIssueAlertResultOutput) Actions() pulumi.StringMapArrayOutput {
+	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]string { return v.Actions }).(pulumi.StringMapArrayOutput)
 }
 
 // List of conditions.
-func (o LookupSentryIssueAlertResultOutput) Conditions() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]interface{} { return v.Conditions }).(pulumi.MapArrayOutput)
+func (o LookupSentryIssueAlertResultOutput) Conditions() pulumi.StringMapArrayOutput {
+	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]string { return v.Conditions }).(pulumi.StringMapArrayOutput)
 }
 
 // Perform issue alert in a specific environment.
@@ -176,8 +181,8 @@ func (o LookupSentryIssueAlertResultOutput) FilterMatch() pulumi.StringOutput {
 }
 
 // List of filters.
-func (o LookupSentryIssueAlertResultOutput) Filters() pulumi.MapArrayOutput {
-	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]interface{} { return v.Filters }).(pulumi.MapArrayOutput)
+func (o LookupSentryIssueAlertResultOutput) Filters() pulumi.StringMapArrayOutput {
+	return o.ApplyT(func(v LookupSentryIssueAlertResult) []map[string]string { return v.Filters }).(pulumi.StringMapArrayOutput)
 }
 
 // Perform actions at most once every `X` minutes for this issue. Defaults to `30`.

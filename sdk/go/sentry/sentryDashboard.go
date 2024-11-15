@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -30,7 +29,7 @@ import (
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			_, err := sentry.NewSentryDashboard(ctx, "main", &sentry.SentryDashboardArgs{
-//				Organization: pulumi.Any(data.Sentry_organization.Main.Id),
+//				Organization: pulumi.Any(mainSentryOrganization.Id),
 //				Title:        pulumi.String("Test dashboard"),
 //				Widgets: sentry.SentryDashboardWidgetArray{
 //					&sentry.SentryDashboardWidgetArgs{
@@ -553,12 +552,6 @@ func (i *SentryDashboard) ToSentryDashboardOutputWithContext(ctx context.Context
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardOutput)
 }
 
-func (i *SentryDashboard) ToOutput(ctx context.Context) pulumix.Output[*SentryDashboard] {
-	return pulumix.Output[*SentryDashboard]{
-		OutputState: i.ToSentryDashboardOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryDashboardArrayInput is an input type that accepts SentryDashboardArray and SentryDashboardArrayOutput values.
 // You can construct a concrete instance of `SentryDashboardArrayInput` via:
 //
@@ -582,12 +575,6 @@ func (i SentryDashboardArray) ToSentryDashboardArrayOutput() SentryDashboardArra
 
 func (i SentryDashboardArray) ToSentryDashboardArrayOutputWithContext(ctx context.Context) SentryDashboardArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardArrayOutput)
-}
-
-func (i SentryDashboardArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryDashboard] {
-	return pulumix.Output[[]*SentryDashboard]{
-		OutputState: i.ToSentryDashboardArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryDashboardMapInput is an input type that accepts SentryDashboardMap and SentryDashboardMapOutput values.
@@ -615,12 +602,6 @@ func (i SentryDashboardMap) ToSentryDashboardMapOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(SentryDashboardMapOutput)
 }
 
-func (i SentryDashboardMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryDashboard] {
-	return pulumix.Output[map[string]*SentryDashboard]{
-		OutputState: i.ToSentryDashboardMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryDashboardOutput struct{ *pulumi.OutputState }
 
 func (SentryDashboardOutput) ElementType() reflect.Type {
@@ -633,12 +614,6 @@ func (o SentryDashboardOutput) ToSentryDashboardOutput() SentryDashboardOutput {
 
 func (o SentryDashboardOutput) ToSentryDashboardOutputWithContext(ctx context.Context) SentryDashboardOutput {
 	return o
-}
-
-func (o SentryDashboardOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryDashboard] {
-	return pulumix.Output[*SentryDashboard]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The internal ID for this dashboard.
@@ -675,12 +650,6 @@ func (o SentryDashboardArrayOutput) ToSentryDashboardArrayOutputWithContext(ctx 
 	return o
 }
 
-func (o SentryDashboardArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryDashboard] {
-	return pulumix.Output[[]*SentryDashboard]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryDashboardArrayOutput) Index(i pulumi.IntInput) SentryDashboardOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryDashboard {
 		return vs[0].([]*SentryDashboard)[vs[1].(int)]
@@ -699,12 +668,6 @@ func (o SentryDashboardMapOutput) ToSentryDashboardMapOutput() SentryDashboardMa
 
 func (o SentryDashboardMapOutput) ToSentryDashboardMapOutputWithContext(ctx context.Context) SentryDashboardMapOutput {
 	return o
-}
-
-func (o SentryDashboardMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryDashboard] {
-	return pulumix.Output[map[string]*SentryDashboard]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryDashboardMapOutput) MapIndex(k pulumi.StringInput) SentryDashboardOutput {

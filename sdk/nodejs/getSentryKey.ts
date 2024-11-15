@@ -13,20 +13,21 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve a project key by name
  * const default = sentry.getSentryKey({
+ *     organization: "my-organization",
+ *     project: "web-app",
  *     name: "Default",
- *     organization: "my-organization",
- *     project: "web-app",
  * });
+ * // Retrieve the first key of a project
  * const first = sentry.getSentryKey({
- *     first: true,
  *     organization: "my-organization",
  *     project: "web-app",
+ *     first: true,
  * });
  * ```
  */
 export function getSentryKey(args: GetSentryKeyArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryKeyResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryKey:getSentryKey", {
         "first": args.first,
@@ -128,20 +129,28 @@ export interface GetSentryKeyResult {
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve a project key by name
  * const default = sentry.getSentryKey({
+ *     organization: "my-organization",
+ *     project: "web-app",
  *     name: "Default",
- *     organization: "my-organization",
- *     project: "web-app",
  * });
+ * // Retrieve the first key of a project
  * const first = sentry.getSentryKey({
- *     first: true,
  *     organization: "my-organization",
  *     project: "web-app",
+ *     first: true,
  * });
  * ```
  */
 export function getSentryKeyOutput(args: GetSentryKeyOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryKeyResult> {
-    return pulumi.output(args).apply((a: any) => getSentryKey(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("sentry:index/getSentryKey:getSentryKey", {
+        "first": args.first,
+        "name": args.name,
+        "organization": args.organization,
+        "project": args.project,
+    }, opts);
 }
 
 /**

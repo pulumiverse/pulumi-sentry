@@ -42,11 +42,11 @@ export class SentryRule extends pulumi.CustomResource {
     /**
      * List of actions.
      */
-    public readonly actions!: pulumi.Output<{[key: string]: any}[]>;
+    public readonly actions!: pulumi.Output<{[key: string]: string}[]>;
     /**
      * List of conditions.
      */
-    public readonly conditions!: pulumi.Output<{[key: string]: any}[]>;
+    public readonly conditions!: pulumi.Output<{[key: string]: string}[]>;
     /**
      * Perform issue alert in a specific environment.
      */
@@ -58,7 +58,7 @@ export class SentryRule extends pulumi.CustomResource {
     /**
      * List of filters.
      */
-    public readonly filters!: pulumi.Output<{[key: string]: any}[] | undefined>;
+    public readonly filters!: pulumi.Output<{[key: string]: string}[] | undefined>;
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */
@@ -163,11 +163,11 @@ export interface SentryRuleState {
     /**
      * List of actions.
      */
-    actions?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    actions?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * List of conditions.
      */
-    conditions?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    conditions?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform issue alert in a specific environment.
      */
@@ -179,7 +179,7 @@ export interface SentryRuleState {
     /**
      * List of filters.
      */
-    filters?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    filters?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */
@@ -219,11 +219,11 @@ export interface SentryRuleArgs {
     /**
      * List of actions.
      */
-    actions: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    actions: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * List of conditions.
      */
-    conditions: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    conditions: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform issue alert in a specific environment.
      */
@@ -235,7 +235,7 @@ export interface SentryRuleArgs {
     /**
      * List of filters.
      */
-    filters?: pulumi.Input<pulumi.Input<{[key: string]: any}>[]>;
+    filters?: pulumi.Input<pulumi.Input<{[key: string]: pulumi.Input<string>}>[]>;
     /**
      * Perform actions at most once every `X` minutes for this issue. Defaults to `30`.
      */

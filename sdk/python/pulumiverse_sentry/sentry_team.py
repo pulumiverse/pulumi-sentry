@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['SentryTeamArgs', 'SentryTeam']
@@ -182,13 +187,11 @@ class _SentryTeamState:
 
     @property
     @pulumi.getter(name="teamId")
+    @_utilities.deprecated("""Use `internal_id` instead.""")
     def team_id(self) -> Optional[pulumi.Input[str]]:
         """
         Use `internal_id` instead.
         """
-        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
-        pulumi.log.warn("""team_id is deprecated: Use `internal_id` instead.""")
-
         return pulumi.get(self, "team_id")
 
     @team_id.setter
@@ -217,15 +220,18 @@ class SentryTeam(pulumi.CustomResource):
         # Create a team
         default = sentry.SentryTeam("default",
             organization="my-organization",
+            name="my-team",
             slug="my-team")
         ```
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 
         ```sh
-         $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
+        $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
         ```
 
         :param str resource_name: The name of the resource.
@@ -252,15 +258,18 @@ class SentryTeam(pulumi.CustomResource):
         # Create a team
         default = sentry.SentryTeam("default",
             organization="my-organization",
+            name="my-team",
             slug="my-team")
         ```
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/teams/[team-slug]/members/
 
         ```sh
-         $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
+        $ pulumi import sentry:index/sentryTeam:SentryTeam default org-slug/team-slug
         ```
 
         :param str resource_name: The name of the resource.
@@ -394,12 +403,10 @@ class SentryTeam(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="teamId")
+    @_utilities.deprecated("""Use `internal_id` instead.""")
     def team_id(self) -> pulumi.Output[str]:
         """
         Use `internal_id` instead.
         """
-        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
-        pulumi.log.warn("""team_id is deprecated: Use `internal_id` instead.""")
-
         return pulumi.get(self, "team_id")
 

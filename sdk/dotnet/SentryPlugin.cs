@@ -26,13 +26,13 @@ namespace Pulumiverse.Sentry
     ///     // Create a plugin
     ///     var @default = new Sentry.SentryPlugin("default", new()
     ///     {
+    ///         Organization = "my-organization",
+    ///         Project = "web-app",
+    ///         Plugin = "slack",
     ///         Config = 
     ///         {
     ///             { "webhook", "slack://webhook" },
     ///         },
-    ///         Organization = "my-organization",
-    ///         Plugin = "slack",
-    ///         Project = "web-app",
     ///     });
     /// 
     /// });
@@ -45,7 +45,7 @@ namespace Pulumiverse.Sentry
         /// Plugin config.
         /// </summary>
         [Output("config")]
-        public Output<ImmutableDictionary<string, object>?> Config { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> Config { get; private set; } = null!;
 
         /// <summary>
         /// The slug of the organization the project belongs to.
@@ -113,14 +113,14 @@ namespace Pulumiverse.Sentry
     public sealed class SentryPluginArgs : global::Pulumi.ResourceArgs
     {
         [Input("config")]
-        private InputMap<object>? _config;
+        private InputMap<string>? _config;
 
         /// <summary>
         /// Plugin config.
         /// </summary>
-        public InputMap<object> Config
+        public InputMap<string> Config
         {
-            get => _config ?? (_config = new InputMap<object>());
+            get => _config ?? (_config = new InputMap<string>());
             set => _config = value;
         }
 
@@ -151,14 +151,14 @@ namespace Pulumiverse.Sentry
     public sealed class SentryPluginState : global::Pulumi.ResourceArgs
     {
         [Input("config")]
-        private InputMap<object>? _config;
+        private InputMap<string>? _config;
 
         /// <summary>
         /// Plugin config.
         /// </summary>
-        public InputMap<object> Config
+        public InputMap<string> Config
         {
-            get => _config ?? (_config = new InputMap<object>());
+            get => _config ?? (_config = new InputMap<string>());
             set => _config = value;
         }
 

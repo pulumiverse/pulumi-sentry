@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['SentryProjectArgs', 'SentryProject']
@@ -142,13 +147,11 @@ class SentryProjectArgs:
 
     @property
     @pulumi.getter
+    @_utilities.deprecated("""Use `teams` instead.""")
     def team(self) -> Optional[pulumi.Input[str]]:
         """
         The slug of the team to create the project for. **Deprecated** Use `teams` instead.
         """
-        warnings.warn("""Use `teams` instead.""", DeprecationWarning)
-        pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
-
         return pulumi.get(self, "team")
 
     @team.setter
@@ -299,10 +302,8 @@ class _SentryProjectState:
 
     @property
     @pulumi.getter(name="isBookmarked")
+    @_utilities.deprecated("""is_bookmarked is no longer used""")
     def is_bookmarked(self) -> Optional[pulumi.Input[bool]]:
-        warnings.warn("""is_bookmarked is no longer used""", DeprecationWarning)
-        pulumi.log.warn("""is_bookmarked is deprecated: is_bookmarked is no longer used""")
-
         return pulumi.get(self, "is_bookmarked")
 
     @is_bookmarked.setter
@@ -356,13 +357,11 @@ class _SentryProjectState:
 
     @property
     @pulumi.getter(name="projectId")
+    @_utilities.deprecated("""Use `internal_id` instead.""")
     def project_id(self) -> Optional[pulumi.Input[str]]:
         """
         Use `internal_id` instead.
         """
-        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
-        pulumi.log.warn("""project_id is deprecated: Use `internal_id` instead.""")
-
         return pulumi.get(self, "project_id")
 
     @project_id.setter
@@ -404,13 +403,11 @@ class _SentryProjectState:
 
     @property
     @pulumi.getter
+    @_utilities.deprecated("""Use `teams` instead.""")
     def team(self) -> Optional[pulumi.Input[str]]:
         """
         The slug of the team to create the project for. **Deprecated** Use `teams` instead.
         """
-        warnings.warn("""Use `teams` instead.""", DeprecationWarning)
-        pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
-
         return pulumi.get(self, "team")
 
     @team.setter
@@ -457,21 +454,24 @@ class SentryProject(pulumi.CustomResource):
         # Create a project
         default = sentry.SentryProject("default",
             organization="my-organization",
-            platform="javascript",
-            resolve_age=720,
-            slug="web-app",
             teams=[
                 "my-first-team",
                 "my-second-team",
-            ])
+            ],
+            name="Web App",
+            slug="web-app",
+            platform="javascript",
+            resolve_age=720)
         ```
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/projects/[project-slug]/
 
         ```sh
-         $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+        $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
         ```
 
         :param str resource_name: The name of the resource.
@@ -504,21 +504,24 @@ class SentryProject(pulumi.CustomResource):
         # Create a project
         default = sentry.SentryProject("default",
             organization="my-organization",
-            platform="javascript",
-            resolve_age=720,
-            slug="web-app",
             teams=[
                 "my-first-team",
                 "my-second-team",
-            ])
+            ],
+            name="Web App",
+            slug="web-app",
+            platform="javascript",
+            resolve_age=720)
         ```
 
         ## Import
 
-        import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+        import using the organization and team slugs from the URL:
+
+        https://sentry.io/settings/[org-slug]/projects/[project-slug]/
 
         ```sh
-         $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+        $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
         ```
 
         :param str resource_name: The name of the resource.
@@ -563,9 +566,6 @@ class SentryProject(pulumi.CustomResource):
             __props__.__dict__["platform"] = platform
             __props__.__dict__["resolve_age"] = resolve_age
             __props__.__dict__["slug"] = slug
-            if team is not None and not opts.urn:
-                warnings.warn("""Use `teams` instead.""", DeprecationWarning)
-                pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
             __props__.__dict__["team"] = team
             __props__.__dict__["teams"] = teams
             __props__.__dict__["color"] = None
@@ -678,10 +678,8 @@ class SentryProject(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="isBookmarked")
+    @_utilities.deprecated("""is_bookmarked is no longer used""")
     def is_bookmarked(self) -> pulumi.Output[bool]:
-        warnings.warn("""is_bookmarked is no longer used""", DeprecationWarning)
-        pulumi.log.warn("""is_bookmarked is deprecated: is_bookmarked is no longer used""")
-
         return pulumi.get(self, "is_bookmarked")
 
     @property
@@ -715,13 +713,11 @@ class SentryProject(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="projectId")
+    @_utilities.deprecated("""Use `internal_id` instead.""")
     def project_id(self) -> pulumi.Output[str]:
         """
         Use `internal_id` instead.
         """
-        warnings.warn("""Use `internal_id` instead.""", DeprecationWarning)
-        pulumi.log.warn("""project_id is deprecated: Use `internal_id` instead.""")
-
         return pulumi.get(self, "project_id")
 
     @property
@@ -747,13 +743,11 @@ class SentryProject(pulumi.CustomResource):
 
     @property
     @pulumi.getter
+    @_utilities.deprecated("""Use `teams` instead.""")
     def team(self) -> pulumi.Output[Optional[str]]:
         """
         The slug of the team to create the project for. **Deprecated** Use `teams` instead.
         """
-        warnings.warn("""Use `teams` instead.""", DeprecationWarning)
-        pulumi.log.warn("""team is deprecated: Use `teams` instead.""")
-
         return pulumi.get(self, "team")
 
     @property

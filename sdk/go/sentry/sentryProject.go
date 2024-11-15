@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -29,15 +28,17 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Create a project
 //			_, err := sentry.NewSentryProject(ctx, "default", &sentry.SentryProjectArgs{
 //				Organization: pulumi.String("my-organization"),
-//				Platform:     pulumi.String("javascript"),
-//				ResolveAge:   pulumi.Int(720),
-//				Slug:         pulumi.String("web-app"),
 //				Teams: pulumi.StringArray{
 //					pulumi.String("my-first-team"),
 //					pulumi.String("my-second-team"),
 //				},
+//				Name:       pulumi.String("Web App"),
+//				Slug:       pulumi.String("web-app"),
+//				Platform:   pulumi.String("javascript"),
+//				ResolveAge: pulumi.Int(720),
 //			})
 //			if err != nil {
 //				return err
@@ -50,12 +51,12 @@ import (
 //
 // ## Import
 //
-// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+// import using the organization and team slugs from the URL:
+//
+// https://sentry.io/settings/[org-slug]/projects/[project-slug]/
 //
 // ```sh
-//
-//	$ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
-//
+// $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
 // ```
 type SentryProject struct {
 	pulumi.CustomResourceState
@@ -79,7 +80,7 @@ type SentryProject struct {
 	Platform pulumi.StringOutput `pulumi:"platform"`
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	ProjectId pulumi.StringOutput `pulumi:"projectId"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntOutput `pulumi:"resolveAge"`
@@ -146,7 +147,7 @@ type sentryProjectState struct {
 	Platform *string `pulumi:"platform"`
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	ProjectId *string `pulumi:"projectId"`
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge *int `pulumi:"resolveAge"`
@@ -181,7 +182,7 @@ type SentryProjectState struct {
 	Platform pulumi.StringPtrInput
 	// Use `internalId` instead.
 	//
-	// Deprecated: Use `internal_id` instead.
+	// Deprecated: Use `internalId` instead.
 	ProjectId pulumi.StringPtrInput
 	// Hours in which an issue is automatically resolve if not seen after this amount of time.
 	ResolveAge pulumi.IntPtrInput
@@ -270,12 +271,6 @@ func (i *SentryProject) ToSentryProjectOutputWithContext(ctx context.Context) Se
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectOutput)
 }
 
-func (i *SentryProject) ToOutput(ctx context.Context) pulumix.Output[*SentryProject] {
-	return pulumix.Output[*SentryProject]{
-		OutputState: i.ToSentryProjectOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryProjectArrayInput is an input type that accepts SentryProjectArray and SentryProjectArrayOutput values.
 // You can construct a concrete instance of `SentryProjectArrayInput` via:
 //
@@ -299,12 +294,6 @@ func (i SentryProjectArray) ToSentryProjectArrayOutput() SentryProjectArrayOutpu
 
 func (i SentryProjectArray) ToSentryProjectArrayOutputWithContext(ctx context.Context) SentryProjectArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectArrayOutput)
-}
-
-func (i SentryProjectArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryProject] {
-	return pulumix.Output[[]*SentryProject]{
-		OutputState: i.ToSentryProjectArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryProjectMapInput is an input type that accepts SentryProjectMap and SentryProjectMapOutput values.
@@ -332,12 +321,6 @@ func (i SentryProjectMap) ToSentryProjectMapOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(SentryProjectMapOutput)
 }
 
-func (i SentryProjectMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryProject] {
-	return pulumix.Output[map[string]*SentryProject]{
-		OutputState: i.ToSentryProjectMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryProjectOutput struct{ *pulumi.OutputState }
 
 func (SentryProjectOutput) ElementType() reflect.Type {
@@ -350,12 +333,6 @@ func (o SentryProjectOutput) ToSentryProjectOutput() SentryProjectOutput {
 
 func (o SentryProjectOutput) ToSentryProjectOutputWithContext(ctx context.Context) SentryProjectOutput {
 	return o
-}
-
-func (o SentryProjectOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryProject] {
-	return pulumix.Output[*SentryProject]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryProjectOutput) Color() pulumi.StringOutput {
@@ -407,7 +384,7 @@ func (o SentryProjectOutput) Platform() pulumi.StringOutput {
 
 // Use `internalId` instead.
 //
-// Deprecated: Use `internal_id` instead.
+// Deprecated: Use `internalId` instead.
 func (o SentryProjectOutput) ProjectId() pulumi.StringOutput {
 	return o.ApplyT(func(v *SentryProject) pulumi.StringOutput { return v.ProjectId }).(pulumi.StringOutput)
 }
@@ -452,12 +429,6 @@ func (o SentryProjectArrayOutput) ToSentryProjectArrayOutputWithContext(ctx cont
 	return o
 }
 
-func (o SentryProjectArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryProject] {
-	return pulumix.Output[[]*SentryProject]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryProjectArrayOutput) Index(i pulumi.IntInput) SentryProjectOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryProject {
 		return vs[0].([]*SentryProject)[vs[1].(int)]
@@ -476,12 +447,6 @@ func (o SentryProjectMapOutput) ToSentryProjectMapOutput() SentryProjectMapOutpu
 
 func (o SentryProjectMapOutput) ToSentryProjectMapOutputWithContext(ctx context.Context) SentryProjectMapOutput {
 	return o
-}
-
-func (o SentryProjectMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryProject] {
-	return pulumix.Output[map[string]*SentryProject]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryProjectMapOutput) MapIndex(k pulumi.StringInput) SentryProjectOutput {

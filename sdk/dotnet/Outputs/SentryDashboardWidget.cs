@@ -23,9 +23,6 @@ namespace Pulumiverse.Sentry.Outputs
         public readonly Outputs.SentryDashboardWidgetLayout Layout;
         public readonly int? Limit;
         public readonly ImmutableArray<Outputs.SentryDashboardWidgetQuery> Queries;
-        /// <summary>
-        /// Dashboard title.
-        /// </summary>
         public readonly string Title;
         public readonly string? WidgetType;
 

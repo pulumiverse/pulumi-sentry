@@ -27,14 +27,15 @@ namespace Pulumiverse.Sentry
     ///     var @default = new Sentry.SentryProject("default", new()
     ///     {
     ///         Organization = "my-organization",
-    ///         Platform = "javascript",
-    ///         ResolveAge = 720,
-    ///         Slug = "web-app",
     ///         Teams = new[]
     ///         {
     ///             "my-first-team",
     ///             "my-second-team",
     ///         },
+    ///         Name = "Web App",
+    ///         Slug = "web-app",
+    ///         Platform = "javascript",
+    ///         ResolveAge = 720,
     ///     });
     /// 
     /// });
@@ -42,10 +43,12 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization and team slugs from the URLhttps://sentry.io/settings/[org-slug]/projects/[project-slug]/
+    /// import using the organization and team slugs from the URL:
+    /// 
+    /// https://sentry.io/settings/[org-slug]/projects/[project-slug]/
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
+    /// $ pulumi import sentry:index/sentryProject:SentryProject default org-slug/project-slug
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryProject:SentryProject")]

@@ -7,17 +7,11 @@ import * as outputs from "../types/output";
 
 export interface GetSentryDashboardWidget {
     displayType: string;
-    /**
-     * The ID of this resource.
-     */
     id: string;
     interval: string;
     layouts: outputs.GetSentryDashboardWidgetLayout[];
     limit: number;
     queries: outputs.GetSentryDashboardWidgetQuery[];
-    /**
-     * Dashboard title.
-     */
     title: string;
     widgetType: string;
 }
@@ -36,9 +30,6 @@ export interface GetSentryDashboardWidgetQuery {
     conditions: string;
     fieldAliases: string[];
     fields: string[];
-    /**
-     * The ID of this resource.
-     */
     id: string;
     name: string;
     orderBy: string;
@@ -47,9 +38,6 @@ export interface GetSentryDashboardWidgetQuery {
 export interface GetSentryMetricAlertTrigger {
     actions: outputs.GetSentryMetricAlertTriggerAction[];
     alertThreshold: number;
-    /**
-     * The ID of this resource.
-     */
     id: string;
     label: string;
     resolveThreshold: number;
@@ -57,9 +45,6 @@ export interface GetSentryMetricAlertTrigger {
 }
 
 export interface GetSentryMetricAlertTriggerAction {
-    /**
-     * The ID of this resource.
-     */
     id: string;
     integrationId: number;
     targetIdentifier: string;
@@ -77,9 +62,6 @@ export interface SentryDashboardWidget {
     layout: outputs.SentryDashboardWidgetLayout;
     limit: number;
     queries: outputs.SentryDashboardWidgetQuery[];
-    /**
-     * Dashboard title.
-     */
     title: string;
     widgetType: string;
 }
@@ -114,13 +96,7 @@ export interface SentryMetricAlertTrigger {
      */
     id: string;
     label: string;
-    /**
-     * The value at which the Alert rule resolves
-     */
     resolveThreshold: number;
-    /**
-     * The type of threshold
-     */
     thresholdType: number;
 }
 

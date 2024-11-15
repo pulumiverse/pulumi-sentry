@@ -24,6 +24,7 @@ namespace Pulumiverse.Sentry
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
+    ///     // Retrieve the Github organization integration
     ///     var github = Sentry.GetSentryOrganizationIntegration.Invoke(new()
     ///     {
     ///         Organization = "my-organization",
@@ -43,10 +44,14 @@ namespace Pulumiverse.Sentry
     /// 
     /// ## Import
     /// 
-    /// import using the organization slug from the URLhttps://sentry.io/organizations/[org-slug]/ [github-org] and [github-repo] are the slugs to your repo
+    /// import using the organization slug from the URL:
+    /// 
+    /// https://sentry.io/organizations/[org-slug]/
+    /// 
+    /// [github-org] and [github-repo] are the slugs to your repo
     /// 
     /// ```sh
-    ///  $ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
+    /// $ pulumi import sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub this org-slug/github-org/github-repo
     /// ```
     /// </summary>
     [SentryResourceType("sentry:index/sentryOrganizationRepositoryGithub:SentryOrganizationRepositoryGithub")]

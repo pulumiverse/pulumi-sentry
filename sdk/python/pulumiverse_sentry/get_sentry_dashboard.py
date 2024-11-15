@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 from . import outputs
 
@@ -97,7 +102,8 @@ def get_sentry_dashboard(internal_id: Optional[str] = None,
                          organization: Optional[str] = None,
                          opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSentryDashboardResult:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this dashboard.
     :param str organization: The slug of the organization the dashboard belongs to.
@@ -114,16 +120,24 @@ def get_sentry_dashboard(internal_id: Optional[str] = None,
         organization=pulumi.get(__ret__, 'organization'),
         title=pulumi.get(__ret__, 'title'),
         widgets=pulumi.get(__ret__, 'widgets'))
-
-
-@_utilities.lift_output_func(get_sentry_dashboard)
 def get_sentry_dashboard_output(internal_id: Optional[pulumi.Input[str]] = None,
                                 organization: Optional[pulumi.Input[str]] = None,
                                 opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSentryDashboardResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## Example Usage
+
 
     :param str internal_id: The internal ID for this dashboard.
     :param str organization: The slug of the organization the dashboard belongs to.
     """
-    ...
+    __args__ = dict()
+    __args__['internalId'] = internal_id
+    __args__['organization'] = organization
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('sentry:index/getSentryDashboard:getSentryDashboard', __args__, opts=opts, typ=GetSentryDashboardResult)
+    return __ret__.apply(lambda __response__: GetSentryDashboardResult(
+        id=pulumi.get(__response__, 'id'),
+        internal_id=pulumi.get(__response__, 'internal_id'),
+        organization=pulumi.get(__response__, 'organization'),
+        title=pulumi.get(__response__, 'title'),
+        widgets=pulumi.get(__response__, 'widgets')))

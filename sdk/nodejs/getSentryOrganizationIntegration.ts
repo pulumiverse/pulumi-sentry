@@ -13,20 +13,21 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve a Github organization integration
  * const github = sentry.getSentryOrganizationIntegration({
- *     name: "my-github-organization",
  *     organization: "my-organization",
  *     providerKey: "github",
+ *     name: "my-github-organization",
  * });
+ * // Retrieve a Slack integration
  * const slack = sentry.getSentryOrganizationIntegration({
- *     name: "Slack Workspace",
  *     organization: "my-organization",
  *     providerKey: "slack",
+ *     name: "Slack Workspace",
  * });
  * ```
  */
 export function getSentryOrganizationIntegration(args: GetSentryOrganizationIntegrationArgs, opts?: pulumi.InvokeOptions): Promise<GetSentryOrganizationIntegrationResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration", {
         "name": args.name,
@@ -87,20 +88,27 @@ export interface GetSentryOrganizationIntegrationResult {
  * import * as pulumi from "@pulumi/pulumi";
  * import * as sentry from "@pulumi/sentry";
  *
+ * // Retrieve a Github organization integration
  * const github = sentry.getSentryOrganizationIntegration({
- *     name: "my-github-organization",
  *     organization: "my-organization",
  *     providerKey: "github",
+ *     name: "my-github-organization",
  * });
+ * // Retrieve a Slack integration
  * const slack = sentry.getSentryOrganizationIntegration({
- *     name: "Slack Workspace",
  *     organization: "my-organization",
  *     providerKey: "slack",
+ *     name: "Slack Workspace",
  * });
  * ```
  */
 export function getSentryOrganizationIntegrationOutput(args: GetSentryOrganizationIntegrationOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetSentryOrganizationIntegrationResult> {
-    return pulumi.output(args).apply((a: any) => getSentryOrganizationIntegration(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("sentry:index/getSentryOrganizationIntegration:getSentryOrganizationIntegration", {
+        "name": args.name,
+        "organization": args.organization,
+        "providerKey": args.providerKey,
+    }, opts);
 }
 
 /**

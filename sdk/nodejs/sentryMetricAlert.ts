@@ -17,13 +17,14 @@ import * as utilities from "./utilities";
  * import * as sentry from "@pulumiverse/sentry";
  *
  * const slack = sentry.getSentryOrganizationIntegration({
- *     organization: sentry_project.main.organization,
+ *     organization: mainSentryProject.organization,
  *     providerKey: "slack",
  *     name: "Slack Workspace",
  * });
  * const main = new sentry.SentryMetricAlert("main", {
- *     organization: sentry_project.main.organization,
- *     project: sentry_project.main.id,
+ *     organization: mainSentryProject.organization,
+ *     project: mainSentryProject.id,
+ *     name: "My metric alert",
  *     dataset: "events",
  *     query: "",
  *     aggregate: "count()",
@@ -35,7 +36,7 @@ import * as utilities from "./utilities";
  *             actions: [{
  *                 type: "email",
  *                 targetType: "team",
- *                 targetIdentifier: sentry_team.main.team_id,
+ *                 targetIdentifier: mainSentryTeam.teamId,
  *             }],
  *             alertThreshold: 300,
  *             label: "critical",
@@ -63,10 +64,18 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * import using the organization, project slugs and rule id from the URLhttps://sentry.io/organizations/[org-slug]/projects/[project-slug]/ https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/ or https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
+ * import using the organization, project slugs and rule id from the URL:
+ *
+ * https://sentry.io/organizations/[org-slug]/projects/[project-slug]/
+ *
+ * https://sentry.io/organizations/[org-slug]/alerts/rules/details/[rule-id]/
+ *
+ * or
+ *
+ * https://sentry.io/organizations/[org-slug]/alerts/metric-rules/[project-slug]/[rule-id]/
  *
  * ```sh
- *  $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
+ * $ pulumi import sentry:index/sentryMetricAlert:SentryMetricAlert default org-slug/project-slug/rule-id
  * ```
  */
 export class SentryMetricAlert extends pulumi.CustomResource {

@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/pulumiverse/pulumi-sentry/sdk/go/sentry/internal"
 )
 
@@ -29,13 +28,14 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// Create a plugin
 //			_, err := sentry.NewSentryPlugin(ctx, "default", &sentry.SentryPluginArgs{
-//				Config: pulumi.AnyMap{
-//					"webhook": pulumi.Any("slack://webhook"),
-//				},
 //				Organization: pulumi.String("my-organization"),
-//				Plugin:       pulumi.String("slack"),
 //				Project:      pulumi.String("web-app"),
+//				Plugin:       pulumi.String("slack"),
+//				Config: pulumi.StringMap{
+//					"webhook": pulumi.String("slack://webhook"),
+//				},
 //			})
 //			if err != nil {
 //				return err
@@ -49,7 +49,7 @@ type SentryPlugin struct {
 	pulumi.CustomResourceState
 
 	// Plugin config.
-	Config pulumi.MapOutput `pulumi:"config"`
+	Config pulumi.StringMapOutput `pulumi:"config"`
 	// The slug of the organization the project belongs to.
 	Organization pulumi.StringOutput `pulumi:"organization"`
 	// Plugin ID.
@@ -98,7 +98,7 @@ func GetSentryPlugin(ctx *pulumi.Context,
 // Input properties used for looking up and filtering SentryPlugin resources.
 type sentryPluginState struct {
 	// Plugin config.
-	Config map[string]interface{} `pulumi:"config"`
+	Config map[string]string `pulumi:"config"`
 	// The slug of the organization the project belongs to.
 	Organization *string `pulumi:"organization"`
 	// Plugin ID.
@@ -109,7 +109,7 @@ type sentryPluginState struct {
 
 type SentryPluginState struct {
 	// Plugin config.
-	Config pulumi.MapInput
+	Config pulumi.StringMapInput
 	// The slug of the organization the project belongs to.
 	Organization pulumi.StringPtrInput
 	// Plugin ID.
@@ -124,7 +124,7 @@ func (SentryPluginState) ElementType() reflect.Type {
 
 type sentryPluginArgs struct {
 	// Plugin config.
-	Config map[string]interface{} `pulumi:"config"`
+	Config map[string]string `pulumi:"config"`
 	// The slug of the organization the project belongs to.
 	Organization string `pulumi:"organization"`
 	// Plugin ID.
@@ -136,7 +136,7 @@ type sentryPluginArgs struct {
 // The set of arguments for constructing a SentryPlugin resource.
 type SentryPluginArgs struct {
 	// Plugin config.
-	Config pulumi.MapInput
+	Config pulumi.StringMapInput
 	// The slug of the organization the project belongs to.
 	Organization pulumi.StringInput
 	// Plugin ID.
@@ -168,12 +168,6 @@ func (i *SentryPlugin) ToSentryPluginOutputWithContext(ctx context.Context) Sent
 	return pulumi.ToOutputWithContext(ctx, i).(SentryPluginOutput)
 }
 
-func (i *SentryPlugin) ToOutput(ctx context.Context) pulumix.Output[*SentryPlugin] {
-	return pulumix.Output[*SentryPlugin]{
-		OutputState: i.ToSentryPluginOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SentryPluginArrayInput is an input type that accepts SentryPluginArray and SentryPluginArrayOutput values.
 // You can construct a concrete instance of `SentryPluginArrayInput` via:
 //
@@ -197,12 +191,6 @@ func (i SentryPluginArray) ToSentryPluginArrayOutput() SentryPluginArrayOutput {
 
 func (i SentryPluginArray) ToSentryPluginArrayOutputWithContext(ctx context.Context) SentryPluginArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SentryPluginArrayOutput)
-}
-
-func (i SentryPluginArray) ToOutput(ctx context.Context) pulumix.Output[[]*SentryPlugin] {
-	return pulumix.Output[[]*SentryPlugin]{
-		OutputState: i.ToSentryPluginArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SentryPluginMapInput is an input type that accepts SentryPluginMap and SentryPluginMapOutput values.
@@ -230,12 +218,6 @@ func (i SentryPluginMap) ToSentryPluginMapOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(SentryPluginMapOutput)
 }
 
-func (i SentryPluginMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryPlugin] {
-	return pulumix.Output[map[string]*SentryPlugin]{
-		OutputState: i.ToSentryPluginMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SentryPluginOutput struct{ *pulumi.OutputState }
 
 func (SentryPluginOutput) ElementType() reflect.Type {
@@ -250,15 +232,9 @@ func (o SentryPluginOutput) ToSentryPluginOutputWithContext(ctx context.Context)
 	return o
 }
 
-func (o SentryPluginOutput) ToOutput(ctx context.Context) pulumix.Output[*SentryPlugin] {
-	return pulumix.Output[*SentryPlugin]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Plugin config.
-func (o SentryPluginOutput) Config() pulumi.MapOutput {
-	return o.ApplyT(func(v *SentryPlugin) pulumi.MapOutput { return v.Config }).(pulumi.MapOutput)
+func (o SentryPluginOutput) Config() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *SentryPlugin) pulumi.StringMapOutput { return v.Config }).(pulumi.StringMapOutput)
 }
 
 // The slug of the organization the project belongs to.
@@ -290,12 +266,6 @@ func (o SentryPluginArrayOutput) ToSentryPluginArrayOutputWithContext(ctx contex
 	return o
 }
 
-func (o SentryPluginArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*SentryPlugin] {
-	return pulumix.Output[[]*SentryPlugin]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SentryPluginArrayOutput) Index(i pulumi.IntInput) SentryPluginOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *SentryPlugin {
 		return vs[0].([]*SentryPlugin)[vs[1].(int)]
@@ -314,12 +284,6 @@ func (o SentryPluginMapOutput) ToSentryPluginMapOutput() SentryPluginMapOutput {
 
 func (o SentryPluginMapOutput) ToSentryPluginMapOutputWithContext(ctx context.Context) SentryPluginMapOutput {
 	return o
-}
-
-func (o SentryPluginMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*SentryPlugin] {
-	return pulumix.Output[map[string]*SentryPlugin]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SentryPluginMapOutput) MapIndex(k pulumi.StringInput) SentryPluginOutput {

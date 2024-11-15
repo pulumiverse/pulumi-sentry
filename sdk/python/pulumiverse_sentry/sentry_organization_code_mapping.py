@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = ['SentryOrganizationCodeMappingArgs', 'SentryOrganizationCodeMapping']
@@ -285,24 +290,26 @@ class SentryOrganizationCodeMapping(pulumi.CustomResource):
         import pulumi_sentry as sentry
         import pulumiverse_sentry as sentry
 
+        # Retrieve the Github organization integration
         github = sentry.get_sentry_organization_integration(organization="my-organization",
             provider_key="github",
             name="my-github-organization")
-        this_sentry_project = sentry.SentryProject("thisSentryProject",
+        this = sentry.SentryProject("this",
             organization="my-organization",
             team="my-team",
+            name="Web App",
             slug="web-app",
             platform="javascript",
             resolve_age=720)
-        this_sentry_organization_repository_github = sentry.SentryOrganizationRepositoryGithub("thisSentryOrganizationRepositoryGithub",
+        this_sentry_organization_repository_github = sentry.SentryOrganizationRepositoryGithub("this",
             organization="my-organization",
             integration_id=github.internal_id,
             identifier="my-github-organization/my-github-repo")
-        this_sentry_organization_code_mapping = sentry.SentryOrganizationCodeMapping("thisSentryOrganizationCodeMapping",
+        this_sentry_organization_code_mapping = sentry.SentryOrganizationCodeMapping("this",
             organization="my-organization",
             integration_id=github.internal_id,
             repository_id=this_sentry_organization_repository_github.internal_id,
-            project_id=this_sentry_project.internal_id,
+            project_id=this.internal_id,
             default_branch="main",
             stack_root="/",
             source_root="src/")
@@ -310,10 +317,16 @@ class SentryOrganizationCodeMapping(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/ and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/ find the corresponding list element and reference [code-mapping-id] from the key "id"
+        import using the organization slug from the URL:
+
+        https://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/
+
+        and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/
+
+        find the corresponding list element and reference [code-mapping-id] from the key "id"
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
+        $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
         ```
 
         :param str resource_name: The name of the resource.
@@ -342,24 +355,26 @@ class SentryOrganizationCodeMapping(pulumi.CustomResource):
         import pulumi_sentry as sentry
         import pulumiverse_sentry as sentry
 
+        # Retrieve the Github organization integration
         github = sentry.get_sentry_organization_integration(organization="my-organization",
             provider_key="github",
             name="my-github-organization")
-        this_sentry_project = sentry.SentryProject("thisSentryProject",
+        this = sentry.SentryProject("this",
             organization="my-organization",
             team="my-team",
+            name="Web App",
             slug="web-app",
             platform="javascript",
             resolve_age=720)
-        this_sentry_organization_repository_github = sentry.SentryOrganizationRepositoryGithub("thisSentryOrganizationRepositoryGithub",
+        this_sentry_organization_repository_github = sentry.SentryOrganizationRepositoryGithub("this",
             organization="my-organization",
             integration_id=github.internal_id,
             identifier="my-github-organization/my-github-repo")
-        this_sentry_organization_code_mapping = sentry.SentryOrganizationCodeMapping("thisSentryOrganizationCodeMapping",
+        this_sentry_organization_code_mapping = sentry.SentryOrganizationCodeMapping("this",
             organization="my-organization",
             integration_id=github.internal_id,
             repository_id=this_sentry_organization_repository_github.internal_id,
-            project_id=this_sentry_project.internal_id,
+            project_id=this.internal_id,
             default_branch="main",
             stack_root="/",
             source_root="src/")
@@ -367,10 +382,16 @@ class SentryOrganizationCodeMapping(pulumi.CustomResource):
 
         ## Import
 
-        import using the organization slug from the URLhttps://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/ and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/ find the corresponding list element and reference [code-mapping-id] from the key "id"
+        import using the organization slug from the URL:
+
+        https://sentry.io/settings/[org-slug]/integrations/github/[org-integration-id]/
+
+        and inspect network tab for request to https://sentry.io/api/0/organizations/[org-slug]/code-mappings/
+
+        find the corresponding list element and reference [code-mapping-id] from the key "id"
 
         ```sh
-         $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
+        $ pulumi import sentry:index/sentryOrganizationCodeMapping:SentryOrganizationCodeMapping this org-slug/31347
         ```
 
         :param str resource_name: The name of the resource.
